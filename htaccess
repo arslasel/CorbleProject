@@ -1,0 +1,10 @@
+
+RewriteEngine on
+
+RewriteOptions inherit
+RewriteCond %{HTTPS} off
+RewriteCond %{HTTP:X-Forwarded-SSL} !on
+RewriteCond %{HTTP_HOST} ^corble\.ch$ [OR]
+RewriteCond %{HTTP_HOST} ^www\.corble\.ch$
+RewriteRule ^(.*)$ "https\:\/\/corble\.ch\/$1" [R=301,L]
+

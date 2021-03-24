@@ -49,15 +49,15 @@
 				<img src="img/CorbleLogo.png" width="350px" style="max-width:100%;">
 			</div>
 		</div>
-		<div class="row">
-			<div class="col-md-12">
-		 		<canvas id="drawBoard"> <!--width="620" height="160"!-->
+		<!--<div class="row">
+			<div class="col-md-12">!-->
+		 		<canvas id="drawBoard">
 		 		</canvas>
-		 	</div>
-		</div>
+		 	<!--</div>
+		</div>!-->
 		<div class="row">
 			<div class="col-md-12">
-				<button class="btn btn-primary" id="submitBtn" onclick="imagePrint()">
+				<button class="btn btn-primary" id="submitBtn">
 				  Submit
 				</button>
 				<button class="btn btn-default" id="clearBtn">
@@ -87,22 +87,12 @@
         </div>
     </div>
     <div>Testpixel:
-<?php
-$im = imagecreatefrompng("img/CorbleLogo.png");
-
-list($width, $height) = getimagesize('img/CorbleLogo.png');
-echo $width + "  " + $height;
-for ($counterWidth=0; $counterWidth < $width; $counterWidth++) {
-    for ($counterHeight=0; $counterHeight < $height; $counterHeight++) {
-        $rgb = imagecolorat($im, $counterWidth, $counterHeight);
-        $r = ($rgb >> 16) & 0xFF;
-        $g = ($rgb >> 8) & 0xFF;
-        $b = $rgb & 0xFF;
-        
-        #var_dump($r, $g, $b);
-    }
-}
-?>
+    <?php
+        include('php/Datenverarbeitung.php');
+        $datenverarbeitung = new Datenverarbeitung("img/CorbleLogo.png");
+        $pixelsInArray = $datenverarbeitung->pixelCount();
+        echo $pixelsInArray;
+    ?>
     </div>
 	<!-- The needed internal repositories -->
 	<script src="https://code.jquery.com/jquery-2.1.0.min.js"></script>
@@ -136,8 +126,8 @@ for ($counterWidth=0; $counterWidth < $width; $counterWidth++) {
 			// Set up the canvas
             var canvas = document.getElementById("drawBoard");
 		    ctx = canvas.getContext("2d");
-		    canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+		    canvas.width = window.innerWidth/1.35;
+		    canvas.height = window.innerHeight/2;
 			initCanvas();
 
 			// Set up the UI
@@ -152,7 +142,27 @@ for ($counterWidth=0; $counterWidth < $width; $counterWidth++) {
 			}, false);
 			submitBtn.addEventListener("click", function (e) {
 				var dataUrl = canvas.toDataURL();
+				//console.log(dataUrl); //TODO: Remove for debugging reasons
 				image.setAttribute("src", dataUrl);
+				//TODO: Moegliche Implementierung in JS von Pixelauszaehlung
+				//funktioniert aber noch nicht
+				/*for(pixelW = 0 ; pixelW < canvas.width ; pixelW++){
+				    for(pixelH = 0 ; pixelH < canvas.height ; pixelH++){
+				        var imageData = image.getImageData(pixelW, pixelH, canvas.width, canvas.height);
+				         var index = (y*imageData.width + x) * 4;
+                        var red = imageData.data[index];
+                        var green = imageData.data[index + 1];
+                        var blue = imageData.data[index + 2];
+                        var alpha = imageData.data[index + 3];
+				    }
+				    
+				}
+				
+				list(type, data) = explode(';', dataUrl);
+				list($data) = explode(',', $data);
+				
+				$data = base64_decode($dataUrl);
+				file_put_contents('img/image.png', $data);*/
 			}, false);
 
 			// Set up mouse events for drawing

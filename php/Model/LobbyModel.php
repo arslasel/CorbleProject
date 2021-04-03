@@ -1,17 +1,21 @@
 <?php
     class LobbyModel{
-        private $nameLobby;
+        private $UserName;//name of the current user
         
         public function __construct(){
             
         }
         
-        public function setName($nameLobby){
-            $this->nameLobby = $nameLobby;
+        public function login($UserName){
+            return false;
+        }
+
+        public function setUserName($UserName){
+            $this->UserName = $UserName;
         }
         
-        public function getName(){
-            return $this->nameLobby .$this->nameLobby;
+        public function getUserName(){
+            return $this->UserName;
         }
     }
 ?>

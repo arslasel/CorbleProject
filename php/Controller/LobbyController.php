@@ -7,9 +7,8 @@
             $this->lobbyModel = new LobbyModel();
         }
         
-        public function helloWorld($name){
-            $this->lobbyModel->setName($name);
-            return $this->lobbyModel->getName();
+        public function login($username){
+            return $this->lobbyModel->login($username);
         }
     }
 ?>

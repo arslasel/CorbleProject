@@ -11,4 +11,5 @@
             return $this->lobbyModel->login($username);
         }
     }
+    return;
 ?>

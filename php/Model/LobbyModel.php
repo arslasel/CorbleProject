@@ -1,5 +1,6 @@
 <?php
 include_once("Database.php");
+include_once("PlayerModel.php");
 include_once("WordpoolModel.php");
 class LobbyModel
 {
@@ -39,7 +40,7 @@ class LobbyModel
             $insertID = CorbleDatabase::executeInsertQuery(
                 "INSERT INTO tbl_player (name)VALUES ('" . $UserName . "')"
             );
-            if($insertID != 0){
+            if ($insertID != 0) {
                 $_SESSION["lobby_username"] = $UserName;
                 return true;
             }
@@ -78,7 +79,7 @@ class LobbyModel
         $this->wordpools = $wordpools;
 
         $this->generateLobbyDatabaseEntry();
-        $this->joinLobby($this->joincode, $this->UserName);
+        $this->joinLobby($this->joincode, $this->UserName,true);
     }
 
     private function generateLobbyDatabaseEntry()
@@ -87,14 +88,17 @@ class LobbyModel
         $date = new DateTime();
         $this->starttimeUNIX = $date->getTimestamp() + $this->starttime;
 
+        $playerINDX = PlayerModel::getPlayerIndxByName($_SESSION["lobby_username"]);
+
         $insertID = CorbleDatabase::executeInsertQuery("
-            INSERT INTO tbl_lobby (votetime,drawtime,starttime,maxplayer,joincode,state) 
+            INSERT INTO tbl_lobby (votetime,drawtime,starttime,maxplayer,joincode,fk_player_indx_lobby,state) 
             VALUES (
                 " . $this->votetime . ",
                 " . $this->drawtime . ",
                 " . $this->starttimeUNIX . ",
                 " . $this->maxplayer . ",
                 " . $this->joincode . ",
+                " . $playerINDX . ",
                 'WaitForPlayers')");
 
         if ($insertID != 0) {
@@ -110,20 +114,39 @@ class LobbyModel
         }
     }
 
-    private function joinLobby($joincode, $username)
+    public static function getLobbyIndxByJoincode($joincode)
     {
-
-        $selectPlayerResult = CorbleDatabase::executeQuery("SELECT indx FROM tbl_player WHERE name='" . $username . "'");
         $selectLobbyResult = CorbleDatabase::executeQuery("SELECT indx FROM tbl_lobby WHERE joincode=" . $joincode . "");
 
-        if ($selectLobbyResult->num_rows > 0 && $selectPlayerResult->num_rows > 0) {
+        if ($selectLobbyResult->num_rows > 0) {
+            return $selectLobbyResult->fetch_assoc()["indx"];
+        } else {
+            return 0;
+        }
+    }
+
+    private function joinLobby($joincode, $username, $isPartyLeader)
+    {
+        $playerINDX = PlayerModel::getPlayerIndxByName($username);
+        $lobbyINDX = LobbyModel::getLobbyIndxByJoincode($joincode);
+        $partyLeaderString = "";
+        if ($isPartyLeader == true) {
+            $partyLeaderString = "TRUE";
+        } else {
+            $partyLeaderString = "FALSE";
+        }
+
+
+        if ($lobbyINDX != 0 && $playerINDX != 0) {
+
             $insertID = CorbleDatabase::executeInsertQuery("
-            INSERT INTO tbl_lobby_player (fk_lobby_indx_Lobby_player,fk_player_indx_lobby_player) 
+            INSERT INTO tbl_lobby_player (fk_lobby_indx_Lobby_player,fk_player_indx_lobby_player,partyLeader) 
             VALUES (
-                " . $selectPlayerResult->fetch_assoc()["indx"] . ",
-                " . $selectLobbyResult->fetch_assoc()["indx"] . ")");
+                " . $playerINDX . ",
+                " . $lobbyINDX . ",
+                " . $partyLeaderString . ")");
             if ($insertID != 0) {
-                $_SESSION["lobby_lobbyINDX"] = $$selectLobbyResult->fetch_assoc()["indx"];
+                $_SESSION["lobby_lobbyINDX"] = $lobbyINDX;
             }
         }
     }

@@ -41,6 +41,8 @@ class CorbleDatabase
             if($conn->query($query) === TRUE){
                 return $conn->insert_id;
             }
+            echo $query;
+            echo("Error description: " . $conn->error);
             return 0;
         }
     }

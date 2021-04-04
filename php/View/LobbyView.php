@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <html>
 
 <head>
@@ -5,6 +6,7 @@
 
     <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="../../style.css">
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 </head>
@@ -33,7 +35,7 @@
                 </div>
                 <div class="col s12">
                     <div class="input-field col s12">
-                        <select id="lobby_config_wordpool" name="lobby_config_wordpool" multiple>
+                        <select id="lobby_config_wordpool" name="lobby_config_wordpool[]" multiple required>
                             <option value="" disabled selected>Choose your option</option>
                         </select>
                         <label>Word Pool</label>
@@ -41,7 +43,7 @@
                 </div>
                 <div class="col s12">
                     <div class="input-field col s12">
-                        <select>
+                        <select name="lobby_config_maxplayer" required>
                             <option value="" disabled selected>Choose your option</option>
                             <option value="4">4</option>
                             <option value="5">5</option>
@@ -70,6 +72,13 @@
         } else {
             echo "<script> alert('true') </script>";
         }
+    };
+
+    if (isset($_POST['lobby_config__submit'])) {
+        $lobbyController->createLobby($_POST['lobby_config_votetime'], $_POST['lobby_config_drawtime'], $_POST['lobby_config_starttime'], $_POST['lobby_config_maxplayer'], $_POST['lobby_config_wordpool']);
+
+        echo "<script> alert('lobby in db') </script>";
+        echo $_SESSION["lobby_lobbyINDX"];
     };
 
     if (!isset($_SESSION["lobby_username"])) {

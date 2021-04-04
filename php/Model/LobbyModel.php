@@ -1,5 +1,6 @@
 <?php
 include_once("Database.php");
+include_once("WordpoolModel.php");
 class LobbyModel
 {
     private $UserName; //name of the current user
@@ -15,7 +16,6 @@ class LobbyModel
         $queryResult = CorbleDatabase::executeQuery("SELECT * FROM  tbl_player");
         if ($queryResult->num_rows > 0) {
             while ($row = $queryResult->fetch_assoc()) {
-                echo $row["name"];
                 if ($row["name"] == $UserName) {
                     $foundSameUser = true;
                     break;
@@ -32,6 +32,17 @@ class LobbyModel
             $_SESSION["lobby_username"] = $UserName;
             return true;
         }
+    }
+
+    public function getWordPools(){
+        $res = CorbleDatabase::executeQuery("SELECT * FROM  tbl_wordpool");
+        $wordpools = array();
+        if ($res->num_rows > 0) {
+            while ($row = $res->fetch_assoc()) {
+                $wordpools[$row["indx"]] = new WordpoolModel($row["indx"],$row["word"]);
+            }
+        }
+        return $wordpools;
     }
 
     public function setUserName($UserName)

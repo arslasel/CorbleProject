@@ -33,11 +33,8 @@
                 </div>
                 <div class="col s12">
                     <div class="input-field col s12">
-                        <select name="lobby_config_wordpool" multiple>
+                        <select id="lobby_config_wordpool" name="lobby_config_wordpool" multiple>
                             <option value="" disabled selected>Choose your option</option>
-                            <option value="1">Option 1</option>
-                            <option value="2">Option 2</option>
-                            <option value="3">Option 3</option>
                         </select>
                         <label>Word Pool</label>
                     </div>
@@ -69,18 +66,29 @@
     if (isset($_POST['login_submit'])) {
         $returnOfHW = $lobbyController->login($_POST['login_username']);
         if ($returnOfHW == false) {
-            echo "<script> 
-               alert('false') 
-              </script>";
+            echo "<script> alert('false') </script>";
         } else {
-            echo "<script> 
-               alert('true') 
-              </script>";
+            echo "<script> alert('true') </script>";
         }
     };
 
     if (!isset($_SESSION["lobby_username"])) {
+        echo "<script>document.getElementById('select_name').removeAttribute('hidden'); </script>";
     } else {
+        echo "<script>document.getElementById('select_name').setAttribute(hidden', ''); </script>";
+        echo "<script>document.getElementById('lobby_configurator').removeAttribute('hidden'); </script>";
+
+        $wordpools = $lobbyController->getWordPools();
+
+        foreach ($wordpools as $wordpool) {
+            echo "<script>
+                var select = document.getElementById('lobby_config_wordpool');
+                var opt = document.createElement('option');
+                opt.value = '" . $wordpool->getIndx() . "';
+                opt.innerHTML = '" . $wordpool->getName() . "';
+                select.appendChild(opt);
+            </script>";
+        }
     }
 
 

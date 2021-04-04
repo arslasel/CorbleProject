@@ -10,6 +10,10 @@
         public function login($username){
             return $this->lobbyModel->login($username);
         }
+
+        public function getWordPools(){
+            return $this->lobbyModel->getWordPools();
+        }
     }
     return;
 ?>

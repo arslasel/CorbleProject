@@ -20,6 +20,18 @@ class WordpoolModel
     {
         return $this->name;
     }
+
+    public static function getWordPools()
+    {
+        $res = CorbleDatabase::executeQuery("SELECT * FROM  tbl_wordpool");
+        $wordpools = array();
+        if ($res->num_rows > 0) {
+            while ($row = $res->fetch_assoc()) {
+                $wordpools[$row["indx"]] = new WordpoolModel($row["indx"], $row["word"]);
+            }
+        }
+        return $wordpools;
+    }
 }
 
 return;

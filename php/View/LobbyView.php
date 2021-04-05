@@ -60,6 +60,47 @@
             </div>
         </form>
     </div>
+    <div hidden="" id="lobby_overview" class="content">
+        <div hidden>
+            <form name="lobby_overview_refresh" action="#" method="POST">
+                <input id="lobby_overview_refresh" type="submit" name="lobby_overview_refresh_submit" />
+            </form>
+        </div>
+        <h1>Lobby Overview</h1>
+        <div>
+            <span>Lobby State :</span>
+            <span id="lobby_overview_state"></span>
+        </div>
+        <div>
+            <span>Vote Time :</span>
+            <span id="lobby_overview_votetime"></span>
+        </div>
+        <div>
+            <span>Start Time :</span>
+            <span id="lobby_overview_starttime"></span>
+        </div>
+        <div>
+            <span>Draw Time :</span>
+            <span id="lobby_overview_drawtime"></span>
+        </div>
+        <div>
+            <span>Max Players :</span>
+            <span id="lobby_overview_maxplayer"></span>
+        </div>
+        <div>
+            <span>Join Code :</span>
+            <span id="lobby_overview_joincode"></span>
+        </div>
+        <div>
+            <div class="row">
+                <span>Players :</span>
+            </div>
+            <div class="row">
+                <div id="lobby_overview_players"></div>
+            </div>
+        </div>
+    </div>
+
     <?php
     ini_set('display_errors', 1);
     include("../Controller/LobbyController.php");
@@ -68,37 +109,74 @@
     if (isset($_POST['login_submit'])) {
         $returnOfHW = $lobbyController->login($_POST['login_username']);
         if ($returnOfHW == false) {
-            echo "<script> alert('false') </script>";
-        } else {
-            echo "<script> alert('true') </script>";
+            echo "<script> alert('username taken') </script>";
         }
     };
 
     if (isset($_POST['lobby_config__submit'])) {
         $lobbyController->createLobby($_POST['lobby_config_votetime'], $_POST['lobby_config_drawtime'], $_POST['lobby_config_starttime'], $_POST['lobby_config_maxplayer'], $_POST['lobby_config_wordpool']);
-
-        echo "<script> alert('lobby in db') </script>";
-        echo $_SESSION["lobby_lobbyINDX"];
     };
 
-    if (!isset($_SESSION["lobby_username"])) {
-        echo "<script>document.getElementById('select_name').removeAttribute('hidden'); </script>";
+    if (!isset($_SESSION["lobby_lobbyINDX"])) {
+        if (!isset($_SESSION["lobby_username"])) {
+            echo "<script>document.getElementById('select_name').removeAttribute('hidden'); </script>";
+        } else {
+            echo "<script>document.getElementById('select_name').setAttribute(hidden', ''); </script>";
+            echo "<script>document.getElementById('lobby_configurator').removeAttribute('hidden'); </script>";
+
+            $wordpools = $lobbyController->getWordPools();
+
+            foreach ($wordpools as $wordpool) {
+                echo "<script>
+                    var select = document.getElementById('lobby_config_wordpool');
+                    var opt = document.createElement('option');
+                    opt.value = '" . $wordpool->getIndx() . "';
+                    opt.innerHTML = '" . $wordpool->getName() . "';
+                    select.appendChild(opt);
+                </script>";
+            }
+        }
     } else {
         echo "<script>document.getElementById('select_name').setAttribute(hidden', ''); </script>";
-        echo "<script>document.getElementById('lobby_configurator').removeAttribute('hidden'); </script>";
+        echo "<script>document.getElementById('lobby_configurator').setAttribute(hidden', ''); </script>";
+        echo "<script>document.getElementById('lobby_overview').removeAttribute('hidden'); </script>";
 
-        $wordpools = $lobbyController->getWordPools();
+        echo "<script>
+            window.setInterval(()=>{
+                document.getElementById('lobby_overview_refresh').click();
+                console.log('fetching data');
+            },1000);
+        </script>";
 
-        foreach ($wordpools as $wordpool) {
+        if (isset($_POST['lobby_overview_refresh_submit'])) {
+            $model = $lobbyController->readLobbyDataFromDB();
+            echo "<script>document.getElementById('lobby_overview_state').innerHTML = '" . $model->getState() . "'; </script>";
+            echo "<script>document.getElementById('lobby_overview_votetime').innerHTML = '" . $model->getVoteTime() . "'; </script>";
+            echo "<script>document.getElementById('lobby_overview_starttime').innerHTML = '" . $model->getStartTime() . "'; </script>";
+            echo "<script>document.getElementById('lobby_overview_drawtime').innerHTML = '" . $model->getDrawTime() . "'; </script>";
+            echo "<script>document.getElementById('lobby_overview_maxplayer').innerHTML = '" . $model->getMaxPlayers() . "'; </script>";
+            echo "<script>document.getElementById('lobby_overview_joincode').innerHTML = '" . $model->getJoinCode() . "'; </script>";
+
             echo "<script>
-                var select = document.getElementById('lobby_config_wordpool');
-                var opt = document.createElement('option');
-                opt.value = '" . $wordpool->getIndx() . "';
-                opt.innerHTML = '" . $wordpool->getName() . "';
-                select.appendChild(opt);
+                var div = document.getElementById('lobby_overview_players');
+                var ul = document.createElement('ul');
+                ul.id = 'lobby_overview_players_list';
+                div.innerHTML = '';
+                div.appendChild(ul);
             </script>";
+
+            foreach ($model->getPlayers() as $player) {
+                echo "<script>
+                var ul = document.getElementById('lobby_overview_players_list');
+                var li = document.createElement('li');
+                li.textContent = '" . $player->getName() . "';
+                ul.appendChild(li);
+            </script>";
+            }
         }
     }
+
+
 
 
     echo "<script>M.AutoInit()</script>"; // init all materiallize components

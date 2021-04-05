@@ -12,7 +12,9 @@ class LobbyModel
     private $starttime;
     private $maxplayer;
     private $joincode;
+    private $state;
     private $wordpools = array();
+    private $players = array();
 
     private $starttimeUNIX;
 
@@ -48,18 +50,6 @@ class LobbyModel
         }
     }
 
-    public function getWordPools()
-    {
-        $res = CorbleDatabase::executeQuery("SELECT * FROM  tbl_wordpool");
-        $wordpools = array();
-        if ($res->num_rows > 0) {
-            while ($row = $res->fetch_assoc()) {
-                $wordpools[$row["indx"]] = new WordpoolModel($row["indx"], $row["word"]);
-            }
-        }
-        return $wordpools;
-    }
-
     public function setUserName($UserName)
     {
         $this->UserName = $UserName;
@@ -68,6 +58,34 @@ class LobbyModel
     public function getUserName()
     {
         return $this->UserName;
+    }
+
+    public function getState(){
+        return $this->state;
+    }
+
+    public function getVoteTime(){
+        return $this->votetime;
+    }
+
+    public function getStartTime(){
+        return $this->starttime;
+    }
+
+    public function getDrawTime(){
+        return $this->drawtime;
+    }
+
+    public function getMaxPlayers(){
+        return $this->maxplayer;
+    }
+
+    public function getJoinCode(){
+        return $this->joincode;
+    }
+
+    public function getPlayers(){
+        return $this->players;
     }
 
     public function createLobby($votetime, $drawtime, $starttime, $maxplayer, $wordpools)
@@ -125,6 +143,58 @@ class LobbyModel
         }
     }
 
+    public static function getPlayersOfLobby($lobbyINDX){
+        $players = array();
+        $query = "
+            SELECT tbl_player.name, tbl_player.indx
+            FROM tbl_lobby_player, tbl_player 
+            WHERE tbl_player.indx = tbl_lobby_player.fk_player_indx_lobby_player 
+            AND tbl_lobby_player.fk_lobby_indx_Lobby_player = ".$lobbyINDX."";
+        $queryResult = CorbleDatabase::executeQuery($query);
+        if($queryResult->num_rows > 0){
+            while($row = $queryResult->fetch_assoc()){
+                $players[$row["indx"]] = new PlayerModel($row["name"],$row["indx"]);
+            }
+        }
+        return $players;
+    }
+
+    public static function getWordpoolsOfLobby($lobbyINDX){
+        $wordpools = array();
+        $query = "
+            SELECT tbl_wordpool.word as name, tbl_wordpool.indx
+            FROM tbl_lobby_wordpool, tbl_wordpool 
+            WHERE tbl_wordpool.indx = tbl_lobby_wordpool.fk_wordpool_indx_lobby_wordpool 
+            AND tbl_lobby_wordpool.fk_lobby_indx_lobby_wordpool  = ".$lobbyINDX."";
+
+        $queryResult = CorbleDatabase::executeQuery($query);
+        if($queryResult->num_rows > 0){
+            while($row = $queryResult->fetch_assoc()){
+                $wordpools[$row["indx"]] = new WordpoolModel($row["name"],$row["indx"]);
+            }
+        }
+        return $wordpools;
+    }
+
+    public function readLobbyDataFromDB(){
+        $query = "SELECT * FROM tbl_lobby WHERE joincode = ".$_SESSION["lobby_joincode"]."";
+        $queryResult = CorbleDatabase::executeQuery($query);
+
+        if($queryResult->num_rows > 0){
+            while($row = $queryResult->fetch_assoc()){
+                $this->state = $row["state"];
+                $this->votetime = $row["votetime"];
+                $this->starttime = $row["starttime"];
+                $this->drawtime = $row["drawtime"];
+                $this->maxplayer = $row["maxplayer"];
+                $this->joincode = $row["joincode"];
+                $this->players = LobbyModel::getPlayersOfLobby($_SESSION["lobby_lobbyINDX"]);
+                $this->wordpools = LobbyModel::getWordpoolsOfLobby($_SESSION["lobby_lobbyINDX"]);
+                break;
+            }
+        }
+    }
+
     private function joinLobby($joincode, $username, $isPartyLeader)
     {
         $playerINDX = PlayerModel::getPlayerIndxByName($username);
@@ -146,9 +216,11 @@ class LobbyModel
                 " . $partyLeaderString . ")");
             if ($insertID != 0) {
                 $_SESSION["lobby_lobbyINDX"] = $lobbyINDX;
+                $_SESSION["lobby_joincode"] = $joincode;
             }
         }
     }
+
 }
 
 return;

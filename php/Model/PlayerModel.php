@@ -1,6 +1,16 @@
 <?php 
 
 class PlayerModel{
+    private $name;
+    private $indx;
+
+    public function __construct($name,$indx)
+    {
+        $this->name = $name;
+        $this->indx = $indx;
+    }
+
+
     public static function getPlayerIndxByName($name){
         $query = "SELECT indx FROM tbl_player WHERE name='" . $name . "'";
         $selectPlayerResult = CorbleDatabase::executeQuery($query);
@@ -10,6 +20,14 @@ class PlayerModel{
         } else {
             return 0;
         }
+    }
+
+    public function getName(){
+        return $this->name;
+    }
+
+    public function getIndx(){
+        return $this->indx;
     }
 }
 

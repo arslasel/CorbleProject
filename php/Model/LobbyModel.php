@@ -195,7 +195,7 @@ class LobbyModel
         }
     }
 
-    private function joinLobby($joincode, $username, $isPartyLeader)
+    public function joinLobby($joincode, $username, $isPartyLeader)
     {
         $playerINDX = PlayerModel::getPlayerIndxByName($username);
         $lobbyINDX = LobbyModel::getLobbyIndxByJoincode($joincode);

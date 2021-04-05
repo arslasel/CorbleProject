@@ -19,46 +19,55 @@
         </form>
     </div>
     <div hidden="" id="lobby_configurator" class="content">
-        <form name="lobby_config" action="#" method="POST">
-            <div class="row">
-                <div class="col s12">
-                    <input id="lobby_config_drawtime" type="number" name="lobby_config_drawtime" required />
-                    <label for="lobby_config_drawtime">Draw Time</label>
-                </div>
-                <div class="col s12">
-                    <input id="lobby_config_votetime" type="number" name="lobby_config_votetime" required />
-                    <label for="lobby_config_votetime">Vote Time</label>
-                </div>
-                <div class="col s12">
-                    <input id="lobby_config_starttime" type="number" name="lobby_config_starttime" required />
-                    <label for="lobby_config_starttime">Start Time</label>
-                </div>
-                <div class="col s12">
-                    <div class="input-field col s12">
-                        <select id="lobby_config_wordpool" name="lobby_config_wordpool[]" multiple required>
-                            <option value="" disabled selected>Choose your option</option>
-                        </select>
-                        <label>Word Pool</label>
+        <div class="row">
+            <form name="join" action="#" method="POST">
+                <input type="text" name="join_joincode" required />
+                <input type="submit" name="join_submit" />
+            </form>
+        </div>
+        <hr>
+        <div class="row">
+            <form name="lobby_config" action="#" method="POST">
+                <div class="row">
+                    <div class="col s12">
+                        <input id="lobby_config_drawtime" type="number" name="lobby_config_drawtime" required />
+                        <label for="lobby_config_drawtime">Draw Time</label>
+                    </div>
+                    <div class="col s12">
+                        <input id="lobby_config_votetime" type="number" name="lobby_config_votetime" required />
+                        <label for="lobby_config_votetime">Vote Time</label>
+                    </div>
+                    <div class="col s12">
+                        <input id="lobby_config_starttime" type="number" name="lobby_config_starttime" required />
+                        <label for="lobby_config_starttime">Start Time</label>
+                    </div>
+                    <div class="col s12">
+                        <div class="input-field col s12">
+                            <select id="lobby_config_wordpool" name="lobby_config_wordpool[]" multiple required>
+                                <option value="" disabled selected>Choose your option</option>
+                            </select>
+                            <label>Word Pool</label>
+                        </div>
+                    </div>
+                    <div class="col s12">
+                        <div class="input-field col s12">
+                            <select name="lobby_config_maxplayer" required>
+                                <option value="" disabled selected>Choose your option</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                            </select>
+                            <label>Lobby Size</label>
+                        </div>
+                    </div>
+                    <div class="col s12">
+                        <input type="submit" name="lobby_config__submit" />
                     </div>
                 </div>
-                <div class="col s12">
-                    <div class="input-field col s12">
-                        <select name="lobby_config_maxplayer" required>
-                            <option value="" disabled selected>Choose your option</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                            <option value="6">6</option>
-                            <option value="7">7</option>
-                            <option value="8">8</option>
-                        </select>
-                        <label>Lobby Size</label>
-                    </div>
-                </div>
-                <div class="col s12">
-                    <input type="submit" name="lobby_config__submit" />
-                </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
     <div hidden="" id="lobby_overview" class="content">
         <div hidden>
@@ -105,6 +114,10 @@
     ini_set('display_errors', 1);
     include("../Controller/LobbyController.php");
     $lobbyController = new LobbyController();
+
+    if (isset($_POST['join_submit'])) {
+        $lobbyController->joinLobby($_POST['join_joincode']);
+    }
 
     if (isset($_POST['login_submit'])) {
         $returnOfHW = $lobbyController->login($_POST['login_username']);

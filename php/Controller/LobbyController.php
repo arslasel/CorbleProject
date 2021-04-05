@@ -20,6 +20,10 @@
             return $this->lobbyModel->createLobby($votetime,$drawtime,$starttime,$maxplayer,$wordpools);
         }
 
+        public function joinLobby($joincode){
+            return $this->lobbyModel->joinLobby($joincode,$_SESSION["lobby_username"],false);
+        }
+
         public function readLobbyDataFromDB(){
             $this->lobbyModel->readLobbyDataFromDB();
             return $this->lobbyModel;

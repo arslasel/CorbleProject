@@ -89,6 +89,22 @@ session_start();
 
 <body>
 
+	<div>Testpixel: <a href="php/View/LobbyView.php" target="_blank">Lobby view</a>
+
+		<?php
+
+		/*include('php/Datenverarbeitung.php');
+
+$datenverarbeitung = new Datenverarbeitung("img/CorbleLogo.png");
+
+$pixelsInArray = $datenverarbeitung->pixelCount();
+
+echo $pixelsInArray;*/
+
+		?>
+
+	</div>
+
 	<!-- Content -->
 
 	<div class="container">
@@ -177,21 +193,7 @@ session_start();
 
 	</div>
 
-	<div>Testpixel: <a href="php/View/LobbyView.php" target="_blank">Lobby view</a>
 
-		<?php
-
-		/*include('php/Datenverarbeitung.php');
-
-        $datenverarbeitung = new Datenverarbeitung("img/CorbleLogo.png");
-
-        $pixelsInArray = $datenverarbeitung->pixelCount();
-
-        echo $pixelsInArray;*/
-
-		?>
-
-	</div>
 
 	<!-- The needed internal repositories -->
 

@@ -79,7 +79,7 @@ class LobbyModel
         $this->wordpools = $wordpools;
 
         $this->generateLobbyDatabaseEntry();
-        $this->joinLobby($this->joincode, $this->UserName,true);
+        $this->joinLobby($this->joincode, $_SESSION["lobby_username"],true);
     }
 
     private function generateLobbyDatabaseEntry()
@@ -109,7 +109,7 @@ class LobbyModel
                 INSERT INTO tbl_lobby_wordpool (fk_lobby_indx_lobby_wordpool,fk_wordpool_indx_lobby_wordpool) 
                 VALUES (
                     " . $this->indx . ",
-                    " . $wordpool->getIndx() . ")");
+                    " .  $wordpool. ")");
             }
         }
     }
@@ -136,11 +136,10 @@ class LobbyModel
             $partyLeaderString = "FALSE";
         }
 
-
         if ($lobbyINDX != 0 && $playerINDX != 0) {
 
             $insertID = CorbleDatabase::executeInsertQuery("
-            INSERT INTO tbl_lobby_player (fk_lobby_indx_Lobby_player,fk_player_indx_lobby_player,partyLeader) 
+            INSERT INTO tbl_lobby_player (fk_player_indx_lobby_player,fk_lobby_indx_Lobby_player,partyLeader) 
             VALUES (
                 " . $playerINDX . ",
                 " . $lobbyINDX . ",

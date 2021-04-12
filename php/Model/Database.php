@@ -6,6 +6,9 @@ class CorbleDatabase
     private static $password = "Zhaw-1234!";
     private static $db = "rigpdqdi_corbleCh";
 
+    public function __construct(){
+    }
+
     public static function executeQuery($query)
     {
         // Create connection

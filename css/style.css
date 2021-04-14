@@ -1,0 +1,65 @@
+html{
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    width: 100%;
+    height: 100%;
+}
+
+.FullHeightWidth {
+    width: 100%;
+    height: 100%;
+}
+
+.FullHeight{
+    height: 100%;
+}
+
+.NoMargin{
+    margin: 0px;
+}
+
+.title {
+    text-align: center;
+}
+
+.root{
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
+    flex-grow: 0;
+    background-color: blueviolet;
+    display: flex;
+    flex-direction: row;
+}
+
+.header_title{
+    flex-grow: 1;
+}
+.header_logo{
+    flex-grow: 0;
+    width: 280px;
+}
+
+.content {
+    flex-grow: 1;
+    background-color: blue;
+}
+
+.footer {
+    flex-grow: 0;
+    background-color: chartreuse;
+}
+
+.logo{
+    width:  100%;
+    height: 100%;
+    background-image: url("/img/CorbleLogo.png");
+    background-color: brown;
+    background-repeat: no-repeat;
+    background-size: contain;
+}

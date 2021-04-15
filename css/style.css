@@ -6,6 +6,7 @@ html{
 body {
     width: 100%;
     height: 100%;
+    font-family: "roboto";
 }
 
 .FullHeightWidth {
@@ -42,7 +43,7 @@ body {
 }
 .header_logo{
     flex-grow: 0;
-    width: 280px;
+    width: 200px;
 }
 
 .content {
@@ -56,10 +57,10 @@ body {
 }
 
 .logo{
-    width:  100%;
+    width: 200px;
     height: 100%;
     background-image: url("/img/CorbleLogo.png");
-    background-color: brown;
     background-repeat: no-repeat;
     background-size: contain;
+    background-position: center center; 
 }

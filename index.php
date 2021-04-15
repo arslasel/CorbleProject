@@ -14,27 +14,53 @@ session_start();
     <meta name="author" content="">
     <title>Corble</title>
 
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Butterfly+Kids%7CRoboto" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <link rel="icon" type="image/png" href="">
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var elems = document.querySelectorAll('.sidenav');
+            var instances = M.Sidenav.init(elems, {});
+        });
+
+        $(document).ready(function() {
+            $('.sidenav').sidenav();
+        });
+    </script>
 </head>
 
 <body>
-    <div id="root" class="root FullHeightWidth NoMargin">
-        <div class="row NoMargin header">
-            <div class="header_title">
-                <h3 class="title">Welcome to Corble</h3>
+    <ul class="sidenav" id="mobile-nav">
+        <li><a href="#">Leave</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Rules</a></li>
+    </ul>
+    <div class="navbar-fixed">
+        <nav class="red" style="padding:0px 10px; position: fixed;">
+            <div class="nav-wrapper">
+                <a href="#" class="brand-logo logo">&nbsp;</a>
+
+                <a href="#" class="sidenav-trigger" data-target="mobile-nav">
+                    <i class="material-icons">menu</i>
+                </a>
+
+                <ul class="right hide-on-med-and-down ">
+                    <li><a href="#">Leave</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Rules</a></li>
+                </ul>
             </div>
-            <div class="header_logo FullHeight">
-                <div class="logo">&nbsp;</div>
-            </div>
-        </div>
-        <div class="row NoMargin content">
-            Content
-        </div>
-        <div class="row NoMargin footer">
-            Copyright
-        </div>
+        </nav>
+
+
+    </div>
+
+    <div>
+        hallo
     </div>
 </body>
 

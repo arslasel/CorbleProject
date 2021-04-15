@@ -20,17 +20,8 @@ session_start();
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    <link rel="icon" type="image/png" href="">
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var elems = document.querySelectorAll('.sidenav');
-            var instances = M.Sidenav.init(elems, {});
-        });
+    <script src="js/init.js"></script>
 
-        $(document).ready(function() {
-            $('.sidenav').sidenav();
-        });
-    </script>
 </head>
 
 <body>
@@ -60,7 +51,7 @@ session_start();
     </div>
 
     <div>
-        hallo
+        <a href="php/View/LobbyView.php" target="_blank">Lobby View</a>
     </div>
 </body>
 

@@ -1,72 +1,156 @@
-<?php session_start(); ?>
+<?php
+session_start();
+?>
+
+<!DOCTYPE HTML>
 <html>
 
 <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="">
     <title>Lobby</title>
 
-    <!-- Compiled and minified CSS -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Butterfly+Kids%7CRoboto" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-    <link rel="stylesheet" href="../../style.css">
-    <!-- Compiled and minified JavaScript -->
+    <link rel="stylesheet" type="text/css" href="../../css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="../../js/init.js"></script>
+    <link rel="icon" type="image/png" href="">
+
 </head>
 
 <body>
+    <ul class="sidenav" id="mobile-nav">
+        <li class="usernameDisplay"><a id="username_display" href="#"></a></li>
+        <li><a href="#">Leave</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Rules</a></li>
+    </ul>
+    <div class="navbar-fixed">
+        <nav class="red" style="padding:0px 10px; position: fixed;">
+            <div class="nav-wrapper">
+                <a href="#" class="brand-logo logo">&nbsp;</a>
+
+                <a href="#" class="sidenav-trigger" data-target="mobile-nav">
+                    <i class="material-icons">menu</i>
+                </a>
+
+                <ul class="right hide-on-med-and-down ">
+                    <li class="usernameDisplay"><a id="username_display" href="#"></a></li>
+                    <li><a href="#">Leave</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Rules</a></li>
+                </ul>
+            </div>
+        </nav>
+
+
+    </div>
+
     <div hidden="" id="select_name" class="content">
-        <form name="login" action="#" method="POST">
-            <input type="text" name="login_username" required />
-            <input type="submit" name="login_submit" />
-        </form>
+        <div class="row">
+            <h2 class="WelcomeText">Welcome To Corble</h2>
+        </div>
+        <div class="row">
+            <div class="col s0 l3"></div>
+            <div class="col s12 l6">
+                <form name="login" action="#" method="POST" autocomplete="off">
+                    <div class="row">
+                        <div class="col s12">
+                            <input id="username" type="text" name="login_username" placeholder="Choose Username" required />
+                            <label class="active" for="username">Username</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12">
+                            <button class="btn waves-effect waves-light red confirmNameButton" type="submit" type="submit" value="Confirm" name="login_submit">Submit
+                                <i class="material-icons right">send</i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col s0 l3"></div>
+        </div>
     </div>
     <div hidden="" id="lobby_configurator" class="content">
         <div class="row">
-            <form name="join" action="#" method="POST">
-                <input type="text" name="join_joincode" required />
-                <input type="submit" name="join_submit" />
-            </form>
-        </div>
-        <hr>
-        <div class="row">
-            <form name="lobby_config" action="#" method="POST">
+            <div id="modal1" class="modal">
+                <div class="modal-content">
+                    <form name="join" action="#" method="POST">
+                        <input type="text" name="join_joincode" required />
+                        <input type="submit" name="join_submit" />
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
+                </div>
+            </div>
+
+            <div class="col s0 l3"></div>
+            <div class="col s12 l6">
                 <div class="row">
-                    <div class="col s12">
-                        <input id="lobby_config_drawtime" type="number" name="lobby_config_drawtime" required />
-                        <label for="lobby_config_drawtime">Draw Time</label>
+                    <div class="col s6">
+                        <h5>Join Lobby</h5>
                     </div>
-                    <div class="col s12">
-                        <input id="lobby_config_votetime" type="number" name="lobby_config_votetime" required />
-                        <label for="lobby_config_votetime">Vote Time</label>
-                    </div>
-                    <div class="col s12">
-                        <input id="lobby_config_starttime" type="number" name="lobby_config_starttime" required />
-                        <label for="lobby_config_starttime">Start Time</label>
-                    </div>
-                    <div class="col s12">
-                        <div class="input-field col s12">
-                            <select id="lobby_config_wordpool" name="lobby_config_wordpool[]" multiple required>
-                                <option value="" disabled selected>Choose your option</option>
-                            </select>
-                            <label>Word Pool</label>
-                        </div>
-                    </div>
-                    <div class="col s12">
-                        <div class="input-field col s12">
-                            <select name="lobby_config_maxplayer" required>
-                                <option value="" disabled selected>Choose your option</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                                <option value="6">6</option>
-                                <option value="7">7</option>
-                                <option value="8">8</option>
-                            </select>
-                            <label>Lobby Size</label>
-                        </div>
-                    </div>
-                    <div class="col s12">
-                        <input type="submit" name="lobby_config__submit" />
+                    <div class="col s6">
+                        <a class="waves-effect waves-light btn red modal-trigger" href="#modal1">Join Lobby</a>
                     </div>
                 </div>
-            </form>
+                <div class="row">
+                    <hr>
+                </div>
+                <div class="row">
+                    <form name="lobby_config" action="#" method="POST">
+                        <div class="row">
+                            <div class="col s12">
+                                <input id="lobby_config_drawtime" type="number" name="lobby_config_drawtime" required />
+                                <label for="lobby_config_drawtime">Draw Time</label>
+                            </div>
+                            <div class="col s12">
+                                <input id="lobby_config_votetime" type="number" name="lobby_config_votetime" required />
+                                <label for="lobby_config_votetime">Vote Time</label>
+                            </div>
+                            <div class="col s12">
+                                <input id="lobby_config_starttime" type="number" name="lobby_config_starttime" required />
+                                <label for="lobby_config_starttime">Start Time</label>
+                            </div>
+                            <div class="col s12">
+                                <div class="input-field col s12">
+                                    <select id="lobby_config_wordpool" name="lobby_config_wordpool[]" multiple required>
+                                        <option value="" disabled selected>Choose your option</option>
+                                    </select>
+                                    <label>Word Pool</label>
+                                </div>
+                            </div>
+                            <div class="col s12">
+                                <div class="input-field col s12">
+                                    <select name="lobby_config_maxplayer" required>
+                                        <option value="" disabled selected>Choose your option</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                        <option value="8">8</option>
+                                    </select>
+                                    <label>Lobby Size</label>
+                                </div>
+                            </div>
+                            <div class="col s12">
+                                <input type="submit" name="lobby_config__submit" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+            <div class="col s0 l3"></div>
         </div>
     </div>
     <div hidden="" id="lobby_overview" class="content">
@@ -189,7 +273,13 @@
         }
     }
 
-
+    //username_display
+    if (isset($_SESSION["lobby_username"])) {
+        echo "<script>
+            var usernameElement = document.getElementById('username_display');
+            usernameElement.innerHTML = '" . $_SESSION["lobby_username"] . "';
+        </script>";
+    }
 
 
     echo "<script>M.AutoInit()</script>"; // init all materiallize components

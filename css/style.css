@@ -7,6 +7,7 @@ body {
     width: 100%;
     height: 100%;
     font-family: "roboto";
+    overflow: hidden;
 }
 
 .FullHeightWidth {
@@ -22,40 +23,6 @@ body {
     margin: 0px;
 }
 
-.title {
-    text-align: center;
-}
-
-.root{
-    display: flex;
-    flex-direction: column;
-}
-
-.header {
-    flex-grow: 0;
-    background-color: blueviolet;
-    display: flex;
-    flex-direction: row;
-}
-
-.header_title{
-    flex-grow: 1;
-}
-.header_logo{
-    flex-grow: 0;
-    width: 200px;
-}
-
-.content {
-    flex-grow: 1;
-    background-color: blue;
-}
-
-.footer {
-    flex-grow: 0;
-    background-color: chartreuse;
-}
-
 .logo{
     width: 200px;
     height: 100%;
@@ -63,4 +30,16 @@ body {
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center center; 
+}
+
+.WelcomeText{
+    text-align: center;
+}
+
+.confirmNameButton{
+    float: right;
+}
+
+.usernameDisplay{
+    pointer-events: none;
 }

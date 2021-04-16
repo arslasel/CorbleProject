@@ -2,11 +2,16 @@
     include('ImageProcessorModel.php');
     include('Database.php');
 
+    /**
+     * This class is used to rate the picture which is drawn from the player
+     */
 	class RatingModel{
         private $imageRessource;
         private $imageProcessingController;
         private $database;
         private const MAX_POINTS = 10;
+        private const MAX_DIFFERENCE_BORDER = 200;
+        private const NO_PIXEL = 0;
         private $actualPoints;
         private $primaryOptimalColorRatio;
         private $secondaryOptimalColorRatio;
@@ -18,7 +23,7 @@
          * @input: String $imageRessource
          * @input: String $word
          */
-        public function __construct(String $imageRessource, $word){
+        public function __construct($imageRessource, $word){
             $this->imageRessource = $imageRessource;
             $this->imageProcessingController = new ImageProcessorModel($imageRessource);
             $this->database = new CorbleDatabase(); #Temp as longs as the between layer not exist
@@ -33,10 +38,9 @@
         /**
          * This function calculates the penalties for wrong color rates of a in the database defined color for a word
          * @input: Word $word
-         * @input: int $sketchIndx
          * @Return: int penaltiePoints
          */
-        function ratioColorsRate($word, $sketchIndx){
+        function ratioColorsRate($word){
             list($blackCounter, $redCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter) = $this->imageProcessingController->pixelCount();
             list($actualPrimaryRatio, $actualSecondaryRatio) = $this->calculateRatio($blackCounter, $redCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter, $this->primaryColor, $this->secondaryColor);
             $penaltiePoints = $this->calculatePenaltiesRatio($this->primaryOptimalColorRatio, $this->secondaryOptimalColorRatio, $actualPrimaryRatio, $actualSecondaryRatio);
@@ -51,29 +55,29 @@
         function foreignColorsRate(){
             $penaltiePoints = 0;
             list($blackCounter, $redCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter) = $this->imageProcessingController->pixelCount();
-            if(($blackCounter >= 0 && $this->primaryColor != "black") && ($blackCounter >= 0 && $this->secondaryColor != "black")){
+            if(($blackCounter >= $this->NO_PIXEL && $this->primaryColor != "black") && ($blackCounter >= $this->NO_PIXEL && $this->secondaryColor != "black")){
                 $penaltiePoints += 1;
-                ($blackCounter >= 200) ?: $penaltiePoints += 3;
+                ($blackCounter >= $this->MAX_DIFFERENCE_BORDER) ?: $penaltiePoints += 3;
             }
-            else if(($redCounter >= 0 && $this->primaryColor != "red") && ($redCounter >= 0 && $this->secondaryColor != "red")){
+            else if(($redCounter >= $this->NO_PIXEL && $this->primaryColor != "red") && ($redCounter >= $this->NO_PIXEL && $this->secondaryColor != "red")){
                 $penaltiePoints += 1;
-                ($redCounter >= 200) ?: $penaltiePoints += 3;
+                ($redCounter >= $this->MAX_DIFFERENCE_BORDER) ?: $penaltiePoints += 3;
             }
-            else if(($greenCounter >= 0 && $this->primaryColor != "green") && ($greenCounter >= 0 && $this->secondaryColor != "green")){
+            else if(($greenCounter >= $this->NO_PIXEL && $this->primaryColor != "green") && ($greenCounter >= $this->NO_PIXEL && $this->secondaryColor != "green")){
                 $penaltiePoints += 1;
-                ($greenCounter >= 200) ?: $penaltiePoints += 3;
+                ($greenCounter >= $this->MAX_DIFFERENCE_BORDER) ?: $penaltiePoints += 3;
             }
-            else if(($blueCounter >= 0 && $this->primaryColor != "blue") && ($blueCounter >= 0 && $this->secondaryColor != "blue")){
+            else if(($blueCounter >= $this->NO_PIXEL && $this->primaryColor != "blue") && ($blueCounter >= $this->NO_PIXEL && $this->secondaryColor != "blue")){
                 $penaltiePoints += 1;
-                ($blueCounter >= 200) ?: $penaltiePoints += 3;
+                ($blueCounter >= $this->MAX_DIFFERENCE_BORDER) ?: $penaltiePoints += 3;
             }
-            else if(($yellowCounter >= 0 && $this->primaryColor != "yellow") && ($yellowCounter >= 0 && $this->secondaryColor != "yellow")){
+            else if(($yellowCounter >= $this->NO_PIXEL && $this->primaryColor != "yellow") && ($yellowCounter >= $this->NO_PIXEL && $this->secondaryColor != "yellow")){
                 $penaltiePoints += 1;
                 ($yellowCounter >= 200) ?: $penaltiePoints += 3;
             }
-            else if(($orangeCounter >= 0 && $this->primaryColor != "orange") && ($orangeCounter >= 0 && $this->secondaryColor != "orange")){
+            else if(($orangeCounter >= $this->NO_PIXEL && $this->primaryColor != "orange") && ($orangeCounter >= $this->NO_PIXEL && $this->secondaryColor != "orange")){
                 $penaltiePoints += 1;
-                ($orangeCounter >= 200) ?: $penaltiePoints += 3;
+                ($orangeCounter >= $this->MAX_DIFFERENCE_BORDER) ?: $penaltiePoints += 3;
             }
 
             $penaltiePoints = $this->validatePenaltiePoints($penaltiePoints);
@@ -90,11 +94,11 @@
         function collectPenalties($word, $sketchIndx){
             $penaltiePoints = 0;
             $penaltiePoints = $this->actualPoints;
-            $penaltiePoints += $this->ratioColorsRate($word, $sketchIndx);
+            $penaltiePoints += $this->ratioColorsRate($word);
             $penaltiePoints += $this->foreignColorsRate();
             $penaltiePoints = $this->validatePenaltiePoints($penaltiePoints);
             $totalPoints = $this->actualPoints - $penaltiePoints;
-            return $totalPoints;
+            $this->database->executeQuery("UPDATE tbl_sketch SET computerscore = " .$totalPoints ."WHERE indx = " .$sketchIndx .";");
         }
         
         /**

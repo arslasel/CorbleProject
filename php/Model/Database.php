@@ -185,6 +185,24 @@ class CorbleDatabase
         $conn = self::createConnection();
         return $conn->query($sql);
     }
+
+    public static function addPlayerToLobby($playerIndx,$lobbyIndx,$partyLeaderString){
+        $sql = "INSERT INTO tbl_lobby_player (fk_player_indx_lobby_player,fk_lobby_indx_Lobby_player,partyLeader) 
+        VALUES (
+            " . $playerIndx . ",
+            " . $lobbyIndx . ",
+            " . $partyLeaderString . ")";
+       
+        $conn = self::createConnection();
+        
+        //Check connection
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+        } else {
+            return $conn->query($sql);
+        }
+        return 0;
+    }
 }
 
 return;

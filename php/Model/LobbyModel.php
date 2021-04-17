@@ -214,12 +214,14 @@ class LobbyModel
 
         if ($lobbyINDX != 0 && $playerINDX != 0) {
 
-            $insertID = CorbleDatabase::executeInsertQuery("
+            /*$insertID = CorbleDatabase::executeInsertQuery("
             INSERT INTO tbl_lobby_player (fk_player_indx_lobby_player,fk_lobby_indx_Lobby_player,partyLeader) 
             VALUES (
                 " . $playerINDX . ",
                 " . $lobbyINDX . ",
-                " . $partyLeaderString . ")");
+                " . $partyLeaderString . ")");*/
+            
+                $insertID = CorbleDatabase::addPlayerToLobby($playerINDX,$lobbyINDX,$partyLeaderString);
             if ($insertID != 0) {
                 $_SESSION["lobby_lobbyINDX"] = $lobbyINDX;
                 $_SESSION["lobby_joincode"] = $joincode;

@@ -25,7 +25,7 @@ class LobbyModel
     public function login($UserName)
     {
         // check if a user with the same name exists
-        $foundSameUser = false;
+        /*$foundSameUser = false;
         $queryResult = CorbleDatabase::executeQuery("SELECT * FROM  tbl_player");
         if ($queryResult->num_rows > 0) {
             while ($row = $queryResult->fetch_assoc()) {
@@ -47,7 +47,21 @@ class LobbyModel
                 return true;
             }
             return false;
+        }*/
+
+        if(CorbleDatabase::checkIfUserExists($UserName)){
+            return false;
+        } else { // there is no user with the same name continue login
+            $insertID = CorbleDatabase::executeInsertQuery(
+                "INSERT INTO tbl_player (name)VALUES ('" . $UserName . "')"
+            );
+            if ($insertID != 0) {
+                $_SESSION["lobby_username"] = $UserName;
+                return true;
+            }
+            return false;
         }
+
     }
 
     public function setUserName($UserName)

@@ -46,6 +46,31 @@ class CorbleDatabase
             return 0;
         }
     }
+
+
+    public static function createConnection(){
+        // Create connection
+        return new mysqli(
+            CorbleDatabase::$servername,
+            CorbleDatabase::$username,
+            CorbleDatabase::$password,
+            CorbleDatabase::$db
+        );
+
+    }
+
+    public static function checkIfUserExists($user){
+        $sql = "SELECT COUNT(*) FROM  tbl_player WHERE name = '".$user."'";
+        $conn = $this->createConnection();
+        $result = $conn->query($sql);
+        if($results){
+            $row = $result->fetch_assoc();
+            if($row[0]===0){
+            }else{
+                return true;
+            }
+        }
+    }
 }
 
 return;

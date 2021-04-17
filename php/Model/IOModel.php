@@ -10,7 +10,7 @@ class IOModel
     }
 
     /**
-     * saves a picture given as base-64 string to a file in a directory that is created on the lobby an round index
+     * saves a picture given as base-64 string to a file in a directory that is created with the lobby an round index
      *
      * @param String $pictureBase64 Content of file to be saved as base-64 string
      * @param String $lobbyIndex Index of Lobby  (used as directory-name)
@@ -23,53 +23,58 @@ class IOModel
         $fd = dio_open($path, O_CREAT);
         dio_write($fd, $pictureBase64);
         dio_close( $fd);
-    }
-
-    /**
-     * Creates a folder for a given lobby
-     *
-     * @param String $lobbyIndex String with index of lobby (unique)
-     * @return String Returns string of created folder
-     */
-    public function createLobbyFolder(String $lobbyIndex){
-        $path = $this->root;
-        $path .= "/" . $lobbyIndex;
-
-        if(!file_exists($path)){
-            mkdir($path, 0777, true);
-         }
-
-        return $path;
-    }
-
-    /**
-     * Creates a folder for a given round and lobby -> allways checks if lobby
-     * is existing and creates a foler if not
-     *
-     * @param String $lobbyIndex String with index of rond (unique)
-     * @return String Returns string of created folder
-     */
-    public function createRoundFolder(String $lobbyIndex, String $roundIndex){
-        $path =  $this->createRoundFolder($lobbyIndex);
-        $path .= "/" . $roundIndex;
-
-        if(!file_exists($path)){
-         mkdir($path , 0777, true);
-        }
-
         return $path;
     }
 
     /**
      * Returns the path to a picture given by its id
-     * @param $pictureIndex
-     * @return string
+     * @param $pictureIndex Index of picture
+     * @return string Path of picture
      */
-    public function returnPathOfPictureIndex($pictureIndex){
+    public function returnPathOfPictureIndex(String $pictureIndex){
         $filename = $pictureIndex . ".txt";
-        $path = "";
+        return rsearch($this->root, filename);
+    }
 
-        // TODO search file;
+    /**
+     * Delete lobby with a given index
+     * @param $lobbyIndex lobby to index
+     */
+    private function deleteLobby(String $lobbyIndex){
+        rmdir($this->rsearch($this->root, $lobbyIndex));
+    }
+
+    private function createLobbyFolder(String $lobbyIndex){
+        $path = $this->root;
+        $path .= "/" . $lobbyIndex;
+
+        if(!file_exists($path)){
+            mkdir($path, 0777, true);
+        }
+
         return $path;
     }
+
+    private function createRoundFolder(String $lobbyIndex, String $roundIndex){
+        $path =  $this->createRoundFolder($lobbyIndex);
+        $path .= "/" . $roundIndex;
+
+        if(!file_exists($path)){
+            mkdir($path , 0777, true);
+        }
+
+        return $path;
+    }
+
+    private function rsearch($folder, $pattern){
+        $iti = new RecursiveDirectoryIterator($folder);
+        foreach (new RecursiveIteratorIterator($iti) as $file) {
+            if (strpos($file, $pattern) !== false) {
+                return $file;
+            }
+        }
+        return false;
+    }
+
+
 }

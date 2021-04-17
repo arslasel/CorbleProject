@@ -165,7 +165,7 @@ class LobbyModel
     }
 
     public static function getWordpoolsOfLobby($lobbyINDX){
-        $wordpools = array();
+        /*$wordpools = array();
         $query = "
             SELECT tbl_wordpool.word as name, tbl_wordpool.indx
             FROM tbl_lobby_wordpool, tbl_wordpool 
@@ -177,8 +177,8 @@ class LobbyModel
             while($row = $queryResult->fetch_assoc()){
                 $wordpools[$row["indx"]] = new WordpoolModel($row["name"],$row["indx"]);
             }
-        }
-        return $wordpools;
+        }*/
+        return CorbleDatabase::getWordpoolsOfLobby($lobbyINDX);
     }
 
     public function readLobbyDataFromDB(){
@@ -195,6 +195,7 @@ class LobbyModel
                 $this->joincode = $row["joincode"];
                 $this->players = LobbyModel::getPlayersOfLobby($_SESSION["lobby_lobbyINDX"]);
                 $this->wordpools = LobbyModel::getWordpoolsOfLobby($_SESSION["lobby_lobbyINDX"]);
+                
                 break;
             }
         }

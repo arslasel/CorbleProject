@@ -162,6 +162,23 @@ class CorbleDatabase
         }
         return $players;
     }
+
+    public static function getWordpoolsOfLobby($lobbyIndx){
+        $wordpools = array();
+        $sql = "
+            SELECT tbl_wordpool.word as name, tbl_wordpool.indx
+            FROM tbl_lobby_wordpool, tbl_wordpool 
+            WHERE tbl_wordpool.indx = tbl_lobby_wordpool.fk_wordpool_indx_lobby_wordpool 
+            AND tbl_lobby_wordpool.fk_lobby_indx_lobby_wordpool  = ".$lobbyIndx."";
+
+        $result = CorbleDatabase::executeQuery($sql);
+        if($result->num_rows > 0){
+            while($row = $result->fetch_assoc()){
+                $wordpools[$row["indx"]] = new WordpoolModel($row["name"],$row["indx"]);
+            }
+        }
+        return $wordpools;
+    }
 }
 
 return;

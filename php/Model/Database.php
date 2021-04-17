@@ -99,6 +99,43 @@ class CorbleDatabase
         }
 
     }
+
+    public static function checkIfJoinCodeExists($joincode){
+        $sql = "SELECT COUNT(*) as matches FROM  tbl_lobby WHERE joincode = '".$joincode."'";
+        $conn = self::createConnection();
+        $result = $conn->query($sql);
+        if($result){
+            $row = $result->fetch_assoc();
+            if($row['matches']==0){
+                return false;
+            }else{
+                return true;
+            }
+        }
+    } 
+
+    public static function addWordCategoriesToLobby($worldpools,$lobbyIndx){
+        $sql = "INSERT INTO tbl_lobby_wordpool (fk_lobby_indx_lobby_wordpool,fk_wordpool_indx_lobby_wordpool)"; 
+       
+        $conn = self::createConnection();
+        
+        // Check connection
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+        } else {
+            foreach ($worldpools as $wordpool) {
+                $sql = "INSERT INTO tbl_lobby_wordpool (fk_lobby_indx_lobby_wordpool,fk_wordpool_indx_lobby_wordpool) 
+                    VALUES (
+                    " . $lobbyIndx . ",
+                    " .  $wordpool. ")";
+
+                $conn->query($sql);
+            }
+
+            return 0;
+        }
+    }
+    
 }
 
 return;

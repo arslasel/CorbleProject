@@ -92,7 +92,11 @@ class LobbyModel
 
     private function generateLobbyDatabaseEntry()
     {
-        $this->joincode = rand(100000, 999999);
+        //generate Joincode and check if exists.
+        do{
+            $this->joincode = rand(100000, 999999);
+        }while(CorbleDatabase::checkIfJoinCodeExists($this->joincode));
+        
         $date = new DateTime();
         $this->starttimeUNIX = $date->getTimestamp() + $this->starttime;
 
@@ -114,14 +118,18 @@ class LobbyModel
 
         if ($insertID != 0) {
             $_SESSION["lobby_joincode"] = $this->joincode;
-            $this->indx = $insertID;
-            foreach ($this->wordpools as $wordpool) {
+            $this->indx = $insertID;           
+            /*foreach ($this->wordpools as $wordpool) {
+                
                 CorbleDatabase::executeInsertQuery("
                 INSERT INTO tbl_lobby_wordpool (fk_lobby_indx_lobby_wordpool,fk_wordpool_indx_lobby_wordpool) 
                 VALUES (
                     " . $this->indx . ",
                     " .  $wordpool. ")");
+                
             }
+            */
+            CorbleDatabase::addWordCategoriesToLobby($this->wordpools,$this->indx);
         }
     }
 

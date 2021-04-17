@@ -9,7 +9,7 @@ class DatabaseMock{
     private $roundIndex;
     private $wordpoolIndex;
     private $wordIndex;
-    private $scetchIndex;
+    private $sketchIndex;
 
     /**
      * Create a mock for a whole game
@@ -122,6 +122,4 @@ class DatabaseMock{
             Values (". $this->roundIndex . ",". $this->sketchIndex .")";
         CorbleDatabase::executeInsertQuery($query);
     }
-
-
 }

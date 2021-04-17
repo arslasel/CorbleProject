@@ -23,7 +23,7 @@
          * @input: String $imageRessource
          * @input: String $word
          */
-        public function __construct($imageRessource, $word){
+        public function __construct(String $imageRessource, String $word){
             $this->imageRessource = $imageRessource;
             $this->imageProcessingController = new ImageProcessorModel($imageRessource);
             $this->database = new CorbleDatabase(); #Temp as longs as the between layer not exist
@@ -37,10 +37,9 @@
 
         /**
          * This function calculates the penalties for wrong color rates of a in the database defined color for a word
-         * @input: Word $word
          * @Return: int penaltiePoints
          */
-        function ratioColorsRate($word){
+        function ratioColorsRate(){
             list($blackCounter, $redCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter) = $this->imageProcessingController->pixelCount();
             list($actualPrimaryRatio, $actualSecondaryRatio) = $this->calculateRatio($blackCounter, $redCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter, $this->primaryColor, $this->secondaryColor);
             $penaltiePoints = $this->calculatePenaltiesRatio($this->primaryOptimalColorRatio, $this->secondaryOptimalColorRatio, $actualPrimaryRatio, $actualSecondaryRatio);
@@ -87,14 +86,13 @@
         
         /**
          * This function collects the penalties from the functions ratioColorsRate() and foreignColorsRate()
-         * @input: Word $word
          * @input: int $sketchIndx 
          * @Return: int $totalPoints
          */
-        function collectPenalties($word, $sketchIndx){
+        function collectPenalties($sketchIndx){
             $penaltiePoints = 0;
             $penaltiePoints = $this->actualPoints;
-            $penaltiePoints += $this->ratioColorsRate($word);
+            $penaltiePoints += $this->ratioColorsRate();
             $penaltiePoints += $this->foreignColorsRate();
             $penaltiePoints = $this->validatePenaltiePoints($penaltiePoints);
             $totalPoints = $this->actualPoints - $penaltiePoints;
@@ -112,7 +110,7 @@
          * @input: int $colorToSelect
          * @Return: int $colorCounter
          */
-        function setupColorCounter($blackCounter, $redCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter, $colorToSelect){
+        function setupColorCounter(int $blackCounter, int $redCounter, int $greenCounter, int $blueCounter, int $yellowCounter, int $orangeCounter, int $colorToSelect){
             $colorCounter = 0;
             switch ($colorToSelect){
                 case "black":
@@ -147,31 +145,28 @@
          * @input: int $orangeCounter 
          * @input: int $primaryColor
          * @input: int $secondaryColor
-         * @Return: list(double $actualPrimaryRatio, double $actualSecondaryRatio)
+         * @Return: list(float $actualPrimaryRatio, float $actualSecondaryRatio)
          */
-        function calculateRatio($blackCounter, $redCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter, $primaryColor, $secondaryColor){
+        function calculateRatio(int $blackCounter, int $redCounter, int $greenCounter, int $blueCounter, int $yellowCounter, int $orangeCounter, int $primaryColor, int $secondaryColor){
             $primaryColorCounterNum = $this->setupColorCounter($blackCounter, $redCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter, $primaryColor);
             $secondaryColorCounterNum = $this->setupColorCounter($blackCounter, $redCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter, $secondaryColor);
             $totalCount = $primaryColorCounterNum + $secondaryColorCounterNum;
             
-            $actualPrimaryRatio = $primaryColorCounterNum/$totalCount;
-            $actualSecondaryRatio = $secondaryColorCounterNum/$totalCount;
+            $actualPrimaryRatio = (float)($primaryColorCounterNum/$totalCount);
+            $actualSecondaryRatio = (float)($secondaryColorCounterNum/$totalCount);
 
             return list($actualPrimaryRatio, $actualSecondaryRatio);
         }
 
         /**
          * This function calculate the total penaltie points for the ratio
-         * @input: double $primaryOptimalColorRatio
-         * @input: double $secondaryOptimalColorRatio 
-         * @input: double $actualPrimaryRatio 
-         * @input: double $actualSecondaryRatio 
+         * @input: float $primaryOptimalColorRatio
+         * @input: float $secondaryOptimalColorRatio 
+         * @input: float $actualPrimaryRatio 
+         * @input: float $actualSecondaryRatio 
          * @Return: int $penaltiePoints
          */
-        function calculatePenaltiesRatio($primaryOptimalColorRatio, $secondaryOptimalColorRatio, $actualPrimaryRatio, $actualSecondaryRatio){
-            $penaltieRangeHarmless = 1;
-            $penaltieRangeNotGood = 2;
-            $penaltieRangeCatastrophic = 3;
+        function calculatePenaltiesRatio(float $primaryOptimalColorRatio, float $secondaryOptimalColorRatio, float $actualPrimaryRatio, float $actualSecondaryRatio){
             $penaltiePoints = 0;
 
             if($primaryOptimalColorRatio != NULL &&  $secondaryOptimalColorRatio != NULL && $actualPrimaryRatio != NULL && $actualSecondaryRatio != NULL){
@@ -189,18 +184,22 @@
 
         /**
          * This function sets the effective penaltie points for the difference between optimal value and actual value of the color ratio
-         * @input: double $difference 
+         * @input: float $difference 
          * @input: int $penaltiePoints
          * @Return: int $penaltiePoints
          */
-        function setPenaltiesRatioPoints($difference, $penaltiePoints){
-            if($difference <= 1){
+        function setPenaltiesRatioPoints(float $difference, int $penaltiePoints){
+            $penaltieRangeHarmless = 1;
+            $penaltieRangeNotGood = 2;
+            $penaltieRangeCatastrophic = 3;
+
+            if($difference <= $penaltieRangeHarmless){
                 $penaltiePoints += 0.5;
             }
-            else if($difference > 1 && $difference <= 2){
+            else if($difference > 1 && $difference <= $penaltieRangeNotGood){
                 $penaltiePoints += 2;
             }
-            else if($difference > 2){
+            else if($difference > $penaltieRangeCatastrophic){
                 $penaltiePoints += 3;
             }
 
@@ -213,7 +212,7 @@
          * $input: int $penaltiePoints
          * @Return: int $penaltiePoints
          */
-        function validatePenaltiePoints($penaltiePoints){
+        function validatePenaltiePoints(int $penaltiePoints){
             if($penaltiePoints <= $this->MAX_POINTS){
                 return $penaltiePoints;
             }

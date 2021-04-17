@@ -179,6 +179,12 @@ class CorbleDatabase
         }
         return $wordpools;
     }
+
+    public static function readLobbyDataFromDB($joincode){
+        $sql = "SELECT * FROM tbl_lobby WHERE joincode = ".$joincode."";
+        $conn = self::createConnection();
+        return $conn->query($sql);
+    }
 }
 
 return;

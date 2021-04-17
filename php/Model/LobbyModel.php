@@ -182,8 +182,8 @@ class LobbyModel
     }
 
     public function readLobbyDataFromDB(){
-        $query = "SELECT * FROM tbl_lobby WHERE joincode = ".$_SESSION["lobby_joincode"]."";
-        $queryResult = CorbleDatabase::executeQuery($query);
+        //$query = "SELECT * FROM tbl_lobby WHERE joincode = ".$_SESSION["lobby_joincode"]."";
+        $queryResult = CorbleDatabase::readLobbyDataFromDB($_SESSION["lobby_joincode"]);
 
         if($queryResult->num_rows > 0){
             while($row = $queryResult->fetch_assoc()){

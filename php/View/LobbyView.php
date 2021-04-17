@@ -26,6 +26,12 @@ session_start();
 </head>
 
 <body>
+    <div hidden>
+        <form name="lobby_overview_refresh" action="#" method="POST">
+            <input id="lobby_overview_refresh" type="submit" name="lobby_overview_refresh_submit" />
+        </form>
+    </div>
+
     <ul class="sidenav" id="mobile-nav">
         <li class="usernameDisplay"><a id="username_display" href="#"></a></li>
         <li><a href="#">Leave</a></li>
@@ -60,6 +66,7 @@ session_start();
         <div class="row">
             <div class="col s0 l3"></div>
             <div class="col s12 l6">
+                <h4>Join Lobby</h4>
                 <form name="login" action="#" method="POST" autocomplete="off">
                     <div class="row">
                         <div class="col s12">
@@ -81,32 +88,22 @@ session_start();
     </div>
     <div hidden="" id="lobby_configurator" class="content">
         <div class="row">
-            <div id="modal1" class="modal">
+            <div id="joinLobbyModal" class="modal">
                 <div class="modal-content">
+                    <h4>Join Lobby</h4>
                     <form name="join" action="#" method="POST">
                         <input type="text" name="join_joincode" required />
-                        <input type="submit" name="join_submit" />
+                        <input hidden id="joinLobbySubmit" type="submit" name="join_submit" />
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
+                    <a onclick="document.getElementById('joinLobbySubmit').click()" href="#!" class="modal-close waves-effect waves-green btn-flat">Join</a>
                 </div>
             </div>
 
-            <div class="col s0 l3"></div>
-            <div class="col s12 l6">
-                <div class="row">
-                    <div class="col s6">
-                        <h5>Join Lobby</h5>
-                    </div>
-                    <div class="col s6">
-                        <a class="waves-effect waves-light btn red modal-trigger" href="#modal1">Join Lobby</a>
-                    </div>
-                </div>
-                <div class="row">
-                    <hr>
-                </div>
-                <div class="row">
+            <div id="createLobbyModal" class="modal">
+                <div class="modal-content">
+                    <h4>Create Lobby</h4>
                     <form name="lobby_config" action="#" method="POST">
                         <div class="row">
                             <div class="col s12">
@@ -143,57 +140,98 @@ session_start();
                                 </div>
                             </div>
                             <div class="col s12">
-                                <input type="submit" name="lobby_config__submit" />
+                                <input hidden id="createLobbySubmit" type="submit" name="lobby_config__submit" />
                             </div>
                         </div>
                     </form>
                 </div>
-
+                <div class="modal-footer">
+                    <a onclick="document.getElementById('createLobbySubmit').click()" href="#!" class="modal-close waves-effect waves-green btn-flat">Create</a>
+                </div>
             </div>
-            <div class="col s0 l3"></div>
+
+            <div class="row lobbyControls">
+                <div class="col s0 l3"></div>
+                <div class="col s12 l6">
+                    <div class="row">
+                        <div class="col s6">
+                            <h5>Join Lobby</h5>
+                        </div>
+                        <div class="col s6">
+                            <a class="waves-effect waves-light btn red modal-trigger" href="#joinLobbyModal">Join Lobby</a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s6">
+                            <h5>Create Lobby</h5>
+                        </div>
+                        <div class="col s6">
+                            <a class="waves-effect waves-light btn red modal-trigger" href="#createLobbyModal">Create Lobby</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s0 l3"></div>
+            </div>
         </div>
     </div>
     <div hidden="" id="lobby_overview" class="content">
-        <div hidden>
-            <form name="lobby_overview_refresh" action="#" method="POST">
-                <input id="lobby_overview_refresh" type="submit" name="lobby_overview_refresh_submit" />
-            </form>
-        </div>
-        <h1>Lobby Overview</h1>
-        <div>
-            <span>Lobby State :</span>
-            <span id="lobby_overview_state"></span>
-        </div>
-        <div>
-            <span>Vote Time :</span>
-            <span id="lobby_overview_votetime"></span>
-        </div>
-        <div>
-            <span>Start Time :</span>
-            <span id="lobby_overview_starttime"></span>
-        </div>
-        <div>
-            <span>Draw Time :</span>
-            <span id="lobby_overview_drawtime"></span>
-        </div>
-        <div>
-            <span>Max Players :</span>
-            <span id="lobby_overview_maxplayer"></span>
-        </div>
-        <div>
-            <span>Join Code :</span>
-            <span id="lobby_overview_joincode"></span>
-        </div>
-        <div>
-            <div class="row">
-                <span>Players :</span>
+
+        <h4 class="LobbyTitle">Lobby Overview</h4>
+        <div class="row">
+            <div class="col s0 l2"></div>
+            <div class="col s12 l8">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td><span>Lobby State :</span></td>
+                            <td><span id="lobby_overview_state"></span></td>
+                        </tr>
+                        <tr>
+                            <td><span>Vote Time :</span></td>
+                            <td><span id="lobby_overview_votetime"></span></td>
+                        </tr>
+                        <tr>
+                            <td><span>Start Time :</span></td>
+                            <td><span id="lobby_overview_starttime"></span></td>
+                        </tr>
+                        <tr>
+                            <td><span>Draw Time :</span></td>
+                            <td><span id="lobby_overview_drawtime"></span></td>
+                        </tr>
+                        <tr>
+                            <td><span>Max Players :</span></td>
+                            <td><span id="lobby_overview_maxplayer"></span></td>
+                        </tr>
+                        <tr>
+                            <td><span>Join Code :</span></td>
+                            <td><span id="lobby_overview_joincode"></span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="row TableDiv">
+                                    <span>Players :</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="row TableDiv">
+                                    <div id="lobby_overview_players"></div>
+                                </div>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
             </div>
-            <div class="row">
-                <div id="lobby_overview_players"></div>
-            </div>
+            <div class="col s0 l2"></div>
         </div>
     </div>
-
     <?php
     ini_set('display_errors', 1);
     include("../Controller/LobbyController.php");
@@ -262,6 +300,7 @@ session_start();
                 div.appendChild(ul);
             </script>";
 
+            //TODO add word pools to lobby overview
             foreach ($model->getPlayers() as $player) {
                 echo "<script>
                 var ul = document.getElementById('lobby_overview_players_list');

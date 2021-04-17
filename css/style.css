@@ -43,3 +43,15 @@ body {
 .usernameDisplay{
     pointer-events: none;
 }
+
+.lobbyControls{
+    margin-top: 10vh;
+}
+
+.LobbyTitle{
+    text-align: center;
+}
+
+.TableDiv{
+    display: inherit;
+}

@@ -72,6 +72,33 @@ class CorbleDatabase
             }
         }
     }
+
+    public static function generateLobby($votetime,$rawtime,$starttimeUNIX,$maxplayer,$joincode,$playerINDX){
+        $sql = "INSERT INTO tbl_lobby (votetime,drawtime,starttime,maxplayer,joincode,fk_player_indx_lobby,state) 
+            VALUES (
+            " . $votetime . ",
+            " . $rawtime . ",
+            " . $starttimeUNIX . ",
+            " . $maxplayer . ",
+            " . $joincode . ",
+            " . $playerINDX . ",
+            'WaitForPlayers')";
+
+        $conn = self::createConnection();
+        
+        // Check connection
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+        } else {
+            if($conn->query($sql) === TRUE){
+                return $conn->insert_id;
+            }
+            echo $sql;
+            echo("Error description: " . $conn->error);
+            return 0;
+        }
+
+    }
 }
 
 return;

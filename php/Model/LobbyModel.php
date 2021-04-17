@@ -97,7 +97,7 @@ class LobbyModel
         $this->starttimeUNIX = $date->getTimestamp() + $this->starttime;
 
         $playerINDX = PlayerModel::getPlayerIndxByName($_SESSION["lobby_username"]);
-
+/*
         $insertID = CorbleDatabase::executeInsertQuery("
             INSERT INTO tbl_lobby (votetime,drawtime,starttime,maxplayer,joincode,fk_player_indx_lobby,state) 
             VALUES (
@@ -108,6 +108,9 @@ class LobbyModel
                 " . $this->joincode . ",
                 " . $playerINDX . ",
                 'WaitForPlayers')");
+*/
+        
+        $insertID = CorbleDatabase::generateLobby($this->votetime,$this->drawtime,$this->starttimeUNIX,$this->maxplayer,$this->joincode,$playerINDX);
 
         if ($insertID != 0) {
             $_SESSION["lobby_joincode"] = $this->joincode;

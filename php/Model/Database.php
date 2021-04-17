@@ -203,6 +203,19 @@ class CorbleDatabase
         }
         return 0;
     }
+
+    public static function getPlayerbyIndex($name){
+
+        $sql = "SELECT indx FROM tbl_player WHERE name='" . $name . "'";
+        $conn = self::createConnection();
+        $result = $conn->query($sql);
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            return $row['indx'];
+        }else{
+            return 0;
+        }
+    }
 }
 
 return;

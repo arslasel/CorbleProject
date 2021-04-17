@@ -20,8 +20,8 @@
 
         /**
          * This method is the constructor of the class RatingModel
-         * @input: String $imageRessource
-         * @input: String $word
+         * @param: String $imageRessource
+         * @param: String $word
          */
         public function __construct(String $imageRessource, String $word){
             $this->imageRessource = $imageRessource;
@@ -37,7 +37,7 @@
 
         /**
          * This function calculates the penalties for wrong color rates of a in the database defined color for a word
-         * @Return: int penaltiePoints
+         * @return: int penaltiePoints
          */
         function ratioColorsRate(){
             list($blackCounter, $redCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter) = $this->imageProcessingController->pixelCount();
@@ -49,7 +49,7 @@
         
         /**
          * This function sets the penalties for wrong applied colors in the picture
-         * @Return: int penaltiesForForeignColors
+         * @return: int penaltiesForForeignColors
          */
         function foreignColorsRate(){
             $penaltiePoints = 0;
@@ -86,8 +86,8 @@
         
         /**
          * This function collects the penalties from the functions ratioColorsRate() and foreignColorsRate()
-         * @input: int $sketchIndx 
-         * @Return: int $totalPoints
+         * @param: int $sketchIndx 
+         * @return: int $totalPoints
          */
         function collectPenalties($sketchIndx){
             $penaltiePoints = 0;
@@ -101,14 +101,14 @@
         
         /**
          * This method is a helper methods. It helps to select the correct counter which is needed to bill the ratio
-         * @input: int $blackCounter
-         * @input: int $redCounter 
-         * @input: int $greenCounter 
-         * @input: int $blueCounter 
-         * @input: int $yellowCounter 
-         * @input: int $orangeCounter 
-         * @input: int $colorToSelect
-         * @Return: int $colorCounter
+         * @param: int $blackCounter
+         * @param: int $redCounter 
+         * @param: int $greenCounter 
+         * @param: int $blueCounter 
+         * @param: int $yellowCounter 
+         * @param: int $orangeCounter 
+         * @param: int $colorToSelect
+         * @return: int $colorCounter
          */
         function setupColorCounter(int $blackCounter, int $redCounter, int $greenCounter, int $blueCounter, int $yellowCounter, int $orangeCounter, int $colorToSelect){
             $colorCounter = 0;
@@ -137,15 +137,15 @@
 
         /**
          * This function calculate the actual ratio of the primary and the secondary colors
-         * @input: int $blackCounter
-         * @input: int $redCounter 
-         * @input: int $greenCounter 
-         * @input: int $blueCounter 
-         * @input: int $yellowCounter 
-         * @input: int $orangeCounter 
-         * @input: int $primaryColor
-         * @input: int $secondaryColor
-         * @Return: list(float $actualPrimaryRatio, float $actualSecondaryRatio)
+         * @param: int $blackCounter
+         * @param: int $redCounter 
+         * @param: int $greenCounter 
+         * @param: int $blueCounter 
+         * @param: int $yellowCounter 
+         * @param: int $orangeCounter 
+         * @param: int $primaryColor
+         * @param: int $secondaryColor
+         * @return: list(float $actualPrimaryRatio, float $actualSecondaryRatio)
          */
         function calculateRatio(int $blackCounter, int $redCounter, int $greenCounter, int $blueCounter, int $yellowCounter, int $orangeCounter, int $primaryColor, int $secondaryColor){
             $primaryColorCounterNum = $this->setupColorCounter($blackCounter, $redCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter, $primaryColor);
@@ -160,11 +160,11 @@
 
         /**
          * This function calculate the total penaltie points for the ratio
-         * @input: float $primaryOptimalColorRatio
-         * @input: float $secondaryOptimalColorRatio 
-         * @input: float $actualPrimaryRatio 
-         * @input: float $actualSecondaryRatio 
-         * @Return: int $penaltiePoints
+         * @param: float $primaryOptimalColorRatio
+         * @param: float $secondaryOptimalColorRatio 
+         * @param: float $actualPrimaryRatio 
+         * @param: float $actualSecondaryRatio 
+         * @return: int $penaltiePoints
          */
         function calculatePenaltiesRatio(float $primaryOptimalColorRatio, float $secondaryOptimalColorRatio, float $actualPrimaryRatio, float $actualSecondaryRatio){
             $penaltiePoints = 0;
@@ -184,9 +184,9 @@
 
         /**
          * This function sets the effective penaltie points for the difference between optimal value and actual value of the color ratio
-         * @input: float $difference 
-         * @input: int $penaltiePoints
-         * @Return: int $penaltiePoints
+         * @param: float $difference 
+         * @param: int $penaltiePoints
+         * @return: int $penaltiePoints
          */
         function setPenaltiesRatioPoints(float $difference, int $penaltiePoints){
             $penaltieRangeHarmless = 1;
@@ -209,8 +209,8 @@
         /**
          * This method validate that we haven't got more than the MAX_POINTS penatlie points because we
          * cannot achive less than 0 points in total
-         * $input: int $penaltiePoints
-         * @Return: int $penaltiePoints
+         * @param: int $penaltiePoints
+         * @return: int $penaltiePoints
          */
         function validatePenaltiePoints(int $penaltiePoints){
             if($penaltiePoints <= $this->MAX_POINTS){

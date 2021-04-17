@@ -61,9 +61,9 @@ class CorbleDatabase
 
     public static function checkIfUserExists($user){
         $sql = "SELECT COUNT(*) FROM  tbl_player WHERE name = '".$user."'";
-        $conn = $this->createConnection();
+        $conn = self::createConnection();
         $result = $conn->query($sql);
-        if($results){
+        if($result){
             $row = $result->fetch_assoc();
             if($row[0]===0){
             }else{

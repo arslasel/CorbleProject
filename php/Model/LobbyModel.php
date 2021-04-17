@@ -147,7 +147,7 @@ class LobbyModel
     }
 
     public static function getPlayersOfLobby($lobbyINDX){
-        $players = array();
+        /*$players = array();
         $query = "
             SELECT tbl_player.name, tbl_player.indx
             FROM tbl_lobby_player, tbl_player 
@@ -160,6 +160,8 @@ class LobbyModel
             }
         }
         return $players;
+        */
+        return CorbleDatabase::getPlayersOfLobby($lobbyINDX);
     }
 
     public static function getWordpoolsOfLobby($lobbyINDX){

@@ -56,7 +56,6 @@ class CorbleDatabase
             CorbleDatabase::$password,
             CorbleDatabase::$db
         );
-
     }
 
     public static function checkIfUserExists($user){
@@ -97,7 +96,6 @@ class CorbleDatabase
             echo("Error description: " . $conn->error);
             return 0;
         }
-
     }
 
     public static function checkIfJoinCodeExists($joincode){
@@ -131,7 +129,6 @@ class CorbleDatabase
 
                 $conn->query($sql);
             }
-
             return 0;
         }
     }
@@ -148,6 +145,23 @@ class CorbleDatabase
         }
     }
     
+    public static function getPlayersOfLobby($lobbyIndx){
+        $players = array();
+        $sql = "
+            SELECT tbl_player.name, tbl_player.indx
+            FROM tbl_lobby_player, tbl_player 
+            WHERE tbl_player.indx = tbl_lobby_player.fk_player_indx_lobby_player 
+            AND tbl_lobby_player.fk_lobby_indx_Lobby_player = ".$lobbyIndx."";
+        
+            $conn = self::createConnection();
+        $result = $conn->query($sql);
+        if($result->num_rows > 0){
+            while($row = $result->fetch_assoc()){
+                $players[$row["indx"]] = new PlayerModel($row["name"],$row["indx"]);
+            }
+        }
+        return $players;
+    }
 }
 
 return;

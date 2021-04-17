@@ -135,13 +135,15 @@ class LobbyModel
 
     public static function getLobbyIndxByJoincode($joincode)
     {
-        $selectLobbyResult = CorbleDatabase::executeQuery("SELECT indx FROM tbl_lobby WHERE joincode=" . $joincode . "");
+        /*$selectLobbyResult = CorbleDatabase::executeQuery("SELECT indx FROM tbl_lobby WHERE joincode=" . $joincode . "");
 
         if ($selectLobbyResult->num_rows > 0) {
             return $selectLobbyResult->fetch_assoc()["indx"];
         } else {
             return 0;
-        }
+        }*/
+
+        return CorbleDatabase::getLobbyIndxByJoincode($joincode);
     }
 
     public static function getPlayersOfLobby($lobbyINDX){

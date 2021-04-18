@@ -271,11 +271,9 @@ class CorbleDatabase
     public static function setPointsForSketch($totalPoints,$sketchIndx){
         $sql = "SELECT * FROM  tbl_wordpool";
         $conn = self::createConnection();
-        if($conn->query($query) === TRUE){
+        if($conn->query($sql) === TRUE){
             return $conn->insert_id;
         }
-    }
-
     }
 
 }

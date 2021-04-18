@@ -48,7 +48,7 @@ class CorbleDatabase
     }
 
 
-    public static function createConnection(){
+    private static function createConnection(){
         // Create connection
         return new mysqli(
             CorbleDatabase::$servername,
@@ -222,6 +222,62 @@ class CorbleDatabase
         $conn = self::createConnection();
         return $conn->query($sql);
     }
+
+
+    public static function getPrimaryOptimalColorRatioForWord($word){
+        $sql = "SELECT primaryColorRatio AS primaryColorRatio FROM tbl_word WHERE word = ".$word;
+        $conn = self::createConnection();
+        $result = $conn->query($sql);
+        if($result){
+            return $result->fetch_assoc();
+        }else{
+            return 0;
+        }
+    }
+
+    public static function getSecondaryOptimalColorRatioForWord($word){
+        $sql = "SELECT secondaryColorRatio AS primaryColorRatio FROM tbl_word WHERE word = ".$word;
+        $conn = self::createConnection();
+        $result = $conn->query($sql);
+        if($result){
+            return $result->fetch_assoc();
+        }else{
+            return 0;
+        }
+    }
+
+    public static function getPrimaryColor($word){
+        $sql = "SELECT primaryColor  AS primaryColorRatio FROM tbl_word WHERE word = ".$word;
+        $conn = self::createConnection();
+        $result = $conn->query($sql);
+        if($result){
+            return $result->fetch_assoc();
+        }else{
+            return 0;
+        }
+    }
+
+    public static function getSecondaryColor($word){
+        $sql = "SELECT secondaryColor  AS primaryColorRatio FROM tbl_word WHERE word = ".$word;
+        $conn = self::createConnection();
+        $result = $conn->query($sql);
+        if($result){
+            return $result->fetch_assoc();
+        }else{
+            return 0;
+        }
+    }
+
+    public static function setPointsForSketch($totalPoints,$sketchIndx){
+        $sql = "SELECT * FROM  tbl_wordpool";
+        $conn = self::createConnection();
+        if($conn->query($query) === TRUE){
+            return $conn->insert_id;
+        }
+    }
+
+    }
+
 }
 
 return;

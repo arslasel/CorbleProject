@@ -216,6 +216,12 @@ class CorbleDatabase
             return 0;
         }
     }
+
+    public static function getWordpools(){
+        $sql = "SELECT * FROM  tbl_wordpool";
+        $conn = self::createConnection();
+        return $conn->query($sql);
+    }
 }
 
 return;

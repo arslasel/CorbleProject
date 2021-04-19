@@ -153,7 +153,7 @@
             $actualPrimaryRatio = (float)($primaryColorCounterNum/$totalCount);
             $actualSecondaryRatio = (float)($secondaryColorCounterNum/$totalCount);
 
-            return list($actualPrimaryRatio, $actualSecondaryRatio);
+            return array($actualPrimaryRatio, $actualSecondaryRatio);
         }
 
         /**

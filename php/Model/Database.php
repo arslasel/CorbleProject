@@ -272,7 +272,7 @@ class CorbleDatabase
     }
 
     public static function setPointsForSketch($totalPoints,$sketchIndx){
-        $sql = "SELECT * FROM  tbl_wordpool";
+        $sql = "UPDATE tbl_sketch SET computerscore = " .$totalPoints ."WHERE indx = " .$sketchIndx .";";
         $conn = self::createConnection();
         if($conn->query($sql) === TRUE){
             return $conn->insert_id;

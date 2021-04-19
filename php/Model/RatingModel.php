@@ -8,7 +8,6 @@
 	class RatingModel{
         private $imageRessource;
         private $imageProcessingController;
-        private $database;
         private const MAX_POINTS = 10;
         private const MAX_DIFFERENCE_BORDER = 200;
         private const NO_PIXEL = 0;
@@ -26,17 +25,12 @@
         public function __construct(String $imageRessource, String $word){
             $this->imageRessource = $imageRessource;
             $this->imageProcessingController = new ImageProcessorModel($imageRessource);
-            $this->database = new CorbleDatabase(); #Temp as longs as the between layer not exist
             $actualPoints = $this->MAX_POINTS;
 
-            $this->primaryOptimalColorRatio = $this->database->executeQuery("SELECT primaryColorRatio AS primaryColorRatio FROM tbl_word WHERE word = " .$word);
-            $this->primaryOptimalColorRatio = $this->primaryOptimalColorRatio->fetch_assoc();
-            $this->secondaryOptimalColorRatio = $this->database->executeQuery("SELECT secondaryColorRatio AS secondaryColorRatio FROM tbl_word WHERE word = " .$word);
-            $this->secondaryOptimalColorRatio = $this->secondaryOptimalColorRatio->fetch_assoc();
-            $this->primaryColor = $this->database->executeQuery("SELECT primaryColor AS primaryColor FROM tbl_word WHERE word = " .$word);
-            $this->primaryColor = $this->primaryColor->fetch_assoc();
-            $this->secondaryColor = $this->database->executeQuery("SELECT secondaryColor AS secondaryColor FROM tbl_word WHERE word = " .$word);
-            $this->secondaryColor = $this->secondaryColor->fetch_assoc();
+            $this->primaryOptimalColorRatio = $this->Database::getPrimaryOptimalColorRatioForWord($word);
+            $this->secondaryOptimalColorRatio = $this->Database::getSecondaryOptimalColorRatioForWord($word);
+            $this->primaryColor = $this->Database::getPrimaryColor($word);
+            $this->secondaryColor = $this->Database::getSecondaryColor($word);
         }
 
         /**
@@ -100,7 +94,7 @@
             $penaltiePoints += $this->foreignColorsRate();
             $penaltiePoints = $this->validatePenaltiePoints($penaltiePoints);
             $totalPoints = $this->actualPoints - $penaltiePoints;
-            $this->database->executeQuery("UPDATE tbl_sketch SET computerscore = " .$totalPoints ."WHERE indx = " .$sketchIndx .";");
+            $this->Database::setPointsForSketch($totalPoints, $sketchIndx);
         }
         
         /**

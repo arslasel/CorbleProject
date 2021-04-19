@@ -23,7 +23,8 @@ class WordpoolModel
 
     public static function getWordPools()
     {
-        $res = CorbleDatabase::executeQuery("SELECT * FROM  tbl_wordpool");
+        //$res = CorbleDatabase::executeQuery("SELECT * FROM  tbl_wordpool");
+        $res = CorbleDatabase::getWordpools();
         $wordpools = array();
         if ($res->num_rows > 0) {
             while ($row = $res->fetch_assoc()) {

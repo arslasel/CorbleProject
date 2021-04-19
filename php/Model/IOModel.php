@@ -19,10 +19,10 @@ class IOModel
      */
     public function savePicture(String $pictureBase64, String $lobbyIndex, String $roundIndex, String $pictureIndex){
         $path = createRoundFolder($lobbyIndex, $roundIndex);
-        $path .= "/" . $pictureIndex . ".txt";
-        $fd = dio_open($path, O_CREAT);
-        dio_write($fd, $pictureBase64);
-        dio_close( $fd);
+        $path .= "/" . $pictureIndex . ".png";
+        if(is_file($path) or is_writable($path)) {
+            file_put_contents($path, base64_decode($pictureBase64));
+        }
         return $path;
     }
 
@@ -41,7 +41,10 @@ class IOModel
      * @param $lobbyIndex lobby to index
      */
     private function deleteLobby(String $lobbyIndex){
-        rmdir($this->rsearch($this->root, $lobbyIndex));
+        $path = $this->rsearch($this->root, $lobbyIndex);
+        if(file_exists($path)){
+            rmdir($this->rsearch($this->root, $lobbyIndex));
+        }
     }
 
     private function createLobbyFolder(String $lobbyIndex){

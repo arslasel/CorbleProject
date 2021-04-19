@@ -6,6 +6,9 @@ class CorbleDatabase
     private static $password = "Zhaw-1234!";
     private static $db = "rigpdqdi_corbleCh";
 
+    public function __construct(){
+    }
+
     public static function executeQuery($query)
     {
         // Create connection
@@ -269,7 +272,7 @@ class CorbleDatabase
     }
 
     public static function setPointsForSketch($totalPoints,$sketchIndx){
-        $sql = "SELECT * FROM  tbl_wordpool";
+        $sql = "UPDATE tbl_sketch SET computerscore = " .$totalPoints ."WHERE indx = " .$sketchIndx .";";
         $conn = self::createConnection();
         if($conn->query($sql) === TRUE){
             return $conn->insert_id;

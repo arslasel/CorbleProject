@@ -279,6 +279,10 @@ class CorbleDatabase
         }
     }
 
+    public static function getAllSketches($roundIndx){
+        //ToDo: To Implement
+    }
+
 }
 
 return;

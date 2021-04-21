@@ -1,0 +1,57 @@
+html{
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    width: 100%;
+    height: 100%;
+    font-family: "roboto";
+    overflow: hidden;
+}
+
+.FullHeightWidth {
+    width: 100%;
+    height: 100%;
+}
+
+.FullHeight{
+    height: 100%;
+}
+
+.NoMargin{
+    margin: 0px;
+}
+
+.logo{
+    width: 200px;
+    height: 100%;
+    background-image: url("/img/CorbleLogo.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center center; 
+}
+
+.WelcomeText{
+    text-align: center;
+}
+
+.confirmNameButton{
+    float: right;
+}
+
+.usernameDisplay{
+    pointer-events: none;
+}
+
+.lobbyControls{
+    margin-top: 10vh;
+}
+
+.LobbyTitle{
+    text-align: center;
+}
+
+.TableDiv{
+    display: inherit;
+}

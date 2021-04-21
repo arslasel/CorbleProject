@@ -194,7 +194,7 @@ class LobbyModel
                 $this->maxplayer = $row["maxplayer"];
                 $this->joincode = $row["joincode"];
                 $this->players = LobbyModel::getPlayersOfLobby($_SESSION["lobby_lobbyINDX"]);
-                $this->wordpools = LobbyModel::getWordpoolsOfLobby($_SESSION["lobby_lobbyINDX"]);
+                //$this->wordpools = LobbyModel::getWordpoolsOfLobby($_SESSION["lobby_lobbyINDX"]);
                 
                 break;
             }

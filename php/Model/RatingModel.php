@@ -27,10 +27,10 @@
             $this->imageProcessingController = new ImageProcessorModel($imageRessource);
             $actualPoints = $this->MAX_POINTS;
 
-            $this->primaryOptimalColorRatio = $this->Database::getPrimaryOptimalColorRatioForWord($word);
-            $this->secondaryOptimalColorRatio = $this->Database::getSecondaryOptimalColorRatioForWord($word);
-            $this->primaryColor = $this->Database::getPrimaryColor($word);
-            $this->secondaryColor = $this->Database::getSecondaryColor($word);
+            $this->primaryOptimalColorRatio = CorbleDatabase::getPrimaryOptimalColorRatioForWord($word);
+            $this->secondaryOptimalColorRatio = CorbleDatabase::getSecondaryOptimalColorRatioForWord($word);
+            $this->primaryColor = CorbleDatabase::getPrimaryColor($word);
+            $this->secondaryColor = CorbleDatabase::getSecondaryColor($word);
         }
 
         /**
@@ -94,7 +94,7 @@
             $penaltiePoints += $this->foreignColorsRate();
             $penaltiePoints = $this->validatePenaltiePoints($penaltiePoints);
             $totalPoints = $this->actualPoints - $penaltiePoints;
-            $this->Database::setPointsForSketch($totalPoints, $sketchIndx);
+            CorbleDatabase::setPointsForSketch($totalPoints, $sketchIndx);
         }
         
         /**
@@ -153,7 +153,7 @@
             $actualPrimaryRatio = (float)($primaryColorCounterNum/$totalCount);
             $actualSecondaryRatio = (float)($secondaryColorCounterNum/$totalCount);
 
-            return list($actualPrimaryRatio, $actualSecondaryRatio);
+            return array($actualPrimaryRatio, $actualSecondaryRatio);
         }
 
         /**

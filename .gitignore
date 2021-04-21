@@ -1,9 +1,11 @@
 /index.php_OLD
 
-.idea/vcs.xml
-
-.idea/PM3_FS21_IT19tb_ZH_Corble.iml
+.idea/modules.xml
 
 .idea/php.xml
 
-.idea/modules.xml
+.idea/PM3_FS21_IT19tb_ZH_Corble.iml
+
+.idea/vcs.xml
+
+.idea/workspace.xml

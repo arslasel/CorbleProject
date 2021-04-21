@@ -52,6 +52,8 @@ session_start();
 
     <div>
         <a href="php/View/LobbyView.php" target="_blank">Lobby View</a>
+        <br>
+        <a href="php/View/GameView.php" target="_blank">Game View</a>
     </div>
 </body>
 

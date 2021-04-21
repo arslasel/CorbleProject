@@ -25,18 +25,7 @@ class LobbyModel
     public function login($UserName)
     {
         // check if a user with the same name exists
-        $foundSameUser = false;
-        $queryResult = CorbleDatabase::executeQuery("SELECT * FROM  tbl_player");
-        if ($queryResult->num_rows > 0) {
-            while ($row = $queryResult->fetch_assoc()) {
-                if ($row["name"] == $UserName) {
-                    $foundSameUser = true;
-                    break;
-                }
-            }
-        }
-
-        if ($foundSameUser) {
+        if(CorbleDatabase::checkIfUserExists($UserName)){
             return false;
         } else { // there is no user with the same name continue login
             $insertID = CorbleDatabase::executeInsertQuery(
@@ -48,6 +37,7 @@ class LobbyModel
             }
             return false;
         }
+
     }
 
     public function setUserName($UserName)
@@ -102,83 +92,40 @@ class LobbyModel
 
     private function generateLobbyDatabaseEntry()
     {
-        $this->joincode = rand(100000, 999999);
+        //generate Joincode and check if exists.
+        do{
+            $this->joincode = rand(100000, 999999);
+        }while(CorbleDatabase::checkIfJoinCodeExists($this->joincode));
+        
         $date = new DateTime();
         $this->starttimeUNIX = $date->getTimestamp() + $this->starttime;
 
         $playerINDX = PlayerModel::getPlayerIndxByName($_SESSION["lobby_username"]);
-
-        $insertID = CorbleDatabase::executeInsertQuery("
-            INSERT INTO tbl_lobby (votetime,drawtime,starttime,maxplayer,joincode,fk_player_indx_lobby,state) 
-            VALUES (
-                " . $this->votetime . ",
-                " . $this->drawtime . ",
-                " . $this->starttimeUNIX . ",
-                " . $this->maxplayer . ",
-                " . $this->joincode . ",
-                " . $playerINDX . ",
-                'WaitForPlayers')");
+        
+        $insertID = CorbleDatabase::generateLobby($this->votetime,$this->drawtime,$this->starttimeUNIX,$this->maxplayer,$this->joincode,$playerINDX);
 
         if ($insertID != 0) {
             $_SESSION["lobby_joincode"] = $this->joincode;
             $this->indx = $insertID;
-            foreach ($this->wordpools as $wordpool) {
-                CorbleDatabase::executeInsertQuery("
-                INSERT INTO tbl_lobby_wordpool (fk_lobby_indx_lobby_wordpool,fk_wordpool_indx_lobby_wordpool) 
-                VALUES (
-                    " . $this->indx . ",
-                    " .  $wordpool. ")");
-            }
+            CorbleDatabase::addWordCategoriesToLobby($this->wordpools,$this->indx);
         }
     }
 
     public static function getLobbyIndxByJoincode($joincode)
     {
-        $selectLobbyResult = CorbleDatabase::executeQuery("SELECT indx FROM tbl_lobby WHERE joincode=" . $joincode . "");
-
-        if ($selectLobbyResult->num_rows > 0) {
-            return $selectLobbyResult->fetch_assoc()["indx"];
-        } else {
-            return 0;
-        }
+        return CorbleDatabase::getLobbyIndxByJoincode($joincode);
     }
 
     public static function getPlayersOfLobby($lobbyINDX){
-        $players = array();
-        $query = "
-            SELECT tbl_player.name, tbl_player.indx
-            FROM tbl_lobby_player, tbl_player 
-            WHERE tbl_player.indx = tbl_lobby_player.fk_player_indx_lobby_player 
-            AND tbl_lobby_player.fk_lobby_indx_Lobby_player = ".$lobbyINDX."";
-        $queryResult = CorbleDatabase::executeQuery($query);
-        if($queryResult->num_rows > 0){
-            while($row = $queryResult->fetch_assoc()){
-                $players[$row["indx"]] = new PlayerModel($row["name"],$row["indx"]);
-            }
-        }
-        return $players;
+        return CorbleDatabase::getPlayersOfLobby($lobbyINDX);
     }
 
     public static function getWordpoolsOfLobby($lobbyINDX){
-        $wordpools = array();
-        $query = "
-            SELECT tbl_wordpool.word as name, tbl_wordpool.indx
-            FROM tbl_lobby_wordpool, tbl_wordpool 
-            WHERE tbl_wordpool.indx = tbl_lobby_wordpool.fk_wordpool_indx_lobby_wordpool 
-            AND tbl_lobby_wordpool.fk_lobby_indx_lobby_wordpool  = ".$lobbyINDX."";
-
-        $queryResult = CorbleDatabase::executeQuery($query);
-        if($queryResult->num_rows > 0){
-            while($row = $queryResult->fetch_assoc()){
-                $wordpools[$row["indx"]] = new WordpoolModel($row["name"],$row["indx"]);
-            }
-        }
-        return $wordpools;
+        return CorbleDatabase::getWordpoolsOfLobby($lobbyINDX);
     }
 
     public function readLobbyDataFromDB(){
-        $query = "SELECT * FROM tbl_lobby WHERE joincode = ".$_SESSION["lobby_joincode"]."";
-        $queryResult = CorbleDatabase::executeQuery($query);
+        $queryResult = CorbleDatabase::readLobbyDataFromDB($_SESSION["lobby_joincode"]);
 
         if($queryResult->num_rows > 0){
             while($row = $queryResult->fetch_assoc()){
@@ -190,6 +137,7 @@ class LobbyModel
                 $this->joincode = $row["joincode"];
                 $this->players = LobbyModel::getPlayersOfLobby($_SESSION["lobby_lobbyINDX"]);
                 $this->wordpools = LobbyModel::getWordpoolsOfLobby($_SESSION["lobby_lobbyINDX"]);
+                
                 break;
             }
         }
@@ -207,13 +155,7 @@ class LobbyModel
         }
 
         if ($lobbyINDX != 0 && $playerINDX != 0) {
-
-            $insertID = CorbleDatabase::executeInsertQuery("
-            INSERT INTO tbl_lobby_player (fk_player_indx_lobby_player,fk_lobby_indx_Lobby_player,partyLeader) 
-            VALUES (
-                " . $playerINDX . ",
-                " . $lobbyINDX . ",
-                " . $partyLeaderString . ")");
+                $insertID = CorbleDatabase::addPlayerToLobby($playerINDX,$lobbyINDX,$partyLeaderString);
             if ($insertID != 0) {
                 $_SESSION["lobby_lobbyINDX"] = $lobbyINDX;
                 $_SESSION["lobby_joincode"] = $joincode;

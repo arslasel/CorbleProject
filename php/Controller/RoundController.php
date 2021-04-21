@@ -1,13 +1,9 @@
 <?php
+    class RoundController{
+        //Construktur noch zu implementieren
+        
+        public function rateSketch($sketchIndx){}
 
-
-class RoundController{
-    private $roundModel;
-    private $RatingModel;
-
-    public function __construct(){
-        $this->roundModel = new RoundModel();
-        $this->RatingModel = new RatingModel();
+        public function selectRandomWord($category){}
     }
-
-}
+?>

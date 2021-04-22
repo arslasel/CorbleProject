@@ -283,6 +283,66 @@ class CorbleDatabase
         //ToDo: To Implement
     }
 
+    /**
+     * This method gets the round index of a specific sketch
+     * @param: int $sketchIndx
+     * @return: int array() $result->fetch_assoc()
+     */
+    public static function getRoundIndexOfSketch($sketchIndx){
+        $sql = "SELECT fk_round_indx_round_sketch FROM tbl_round_sketch WHERE fk_sketch_indx_round_sketch = " .$sketchIndx .";";
+        $conn = self::createConnection();
+        $result = $conn->query($sql);
+        if($result){
+            return $result->fetch_assoc();
+        }
+        else{
+            return 0;
+        }
+    }
+
+    /**
+     * This method gives back all wordIds of a category
+     * @param: int $categoryId
+     * @return: int array() $result->fetch_assoc()
+     */
+    public static function getAllWordIdsOfCategory($categoryId){
+        $sql = "SELECT fk_word_indx_wordpool_word FROM tbl_wordpool_word WHERE fk_wordpool_indx_wordpool_word = " .$categoryId .";";
+        $conn = self::createConnection();
+        $result = $conn->query($sql);
+        if($result){
+            return $result->fetch_assoc();
+        }
+        else{
+            return 0;
+        }
+    }
+
+    /**
+     * This method gets the votes for a specific sketch index.
+     * @param: int $sketchIndx
+     * @return: int array() result->fetch_assoc()
+     */
+    public static function getVotes($sketchIndx){
+        $sql = "SELECT votes FROM tbl_sketch WHERE indx = " .$sketchIndx ." LIMIT 1 FOR UPDATE;"; //TODO: The readlock with FOR UPDATE currently doesn't work
+        $conn = self::createConnection();
+        $result = $conn->query($sql);
+        if($result){
+            return $result->fetch_assoc();
+        }
+        else{
+            return 0;
+        }
+    }
+
+    /**
+     * This method sets the vote for a specific sketch index.
+     * @param: int $sketchIndx
+     */
+    public static function setVotes($sketchIndx){
+        $sql = "UPDATE tbl_sketch SET votes = " .CorbleDatabase::getVotes($sketchIndx)[0] + 1 ." WHERE indx = " .$sketchIndx .";";
+        $conn = self::createConnection();
+        $conn->query($sql);
+    }
 }
 
 return;

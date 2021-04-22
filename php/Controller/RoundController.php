@@ -1,4 +1,5 @@
 <?php
+    //Includes required for using the RoundController functionality
     include_once('../Database.php');
     include_once('../RatingModel.php');
     /**
@@ -11,6 +12,7 @@
         private $categoryId;
         private const MIN_WORD_ID = 1;
         private $ratingModel;
+        private $roundIndx;
 
         /**
          * This method is the constructor of the class RoundController
@@ -50,9 +52,29 @@
 
         /**
          * This method is used to perform the rating of a picture from a player
+         * @param: int $sketchIndx
          */
-        public function sketchRateOfPlayer(){
+        public function sketchRateOfPlayer($sketchIndx){
+            CorbleDatabase::setVotes($sketchIndx);
+        }
 
+        /////////////////////////////////////////////////////////////////////
+        /////////////// Helper Methods
+        /////////////////////////////////////////////////////////////////////
+        /**
+         * This method get all sketches as a list.
+         * @return: String array() $this->sketches
+         */
+        public function getSketchesOfRound(){
+                return $this->sketches;
+        }
+
+        /**
+         * This method refreshes the sketches which are contained in the round.
+         */
+        public function refreshListOfSketches(){
+            $this->roundIndx = CorbleDatabase::getRoundIndexOfSketch($this->sketchesIds[0]);
+            $this->sketches = CorbleDatabase::getAllSketches($this->roundIndx);
         }
     }
 ?>

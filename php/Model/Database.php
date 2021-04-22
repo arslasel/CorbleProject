@@ -283,6 +283,23 @@ class CorbleDatabase
         //ToDo: To Implement
     }
 
+    /**
+     * This method gives back all wordIds of a category
+     * @param: int $categoryId
+     * @return: int array() $result->fetch_assoc()
+     */
+    public static function getAllWordIdsOfCategory($categoryId){
+        $sql = "SELECT fk_word_indx_wordpool_word FROM tbl_wordpool_word WHERE fk_wordpool_indx_wordpool_word = " .$categoryId .";";
+        $conn = self::createConnection();
+        $result = $conn->query($sql);
+        if($result){
+            return $result->fetch_assoc();
+        }
+        else{
+            return 0;
+        }
+    }
+
 }
 
 return;

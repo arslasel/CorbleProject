@@ -1,6 +1,7 @@
-html{
+html {
     width: 100%;
     height: 100%;
+    overflow: hidden;
 }
 
 body {
@@ -15,44 +16,44 @@ body {
     height: 100%;
 }
 
-.FullHeight{
+.FullHeight {
     height: 100%;
 }
 
-.NoMargin{
+.NoMargin {
     margin: 0px;
 }
 
-.logo{
+.logo {
     width: 200px;
     height: 100%;
     background-image: url("/img/CorbleLogo.png");
     background-repeat: no-repeat;
     background-size: contain;
-    background-position: center center; 
+    background-position: center center;
 }
 
-.WelcomeText{
+.WelcomeText {
     text-align: center;
 }
 
-.confirmNameButton{
+.confirmNameButton {
     float: right;
 }
 
-.usernameDisplay{
+.usernameDisplay {
     pointer-events: none;
 }
 
-.lobbyControls{
+.lobbyControls {
     margin-top: 10vh;
 }
 
-.LobbyTitle{
+.LobbyTitle {
     text-align: center;
 }
 
-.TableDiv{
+.TableDiv {
     display: inherit;
 }
 
@@ -64,4 +65,30 @@ body {
 
 #dataUrl {
     width: 100%;
+}
+
+#drawBoardContainer {
+    height: 100%;
+}
+
+#drawBoardContainer {
+    height: 100%;
+}
+
+.content {
+    height: 90%;
+    margin: 1%;
+    overflow: scroll;
+}
+
+::-webkit-scrollbar {
+    width: 0;
+    /* Remove scrollbar space */
+    background: transparent;
+    /* Optional: just make scrollbar invisible */
+}
+
+/* Optional: show position indicator in red */
+::-webkit-scrollbar-thumb {
+    background: #FF0000;
 }

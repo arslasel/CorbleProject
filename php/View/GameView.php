@@ -53,20 +53,12 @@ session_start();
     </div>
 
     <div id="drawContainer" class="content">
-        <div class="row">
+        <div class="row FullHeight NoMargin">
             <div id="drawBoardContainer" class="col s12 l8">
                 <canvas id="drawBoard">
                 </canvas>
-                <div class="row">
-                    <div class="col-md-12">
-                        <button class="btn btn-primary" id="submitBtn">
-                            Submit
-                        </button>
-                        <button class="btn btn-default" id="clearBtn">
-                            Clear
-                        </button>
-                    </div>
-                </div>
+            </div>
+            <div class="col s12 l2">
                 <div class="row">
                     <div class="col-md-12">
                         <div>Choose Color</div>
@@ -80,8 +72,17 @@ session_start();
                         <div style="width:50px;height:50px;background:white;border:2px solid;" id="white" onclick="color(this)"></div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <button class="btn btn-primary" id="submitBtn">
+                            Submit
+                        </button>
+                        <button class="btn btn-default" id="clearBtn">
+                            Clear
+                        </button>
+                    </div>
+                </div>
             </div>
-            <div class="col s12 l2">M</div>
             <div class="col s12 l2">L</div>
         </div>
     </div>

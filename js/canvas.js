@@ -15,6 +15,7 @@ var x;
 var y
 var wheelOpt;
 var wheelEvent;
+var line_thickness;
 
 
 
@@ -54,6 +55,9 @@ function renderCanvas() {
     if (drawing) {
         ctx.moveTo(lastPos.x, lastPos.y);
         ctx.lineTo(mousePos.x, mousePos.y);
+        ctx.lineWidth = line_thickness;
+        ctx.lineJoin = "round";
+        ctx.lineCap = "round";
         ctx.stroke();
         lastPos = mousePos;
     }
@@ -71,7 +75,7 @@ function clearCanvas() {
     * canvas
     * @input: canvas object
     */
-function color(obj) {
+function select_color(obj) {
     switch (obj.id) {
         case "green":
             x = "green";
@@ -102,8 +106,40 @@ function color(obj) {
             initCanvas();
             break;
     }
-    if (x == "white") y = 14;
-    else y = 2;
+   
+    document.getElementById("green").classList.remove("selectedColor");
+    document.getElementById("blue").classList.remove("selectedColor");
+    document.getElementById("red").classList.remove("selectedColor");
+    document.getElementById("yellow").classList.remove("selectedColor");
+    document.getElementById("orange").classList.remove("selectedColor");
+    document.getElementById("black").classList.remove("selectedColor");
+    document.getElementById("white").classList.remove("selectedColor");
+
+
+    obj.classList.add("selectedColor");
+}
+
+function select_line_thickness(obj){
+    switch (obj.id) {
+        case "line_thickness_s":
+            line_thickness = 10;
+            initCanvas();
+            break;
+        case "line_thickness_m":
+            line_thickness = 25;
+            initCanvas();
+            break;
+        case "line_thickness_l":
+            line_thickness = 50;
+            initCanvas();
+            break;
+    }
+
+    document.getElementById("line_thickness_s").classList.remove("selectedColor");
+    document.getElementById("line_thickness_m").classList.remove("selectedColor");
+    document.getElementById("line_thickness_l").classList.remove("selectedColor");
+
+    obj.classList.add("selectedColor");
 
 }
 
@@ -183,8 +219,8 @@ function onCanvasLoad() {
     canvas = document.getElementById("drawBoard");
     var drawBoardContainer = document.getElementById("drawBoardContainer");
     ctx = canvas.getContext("2d");
-    canvas.width = drawBoardContainer.getBoundingClientRect().width * 0.95;
-    canvas.height = drawBoardContainer.getBoundingClientRect().height * 0.95;
+    canvas.width = drawBoardContainer.getBoundingClientRect().width;
+    canvas.height = drawBoardContainer.getBoundingClientRect().height * 0.9;
 
     initCanvas();
 
@@ -288,4 +324,7 @@ function onCanvasLoad() {
         passive: false
     } : false;
     wheelEvent = 'onwheel' in document.createElement('div') ? 'wheel' : 'mousewheel';
+
+    select_color(document.getElementById("black"));
+    select_line_thickness(document.getElementById("line_thickness_s"));
 }

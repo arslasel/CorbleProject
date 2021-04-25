@@ -54,36 +54,111 @@ session_start();
 
     <div id="drawContainer" class="content">
         <div class="row FullHeight NoMargin">
-            <div id="drawBoardContainer" class="col s12 l8">
+            <div id="drawBoardContainer" class="col s12 l8 NoPadding drawcols">
                 <canvas id="drawBoard">
                 </canvas>
-            </div>
-            <div class="col s12 l2">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div>Choose Color</div>
-                        <div style="width:50px;height:50px;background:green;" id="green" onclick="color(this)"></div>
-                        <div style="width:50px;height:50px;background:blue;" id="blue" onclick="color(this)"></div>
-                        <div style="width:50px;height:50px;background:red;" id="red" onclick="color(this)"></div>
-                        <div style="width:50px;height:50px;background:yellow;" id="yellow" onclick="color(this)"></div>
-                        <div style="width:50px;height:50px;background:orange;" id="orange" onclick="color(this)"></div>
-                        <div style="width:50px;height:50px;background:black;" id="black" onclick="color(this)"></div>
-                        <div>Eraser</div>
-                        <div style="width:50px;height:50px;background:white;border:2px solid;" id="white" onclick="color(this)"></div>
+                <div class="row NoMarginRow">
+                    <div class="controllsPull">
+                        <i class="material-icons medium">arrow_drop_down</i>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <button class="btn btn-primary" id="submitBtn">
+            </div>
+            <div class="col s12 l2 NoPadding drawcols">
+                <div class="row NoMarginRow">
+                    <div class="col s6 NoPadding"><h6>Time Left</h6></div>
+                    <div class="col s6 NoPadding"><h6>23sec</h6></div>
+                </div>
+                <div class="row NoMarginRow">
+                    <h6>Color</h6>
+                </div>
+                <div class="row NoMarginRow">
+                    <div class="col s4">
+                        <div class="corbleColor corbleGreen" id="green" onclick="select_color(this)">&nbsp;</div>
+                    </div>
+                    <div class="col s4">
+                        <div class="corbleColor corbleBlue" id="blue" onclick="select_color(this)">&nbsp;</div>
+                    </div>
+                    <div class="col s4">
+                        <div class="corbleColor corbleRed" id="red" onclick="select_color(this)">&nbsp;</div>
+                    </div>
+                </div>
+                <div class="row NoMarginRow">
+                    <div class="col s4">
+                        <div class="corbleColor corbleYellow" id="yellow" onclick="select_color(this)">&nbsp;</div>
+                    </div>
+                    <div class="col s4">
+                        <div class="corbleColor corbleOrange" id="orange" onclick="select_color(this)">&nbsp;</div>
+                    </div>
+                    <div class="col s4">
+                        <div class="corbleColor corbleBlack" id="black" onclick="select_color(this)">&nbsp;</div>
+                    </div>
+                </div>
+                <div class="row NoMarginRow">
+                    <div class="col s4">
+                        <div class="corbleColor corbleWhite" id="white" onclick="select_color(this)">&nbsp;</div>
+                    </div>
+                </div>
+                <div class="row NoMarginRow">
+                    <h6>Line Size</h6>
+                </div>
+                <div class="row NoMarginRow">
+                    <div class="corbleColor corbleWhite" id="line_thickness_s" onclick="select_line_thickness(this)">S</div>
+                </div>
+                <div class="row NoMarginRow">
+                    <div class="corbleColor corbleWhite" id="line_thickness_m" onclick="select_line_thickness(this)">M</div>
+                </div>
+                <div class="row NoMarginRow">
+                    <div class="corbleColor corbleWhite" id="line_thickness_l" onclick="select_line_thickness(this)">L</div>
+                </div>
+                <div class="row NoMarginRow">
+                    <div class="col s6">
+                        <button id="submitBtn" class="btn waves-effect waves-light red" type="submit" type="submit" name="login_submit">
                             Submit
                         </button>
-                        <button class="btn btn-default" id="clearBtn">
+                    </div>
+                    <div class="col s6">
+                        <button id="clearBtn" class="btn waves-effect waves-light red" type="submit" type="submit" name="login_submit">
                             Clear
                         </button>
                     </div>
                 </div>
             </div>
-            <div class="col s12 l2">L</div>
+            <div class="col s12 l2 NoPadding drawcols">
+                <div class="row NoMarginRow">
+                    <h6>Leaderboard</h6>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Score</th>
+                                <th>Name</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td>6</td>
+                                <td>Gino</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Selim</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Kaya</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Roman</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Dominique</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 

@@ -22,18 +22,18 @@ body {
 }
 
 .NoMargin {
-    margin: 0px!important;
+    margin: 0px !important;
 }
 
 .NoMarginRow {
-    margin-left: 0px!important;
-    margin-right: 0px!important;
+    margin-left: 0px !important;
+    margin-right: 0px !important;
     padding-left: 10px;
     padding-right: 10px;
 }
 
-.NoPadding{
-    padding: 0px!important;
+.NoPadding {
+    padding: 0px !important;
 }
 
 .logo {
@@ -88,7 +88,7 @@ body {
     height: 100%;
 }
 
-.selectedColor{
+.selectedColor {
     box-shadow: 0px 0px 10px 6px rgb(0 0 0 / 77%);
 }
 
@@ -98,7 +98,7 @@ body {
     overflow: scroll;
 }
 
-.corbleColor{
+.corbleColor {
     height: 30px;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -109,33 +109,43 @@ body {
     text-align: center;
 }
 
-.corbleGreen{
+.corbleGreen {
     background-color: green;
 }
 
-.corbleRed{
+.corbleRed {
     background-color: red;
 }
 
-.corbleBlue{
+.corbleBlue {
     background-color: blue;
 }
 
-.corbleYellow{
+.corbleYellow {
     background-color: yellow;
 }
 
-.corbleBlack{
+.corbleBlack {
     background-color: black;
 }
 
-.corbleOrange{
+.corbleOrange {
     background-color: orange;
 }
 
-.corbleWhite{
+.corbleWhite {
     background-color: white;
 }
+
+.corbleBrown {
+    background-color: brown;
+}
+
+.corbleGrey {
+    background-color: grey;
+}
+
+
 
 ::-webkit-scrollbar {
     width: 0;
@@ -149,21 +159,22 @@ body {
     background: #FF0000;
 }
 
-#submitBtn{
+#submitBtn {
     width: 100%;
 }
 
-#clearBtn{
+#clearBtn {
     width: 100%;
 }
 
-.drawcols{
+.drawcols {
     overflow: hidden;
 }
 
-.controllsPull{
+.controllsPull {
     display: none;
 }
+
 @media only screen and (max-width: 992px) {
     .controllsPull {
         display: block;

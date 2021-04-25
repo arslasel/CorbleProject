@@ -76,37 +76,9 @@ function clearCanvas() {
     * @input: canvas object
     */
 function select_color(obj) {
-    switch (obj.id) {
-        case "green":
-            x = "green";
-            initCanvas();
-            break;
-        case "blue":
-            x = "blue";
-            initCanvas();
-            break;
-        case "red":
-            x = "red";
-            initCanvas();
-            break;
-        case "yellow":
-            x = "yellow";
-            initCanvas();
-            break;
-        case "orange":
-            x = "orange";
-            initCanvas();
-            break;
-        case "black":
-            x = "black";
-            initCanvas();
-            break;
-        case "white":
-            x = "white";
-            initCanvas();
-            break;
-    }
-   
+    x = obj.id
+    initCanvas();
+
     document.getElementById("green").classList.remove("selectedColor");
     document.getElementById("blue").classList.remove("selectedColor");
     document.getElementById("red").classList.remove("selectedColor");
@@ -119,7 +91,7 @@ function select_color(obj) {
     obj.classList.add("selectedColor");
 }
 
-function select_line_thickness(obj){
+function select_line_thickness(obj) {
     switch (obj.id) {
         case "line_thickness_s":
             line_thickness = 10;
@@ -231,8 +203,6 @@ function onCanvasLoad() {
     var submitBtn = document.getElementById("submitBtn");
     clearBtn.addEventListener("click", function (e) {
         clearCanvas();
-        text.innerHTML = "Data URL";
-        image.setAttribute("src", "");
     }, false);
     submitBtn.addEventListener("click", function (e) {
         var dataUrl = canvas.toDataURL();

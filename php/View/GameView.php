@@ -65,8 +65,12 @@ session_start();
             </div>
             <div class="col s12 l2 NoPadding drawcols">
                 <div class="row NoMarginRow">
-                    <div class="col s6 NoPadding"><h6>Time Left</h6></div>
-                    <div class="col s6 NoPadding"><h6>23sec</h6></div>
+                    <div class="col s6 NoPadding">
+                        <h6>Time Left</h6>
+                    </div>
+                    <div class="col s6 NoPadding">
+                        <h6>23sec</h6>
+                    </div>
                 </div>
                 <div class="row NoMarginRow">
                     <h6>Color</h6>
@@ -94,6 +98,12 @@ session_start();
                     </div>
                 </div>
                 <div class="row NoMarginRow">
+                    <div class="col s4">
+                        <div class="corbleColor corbleBrown" id="brown" onclick="select_color(this)">&nbsp;</div>
+                    </div>
+                    <div class="col s4">
+                        <div class="corbleColor corbleGrey" id="grey" onclick="select_color(this)">&nbsp;</div>
+                    </div>
                     <div class="col s4">
                         <div class="corbleColor corbleWhite" id="white" onclick="select_color(this)">&nbsp;</div>
                     </div>

@@ -280,8 +280,62 @@ class CorbleDatabase
     }
 
     public static function getAllSketches($roundIndx){
-        //ToDo: To Implement
+        $sql = "SELECT path as path FROM tbl_sketch WHERE fk_round_indx = ".$roundIndx;
+        $conn = self::createConnection();
+        $result = $conn->query($sql);
+        if($result){
+            $results = array();
+            while($row = $result->fetch_row()){
+                $results[] = $row;
+            }
+            return $results;
+        }else{
+            return 0;
+        }
     }
+
+    public static function saveRatingFromPlayer($sketchIndx){
+        //Todo: This needs to made thread safe but on database level.
+
+        $sql = "SELECT votes  AS votes FROM tbl_sketch WHERE indx = ".$sketchIndx;
+        $conn = self::createConnection();
+        $result = $conn->query($sql);
+        if ($result->num_rows > 0) {
+            $votes = $result->fetch_assoc();
+            
+            $votes = $votes + 1;
+
+            $sql = "UPDATE tbl_sketch SET votes = " .$votes ."WHERE indx = " .$sketchIndx .";";
+            $conn = self::createConnection();
+            if($conn->query($sql) === TRUE){
+                return $conn->insert_id;
+            }  
+
+        }else{
+            return 0;
+        }
+        
+        
+    }
+
+    public static function savePicture($path, $playerIndx){
+        $sql = "INSERT INTO `tbl_sketch` (`path`, `computerscore`, `fk_player_indx_sketch`, `fk_word_indx_sketch`, `votes`, `fk_round_indx`) VALUES (".$path.", '0', ".$playerIndx.", '', '0', '')";
+
+    $conn = self::createConnection();
+    
+    // Check connection
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    } else {
+        if($conn->query($sql) === TRUE){
+            return $conn->insert_id;
+        }
+        echo $sql;
+        echo("Error description: " . $conn->error);
+        return 0;
+    }
+    }
+
 
     /**
      * This method gets the round index of a specific sketch

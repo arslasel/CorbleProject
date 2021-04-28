@@ -20,11 +20,11 @@ var line_thickness;
 
 
 /**
-     * This function is used for getting the position of the mouse
-     * relative to the canvas
-     * @input: Canvas canvasDom
-     * @input: Event mouseEvent
-     */
+ * This function is used for getting the position of the mouse
+ * relative to the canvas
+ * @input: Canvas canvasDom
+ * @input: Event mouseEvent
+ */
 // 
 function getMousePos(canvasDom, mouseEvent) {
     var rect = canvasDom.getBoundingClientRect();
@@ -71,10 +71,10 @@ function clearCanvas() {
 }
 
 /**
-    * This function allows us to change the color of the drawing style in the
-    * canvas
-    * @input: canvas object
-    */
+ * This function allows us to change the color of the drawing style in the
+ * canvas
+ * @input: canvas object
+ */
 function select_color(obj) {
     x = obj.id
     initCanvas();
@@ -116,9 +116,9 @@ function select_line_thickness(obj) {
 }
 
 /**
-    * The beginPath() allows to use different colors without changing the whole drawn
-    * and other inital stuff witch have to be repeatily used
-    */
+ * The beginPath() allows to use different colors without changing the whole drawn
+ * and other inital stuff witch have to be repeatily used
+ */
 function initCanvas() {
     ctx.beginPath();
     ctx.strokeStyle = x;
@@ -128,18 +128,18 @@ function initCanvas() {
 }
 
 /**
-    * This function is recursive and iterates in the event.
-    * It is used for prevent the scrolling while drawing.
-    * @input Event e
-    */
+ * This function is recursive and iterates in the event.
+ * It is used for prevent the scrolling while drawing.
+ * @input Event e
+ */
 function preventDefault(e) {
     e.preventDefault();
 }
 
 /**
-* This function checks the inputted scroll keys
-* @input Event e
-*/
+ * This function checks the inputted scroll keys
+ * @input Event e
+ */
 function preventDefaultForScrollKeys(e) {
     if (keys[e.keyCode]) {
         preventDefault(e);
@@ -148,8 +148,8 @@ function preventDefaultForScrollKeys(e) {
 }
 
 /**
-    * This function is called to disable scrolling
-    */
+ * This function is called to disable scrolling
+ */
 function disableScroll() {
     window.addEventListener('DOMMouseScroll', preventDefault, false); // older FF
     window.addEventListener(wheelEvent, preventDefault, wheelOpt); // modern desktop
@@ -158,8 +158,8 @@ function disableScroll() {
 }
 
 /**
-* This function is called to enable scrolling
-*/
+ * This function is called to enable scrolling
+ */
 function enableScroll() {
     window.removeEventListener('DOMMouseScroll', preventDefault, false);
     window.removeEventListener(wheelEvent, preventDefault, wheelOpt);
@@ -169,20 +169,20 @@ function enableScroll() {
 
 function onCanvasLoad() {
     /**
-         * The Variables has to be initalized so that for example a color is
-         * present
-         */
+     * The Variables has to be initalized so that for example a color is
+     * present
+     */
     x = "black",
         y = 2;
 
     // Get a regular interval for drawing to the screen
-    window.requestAnimFrame = (function (callback) {
+    window.requestAnimFrame = (function(callback) {
         return window.requestAnimationFrame ||
             window.webkitRequestAnimationFrame ||
             window.mozRequestAnimationFrame ||
             window.oRequestAnimationFrame ||
             window.msRequestAnimaitonFrame ||
-            function (callback) {
+            function(callback) {
                 window.setTimeout(callback, 1000 / 60);
             };
     })();
@@ -201,10 +201,10 @@ function onCanvasLoad() {
     var image = document.getElementById("image");
     var clearBtn = document.getElementById("clearBtn");
     var submitBtn = document.getElementById("submitBtn");
-    clearBtn.addEventListener("click", function (e) {
+    clearBtn.addEventListener("click", function(e) {
         clearCanvas();
     }, false);
-    submitBtn.addEventListener("click", function (e) {
+    submitBtn.addEventListener("click", function(e) {
         var dataUrl = canvas.toDataURL();
         image.setAttribute("src", dataUrl);
     }, false);
@@ -216,21 +216,21 @@ function onCanvasLoad() {
         y: 0
     };
     lastPos = mousePos;
-    canvas.addEventListener("mousedown", function (e) {
+    canvas.addEventListener("mousedown", function(e) {
         drawing = true;
         disableScroll();
         lastPos = getMousePos(canvas, e);
     }, false);
-    canvas.addEventListener("mouseup", function (e) {
+    canvas.addEventListener("mouseup", function(e) {
         drawing = false;
         enableScroll();
     }, false);
-    canvas.addEventListener("mousemove", function (e) {
+    canvas.addEventListener("mousemove", function(e) {
         mousePos = getMousePos(canvas, e);
     }, false);
 
     // Set up touch events for mobile
-    canvas.addEventListener("touchstart", function (e) {
+    canvas.addEventListener("touchstart", function(e) {
         mousePos = getTouchPos(canvas, e);
         disableScroll(); //otherwise you cannot draw without scrolling around
         var touch = e.touches[0];
@@ -240,11 +240,11 @@ function onCanvasLoad() {
         });
         canvas.dispatchEvent(mouseEvent);
     }, false);
-    canvas.addEventListener("touchend", function (e) {
+    canvas.addEventListener("touchend", function(e) {
         var mouseEvent = new MouseEvent("mouseup", {});
         canvas.dispatchEvent(mouseEvent);
     }, false);
-    canvas.addEventListener("touchmove", function (e) {
+    canvas.addEventListener("touchmove", function(e) {
         var touch = e.touches[0];
         var mouseEvent = new MouseEvent("mousemove", {
             clientX: touch.clientX,
@@ -254,17 +254,17 @@ function onCanvasLoad() {
     }, false);
 
     // Prevent scrolling when touching the canvas
-    document.body.addEventListener("touchstart", function (e) {
+    document.body.addEventListener("touchstart", function(e) {
         if (e.target == canvas) {
             e.preventDefault();
         }
     }, false);
-    document.body.addEventListener("touchend", function (e) {
+    document.body.addEventListener("touchend", function(e) {
         if (e.target == canvas) {
             e.preventDefault();
         }
     }, false);
-    document.body.addEventListener("touchmove", function (e) {
+    document.body.addEventListener("touchmove", function(e) {
         if (e.target == canvas) {
             e.preventDefault();
         }
@@ -279,16 +279,16 @@ function onCanvasLoad() {
     })();
 
     /**
-    * modern Chrome requires { passive: false } when adding event
-    */
+     * modern Chrome requires { passive: false } when adding event
+     */
     var supportsPassive = false;
     try {
         window.addEventListener("supportPassive", null, Object.defineProperty({}, 'passive', {
-            get: function () {
+            get: function() {
                 supportsPassive = true;
             }
         }));
-    } catch (e) { }
+    } catch (e) {}
 
     wheelOpt = supportsPassive ? {
         passive: false

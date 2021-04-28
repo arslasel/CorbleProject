@@ -45,9 +45,10 @@ body {
     background-position: center center;
 }
 
-<<<<<<< HEAD
 .WelcomeText {
-=======
+    text-align: center;
+}
+
 .img {
     display: block;
     margin-left: auto;
@@ -57,8 +58,8 @@ body {
 }
 
 .container {
-	text-align: center;
-	padding: 10px 20px;
+    text-align: center;
+    padding: 10px 20px;
 }
 
 .WelcomeText {
@@ -161,17 +162,17 @@ body {
     background-color: grey;
 }
 
-
-
-::-webkit-scrollbar {
+ ::-webkit-scrollbar {
     width: 0;
     /* Remove scrollbar space */
     background: transparent;
     /* Optional: just make scrollbar invisible */
 }
 
+
 /* Optional: show position indicator in red */
-::-webkit-scrollbar-thumb {
+
+ ::-webkit-scrollbar-thumb {
     background: #FF0000;
 }
 
@@ -197,4 +198,8 @@ body {
         text-align: center;
         width: 100%;
     }
+}
 
+.sketchTitle {
+    mix-blend-mode: difference;
+}

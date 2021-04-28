@@ -205,7 +205,7 @@ session_start();
                     <h5 class="WelcomeText">Schlechtestes Bild nach Algorithmus</h5>
                     <div class="card">
                         <div class="card-image">
-                            <img src="/img/Download.jfif">
+                            <img src="/img/1542233.jpg">
                             <span class="card-title sketchTitle">Selim</span>
                         </div>
                     </div>

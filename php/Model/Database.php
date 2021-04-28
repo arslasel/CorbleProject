@@ -271,14 +271,116 @@ class CorbleDatabase
         }
     }
 
-    public static function setPointsForSketch($totalPoints,$sketchIndx){
-        $sql = "UPDATE tbl_sketch SET computerscore = " .$totalPoints ."WHERE indx = " .$sketchIndx .";";
+    public static function setPointsForSketch($totalPoints, $sketchIndx){
+        $sql = "UPDATE tbl_sketch SET computerscore = " .$totalPoints ."WHERE indx = " .$sketchIndx;
         $conn = self::createConnection();
         if($conn->query($sql) === TRUE){
             return $conn->insert_id;
         }
     }
 
+    public static function getPlayerWithBestVotedSketch($lobbyIndex){
+        $sql1 = "SELECT index FROM tbl_round WHERE fk_lobby_index = " . $lobbyIndex;
+        $sql2 = "SELECT MAX(votes) FROM tbl_sketch WHERE fk_round_index IN (". $sql1 . ")";
+        $sql3 = "SELECT fk_player_index_sketch FROM tbl_sketch WHERE fk_round_index = roundIndex AND votes = (" . $sql2 . ")";
+        $sql4 = "SELECT name FROM tbl_player WHERE indx = " . $sql3;
+        $conn = self::createConnection();
+        $result = $conn->query($sql4);
+        if ($result) {
+            return $result->fetch_assoc();
+        } else {
+            return 0;
+        }
+    }
+
+
+    public function getPlayerWithBestAlogrithmSketch($lobbyIndex){
+        $sql1 = "SELECT index FROM tbl_round WHERE fk_lobby_index = " . $lobbyIndex;
+        $sql2 = "SELECT MAX(computerscore) FROM tbl_sketch WHERE fk_round_index  IN (". $sql1 . ")";
+        $sql3 = "SELECT fk_player_index_sketch FROM tbl_sketch WHERE fk_round_index = roundIndex AND computerscore = (" . $sql2 . ")";
+        $sql4 = "SELECT name FROM tbl_player WHERE indx = " . $sql3;
+
+        $conn = self::createConnection();
+        $result = $conn->query($sql4);
+        if ($result) {
+            return $result->fetch_assoc();
+        } else {
+            return 0;
+        }
+    }
+
+    public function getPlayerWithWorstVotedSketch($lobbyIndex){
+        $sql1 = "SELECT index FROM tbl_round WHERE fk_lobby_index = " . $lobbyIndex;
+        $sql2 = "SELECT MIN(computerscore) FROM tbl_sketch WHERE fk_round_index IN (". $sql1 . ")";
+        $sql3 = "SELECT fk_player_index_sketch FROM tbl_sketch WHERE fk_round_index = roundIndex AND computerscore = (" . $sql2 . ")";
+        $sql4 = "SELECT name FROM tbl_player WHERE indx = " . $sql3;
+
+        $conn = self::createConnection();
+        $result = $conn->query($sql4);
+        if ($result) {
+            return $result->fetch_assoc();
+        } else {
+            return 0;
+        }
+    }
+
+    public function getSketchBestVoted($lobbyIndex){
+        $sql1 = "SELECT index FROM tbl_round WHERE fk_lobby_index = " . $lobbyIndex;
+        $sql2 = "SELECT MAX(votes) FROM tbl_sketch WHERE fk_round_index IN (". $sql1 . ")";
+        $sql3 = "SELECT path FROM tbl_sketch WHERE fk_round_index = roundIndex AND votes = (" . $sql2 . ")";
+
+        $conn = self::createConnection();
+        $result = $conn->query($sql3);
+        if ($result) {
+            return $result->fetch_assoc();
+        } else {
+            return 0;
+        }
+    }
+
+    public function getSketchWorstAlgorithm($lobbyIndex){
+        $sql1 = "SELECT index FROM tbl_round WHERE fk_lobby_index = " . $lobbyIndex;
+        $sql2 = "SELECT MAX(computerscore) FROM tbl_sketch WHERE fk_round_index IN (". $sql1 . ")";
+        $sql3 = "SELECT path FROM tbl_sketch WHERE fk_round_index = roundIndex AND computerscore = (" . $sql2 . ")";
+
+        $conn = self::createConnection();
+        $result = $conn->query($sql3);
+        if ($result) {
+            return $result->fetch_assoc();
+        } else {
+            return 0;
+        }
+    }
+
+    public function getSketchBestAlgorithm($lobbyIndex){
+        $sql1 = "SELECT index FROM tbl_round WHERE fk_lobby_index = " . $lobbyIndex;
+        $sql2 = "SELECT MIN(computerscore) FROM tbl_sketch WHERE fk_round_index IN (". $sql1 . ")";
+        $sql3 = "SELECT path FROM tbl_sketch WHERE fk_round_index = roundIndex AND computerscore = (" . $sql1 . ")";
+
+        $conn = self::createConnection();
+        $result = $conn->query($sql3);
+        if ($result) {
+            return $result->fetch_assoc();
+        } else {
+            return 0;
+        };
+    }
+
+    public function getWinner($lobbyIndex){
+        $sql1 = "SELECT index FROM tbl_round WHERE fk_lobby_index = " . $lobbyIndex;
+        $sql2 = "SELECT fk_player_index_sketch, SUM(votes) as total FROM tbl_sketch WHERE fk_round_index IN (" . $sql1 . ") GROUP BY fk_player_indx_sketch";
+        $sql3 = "SELECT MAX(total) FROM " . $sql2 ;
+
+        $sql4 = "SELECT fk_player_index_sketch FROM " . $sql2 . " WHERE total = " . $sql3;
+        $sql5 = "SELECT name FROM tbl_player WHERE indx = " . $sql4;
+        $conn = self::createConnection();
+        $result = $conn->query($sql5);
+        if ($result) {
+            return $result->fetch_assoc();
+        } else {
+            return 0;
+        }
+    }
 }
 
 return;

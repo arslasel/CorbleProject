@@ -172,12 +172,60 @@ session_start();
         </div>
     </div>
 
-    <div hidden="" id="voteContainer" class="content">
+    <div id="voteContainer" class="content" style="display: none;">
         vote
     </div>
 
-    <div hidden="" id="endContainer" class="content">
-        <!-- TODO selim  -->
+    <div id="endContainer" class="content">
+        <div class="ex1">
+            <div class="row">
+                <h2 class="WelcomeText">Spiel Ende</h2>
+                <h3 class="WelcomeText">Siegerehrung</h3>
+            </div>
+            <div class="row">
+                <div class="col s12 l4">
+                    <h5 class="WelcomeText">Bestes Bild nach Stimmen</h5>
+                    <div class="polaroid">
+                        <div class="img">
+                            <img src="/img/Ubuntu.png" alt="Ubuntu" style="width:50%">
+                        </div>
+                        <div class="container">
+                            <p>Dandolo</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12 l4">
+                    <h5 class="WelcomeText">Bestes Bild nach Algorithmus</h5>
+                    <div class="polaroid">
+                        <div class="img">
+                            <img src="/img/Ubuntu.png" alt="Ubuntu" style="width:50%">
+                        </div>
+                        <div class="container">
+                            <p>Henrici</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12 l4">
+                    <h5 class="WelcomeText">Schlechtestes Bild nach Algorithmus</h5>
+                    <div class="polaroid">
+                        <div class="img">
+                            <img src="/img/Ubuntu.png" alt="Ubuntu" style="width:50%">
+                        </div>
+                        <div class="container">
+                            <p>Bachmann</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <h2 class="WelcomeText">
+                        <p style="color:Tomato;">
+                            Gewinner ist: Selim
+                            </style>
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
     </div>
 
     <?php

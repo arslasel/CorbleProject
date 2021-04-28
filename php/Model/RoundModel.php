@@ -3,16 +3,21 @@
     include_once('Database.php');
 
     class RoundModel{
-        //Construktur noch zu implementieren
-
-        private $sketches = array(); //getAllSketches() in Database.php
         
-        public function savePicture($base64, $playerIndx){}
+        public function savePicture($root,$base64, $lobbyIndx,$roundIndx,$playerIndx){
+           $IoModel = new IOModel($root);
+           $path = $IoModel->savePicture($base64,$lobbyIndx,$roundIndx,$playerIndx);
+           if($path =! null){
+                CorbleDatabase::savePicture($path, $playerIndx);
+           }
+        }
 
-        public function saveRatingFromPlayer($ratingPlayerIndx, $sketchIndx){}
+        public function saveRatingFromPlayer($sketchIndx){
+            CorbleDatabase::saveRatingFromPlayer($sketchIndx);
+        }
 
         public function getAllSketches($roundIndx){
-            $this->sketches = CorbleDatabase::getAllSketches($roundIndx);
+            return CorbleDatabase::getAllSketches($roundIndx);
         }
     }
 ?>

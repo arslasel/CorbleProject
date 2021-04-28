@@ -185,44 +185,38 @@ session_start();
             <div class="row">
                 <div class="col s12 l4">
                     <h5 class="WelcomeText">Bestes Bild nach Stimmen</h5>
-                    <div class="polaroid">
-                        <div class="img">
-                            <img src="/img/Ubuntu.png" alt="Ubuntu" style="width:50%">
-                        </div>
-                        <div class="container">
-                            <p>Dandolo</p>
+                    <div class="card">
+                        <div class="card-image">
+                            <img src="/img/Ubuntu.png">
+                            <span class="card-title sketchTitle">Selim</span>
                         </div>
                     </div>
                 </div>
                 <div class="col s12 l4">
                     <h5 class="WelcomeText">Bestes Bild nach Algorithmus</h5>
-                    <div class="polaroid">
-                        <div class="img">
-                            <img src="/img/Ubuntu.png" alt="Ubuntu" style="width:50%">
-                        </div>
-                        <div class="container">
-                            <p>Henrici</p>
+                    <div class="card">
+                        <div class="card-image">
+                            <img src="/img/KimJongUn.png">
+                            <span class="card-title sketchTitle">Selim</span>
                         </div>
                     </div>
                 </div>
                 <div class="col s12 l4">
                     <h5 class="WelcomeText">Schlechtestes Bild nach Algorithmus</h5>
-                    <div class="polaroid">
-                        <div class="img">
-                            <img src="/img/Ubuntu.png" alt="Ubuntu" style="width:50%">
-                        </div>
-                        <div class="container">
-                            <p>Bachmann</p>
+                    <div class="card">
+                        <div class="card-image">
+                            <img src="/img/Download.jfif">
+                            <span class="card-title sketchTitle">Selim</span>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <h2 class="WelcomeText">
-                        <p style="color:Tomato;">
-                            Gewinner ist: Selim
-                            </style>
-                    </h2>
-                </div>
+            </div>
+            <div class="row">
+                <h2 class="WelcomeText">
+                    <p style="color:Tomato;">
+                        Gewinner ist: Selim
+                        </style>
+                </h2>
             </div>
         </div>
     </div>

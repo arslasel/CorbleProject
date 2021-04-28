@@ -1,7 +1,7 @@
 <?php
     //Includes required for using the RoundController functionality
-    include_once('../Database.php');
-    include_once('../RatingModel.php');
+    include_once('../Model/RatingModel.php');
+    include_once('../Model/RoundModel.php');
     /**
      * The class RoundController will be used for doing the whole logic part of the game round
      */
@@ -39,7 +39,7 @@
          * This method is used for selecting a random Word out of a category
          */
         public function selectRandomWord(){
-            $wordIds = CorbleDatabase::getAllWordIdsOfCategory($this->categoryId);
+            $wordIds = RoundModel::getAllWordIdsOfCategory($this->categoryId);
             if($wordIds != 0){ // if wordIds == 0 then no word was found for category
                 $numOfElements = count($wordIds);
                 $randomNumInArray = rand($this->MIN_WORD_ID, $numOfElements);
@@ -55,7 +55,7 @@
          * @param: int $sketchIndx
          */
         public function sketchRateOfPlayer($sketchIndx){
-            CorbleDatabase::setVotes($sketchIndx);
+            RoundModel::saveRatingFromPlayer($sketchIndx);
         }
 
         /////////////////////////////////////////////////////////////////////
@@ -73,8 +73,8 @@
          * This method refreshes the sketches which are contained in the round.
          */
         public function refreshListOfSketches(){
-            $this->roundIndx = CorbleDatabase::getRoundIndexOfSketch($this->sketchesIds[0]);
-            $this->sketches = CorbleDatabase::getAllSketches($this->roundIndx);
+            $this->roundIndx = RoundModel::getRoundIndexOfSketch($this->sketchesIds[0]);
+            $this->sketches = RoundModel::getAllSketches($this->roundIndx);
         }
     }
 ?>

@@ -392,7 +392,7 @@ class CorbleDatabase
      * This method sets the vote for a specific sketch index.
      * @param: int $sketchIndx
      */
-    public static function setVotes($sketchIndx){
+    public static function setVotes($sketchIndx){ //TODO: is duplicated with function saveRatingFromPlayer()
         $sql = "UPDATE tbl_sketch SET votes = " .CorbleDatabase::getVotes($sketchIndx)[0] + 1 ." WHERE indx = " .$sketchIndx .";";
         $conn = self::createConnection();
         $conn->query($sql);

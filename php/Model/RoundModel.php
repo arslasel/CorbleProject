@@ -4,7 +4,7 @@
 
     class RoundModel{
         
-        public function savePicture($root,$base64, $lobbyIndx,$roundIndx,$playerIndx){
+        public static function savePicture($root,$base64, $lobbyIndx,$roundIndx,$playerIndx){
            $IoModel = new IOModel($root);
            $path = $IoModel->savePicture($base64,$lobbyIndx,$roundIndx,$playerIndx);
            if($path =! null){
@@ -12,12 +12,18 @@
            }
         }
 
-        public function saveRatingFromPlayer($sketchIndx){
+        public static function saveRatingFromPlayer($sketchIndx){
             CorbleDatabase::saveRatingFromPlayer($sketchIndx);
         }
 
-        public function getAllSketches($roundIndx){
+        public static function getAllSketches($roundIndx){
             return CorbleDatabase::getAllSketches($roundIndx);
+        }
+
+        public static function getRoundIndexOfSketch($sketchId){}
+
+        public static function getAllWordIdsOfCategory($categoryId){
+            return [];
         }
     }
 ?>

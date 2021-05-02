@@ -182,28 +182,52 @@ session_start();
                     <!-- Full-width images with number text -->
                     <div class="mySlidesSlideShow mySlidesSlideShowSelected pictureWidth">
                         <div id="image1" hidden>
-                            <div class="numbertextSlideShow">1 / 6</div>
-                            <img src="/img/FIZZ.jpg">
+                            <div class="card">
+                                <div class="card-image">
+                                    <img src="/img/FIZZ.jpg">
+                                    <div class="numbertextSlideShow">1 / 6</div>
+                                </div>
+                            </div>
                         </div>
                         <div id="image2" hidden>
-                            <div class="numbertextSlideShow">2 / 6</div>
-                            <img src="/img/Fiora.jpg">
+                            <div class="card">
+                                <div class="card-image">
+                                    <img src="/img/Fiora.jpg">
+                                    <div class="numbertextSlideShow">2 / 6</div>
+                                </div>
+                            </div>
                         </div>
                         <div id="image3" hidden>
-                            <div class="numbertextSlideShow">3 / 6</div>
-                            <img src="/img/Yorrick.jpg">
+                            <div class="card">
+                                <div class="card-image">
+                                    <img src="/img/Yorrick.jpg">
+                                    <div class="numbertextSlideShow">3 / 6</div>
+                                </div>
+                            </div>
                         </div>
                         <div id="image4" hidden>
-                            <div class="numbertextSlideShow">4 / 6</div>
-                            <img src="/img/FIZZVOID.png">
+                            <div class="card">
+                                <div class="card-image">
+                                    <img src="/img/FIZZVOID.png">
+                                    <div class="numbertextSlideShow">4 / 6</div>
+                                </div>
+                            </div>
                         </div>
                         <div id="image5" hidden>
-                            <div class="numbertextSlideShow">5 / 6</div>
-                            <img src="/img/1542233.jpg">
+                            <div class="card">
+                                <div class="card-image">
+                                    <img src="/img/1542233.jpg">
+                                    <div class="numbertextSlideShow">5 / 6</div>
+                                </div>
+                            </div>
                         </div>
                         <div id="image6" hidden>
-                            <div class="numbertextSlideShow">6 / 6</div>
-                            <img src="/img/Wukong.jpg">
+                            <div class="card">
+                                <div class="card-image">
+                                    <img src="/img/Wukong.jpg">
+                                    <div class="numbertextSlideShow">6 / 6</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <!-- Image text -->
@@ -337,47 +361,47 @@ session_start();
     </div>
 
     <div id="endContainer" class="content" style="display: none;">
-            <div class="ex1">
-                <div class="row">
-                    <h2 class="WelcomeText">Spiel Ende</h2>
-                    <h3 class="WelcomeText">Siegerehrung</h3>
-                </div>
-                <div class="row">
-                    <div class="col s12 l4">
-                        <h5 class="WelcomeText">Bestes Bild nach Stimmen</h5>
-                        <div class="card">
-                            <div class="card-image">
-                                <img src="/img/Ubuntu.png">
-                                <span class="card-title sketchTitle">Selim</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col s12 l4">
-                        <h5 class="WelcomeText">Bestes Bild nach Algorithmus</h5>
-                        <div class="card">
-                            <div class="card-image">
-                                <img src="/img/KimJongUn.png">
-                                <span class="card-title sketchTitle">Selim</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col s12 l4">
-                        <h5 class="WelcomeText">Schlechtestes Bild nach Algorithmus</h5>
-                        <div class="card">
-                            <div class="card-image">
-                                <img src="/img/1542233.jpg">
-                                <span class="card-title sketchTitle">Selim</span>
-                            </div>
+        <div class="ex1">
+            <div class="row">
+                <h2 class="WelcomeText">Spiel Ende</h2>
+                <h3 class="WelcomeText">Siegerehrung</h3>
+            </div>
+            <div class="row">
+                <div class="col s12 l4">
+                    <h5 class="WelcomeText">Bestes Bild nach Stimmen</h5>
+                    <div class="card">
+                        <div class="card-image">
+                            <img src="/img/Ubuntu.png">
+                            <span class="card-title sketchTitle">Selim</span>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <h2 class="WelcomeText selectColorWinner">
-                        Gewinner ist: Selim
-                    </h2>
+                <div class="col s12 l4">
+                    <h5 class="WelcomeText">Bestes Bild nach Algorithmus</h5>
+                    <div class="card">
+                        <div class="card-image">
+                            <img src="/img/KimJongUn.png">
+                            <span class="card-title sketchTitle">Selim</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12 l4">
+                    <h5 class="WelcomeText">Schlechtestes Bild nach Algorithmus</h5>
+                    <div class="card">
+                        <div class="card-image">
+                            <img src="/img/1542233.jpg">
+                            <span class="card-title sketchTitle">Selim</span>
+                        </div>
+                    </div>
                 </div>
             </div>
+            <div class="row">
+                <h2 class="WelcomeText selectColorWinner">
+                    Gewinner ist: Selim
+                </h2>
+            </div>
         </div>
+    </div>
 
     <?php
     ini_set('display_errors', 1);

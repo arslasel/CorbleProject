@@ -343,3 +343,12 @@ body {
     order: 1;
     flex-grow: 10;
 }
+
+.setPictureInCard {
+    text-align: -webkit-center;
+}
+
+.sizeOfPicture {
+    width: 60%;
+    height: 60%;
+}

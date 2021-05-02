@@ -181,48 +181,48 @@ session_start();
                 <div class="slideShowContainer">
                     <!-- Full-width images with number text -->
                     <div class="mySlidesSlideShow mySlidesSlideShowSelected pictureWidth">
-                        <div id="image1" hidden>
-                            <div class="card">
+                        <div id="image1" class="setPictureInCard" hidden>
+                            <div class="card sizeOfPicture">
                                 <div class="card-image">
                                     <img src="/img/FIZZ.jpg">
                                     <div class="numbertextSlideShow">1 / 6</div>
                                 </div>
                             </div>
                         </div>
-                        <div id="image2" hidden>
-                            <div class="card">
+                        <div id="image2" class="setPictureInCard" hidden>
+                            <div class="card sizeOfPicture">
                                 <div class="card-image">
                                     <img src="/img/Fiora.jpg">
                                     <div class="numbertextSlideShow">2 / 6</div>
                                 </div>
                             </div>
                         </div>
-                        <div id="image3" hidden>
-                            <div class="card">
+                        <div id="image3" class="setPictureInCard" hidden>
+                            <div class="card sizeOfPicture">
                                 <div class="card-image">
                                     <img src="/img/Yorrick.jpg">
                                     <div class="numbertextSlideShow">3 / 6</div>
                                 </div>
                             </div>
                         </div>
-                        <div id="image4" hidden>
-                            <div class="card">
+                        <div id="image4" class="setPictureInCard" hidden>
+                            <div class="card sizeOfPicture">
                                 <div class="card-image">
                                     <img src="/img/FIZZVOID.png">
                                     <div class="numbertextSlideShow">4 / 6</div>
                                 </div>
                             </div>
                         </div>
-                        <div id="image5" hidden>
-                            <div class="card">
+                        <div id="image5" class="setPictureInCard" hidden>
+                            <div class="card sizeOfPicture">
                                 <div class="card-image">
                                     <img src="/img/1542233.jpg">
                                     <div class="numbertextSlideShow">5 / 6</div>
                                 </div>
                             </div>
                         </div>
-                        <div id="image6" hidden>
-                            <div class="card">
+                        <div id="image6" class="setPictureInCard" hidden>
+                            <div class="card sizeOfPicture">
                                 <div class="card-image">
                                     <img src="/img/Wukong.jpg">
                                     <div class="numbertextSlideShow">6 / 6</div>

@@ -206,12 +206,6 @@ session_start();
                             <img src="/img/Wukong.jpg">
                         </div>
                     </div>
-
-                    <!-- Next and previous buttons -->
-                    <a class="prev" onclick="plusSlides(-1)"> <i class="material-icons">chevron_left</i></a>
-                    <a class="next" onclick="plusSlides(1)"><span><i class="material-icons">chevron_right</i></span></a>
-
-
                     <!-- Image text -->
                     <div class="caption-containerSlideShow">
                         <p id="caption"></p>

@@ -8,9 +8,9 @@
 	class RatingModel{
         private $imageRessource;
         private $imageProcessingController;
-        private const MAX_POINTS = 10;
-        private const MAX_DIFFERENCE_BORDER = 200;
-        private const NO_PIXEL = 0;
+        const MAX_POINTS = 10;
+        const MAX_DIFFERENCE_BORDER = 200;
+        const NO_PIXEL = 0;
         private $actualPoints;
         private $primaryOptimalColorRatio;
         private $secondaryOptimalColorRatio;
@@ -25,7 +25,7 @@
         public function __construct(String $imageRessource, String $word){
             $this->imageRessource = $imageRessource;
             $this->imageProcessingController = new ImageProcessorModel($imageRessource);
-            $actualPoints = $this->MAX_POINTS;
+            $actualPoints = RatingModel::MAX_POINTS;
 
             $this->primaryOptimalColorRatio = CorbleDatabase::getPrimaryOptimalColorRatioForWord($word);
             $this->secondaryOptimalColorRatio = CorbleDatabase::getSecondaryOptimalColorRatioForWord($word);
@@ -52,29 +52,29 @@
         function foreignColorsRate(){
             $penaltiePoints = 0;
             list($blackCounter, $redCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter) = $this->imageProcessingController->pixelCount();
-            if(($blackCounter >= $this->NO_PIXEL && $this->primaryColor["primaryColor"] != "black") && ($blackCounter >= $this->NO_PIXEL && $this->secondaryColor["secondaryColor"] != "black")){
+            if(($blackCounter >= RatingModel::NO_PIXEL && $this->primaryColor["primaryColor"] != "black") && ($blackCounter >= RatingModel::NO_PIXEL && $this->secondaryColor["secondaryColor"] != "black")){
                 $penaltiePoints += 1;
-                ($blackCounter >= $this->MAX_DIFFERENCE_BORDER) ?: $penaltiePoints += 3;
+                ($blackCounter >= RatingModel::MAX_DIFFERENCE_BORDER) ?: $penaltiePoints += 3;
             }
-            else if(($redCounter >= $this->NO_PIXEL && $this->primaryColor["primaryColor"] != "red") && ($redCounter >= $this->NO_PIXEL && $this->secondaryColor["secondaryColor"] != "red")){
+            else if(($redCounter >= RatingModel::NO_PIXEL && $this->primaryColor["primaryColor"] != "red") && ($redCounter >= RatingModel::NO_PIXEL && $this->secondaryColor["secondaryColor"] != "red")){
                 $penaltiePoints += 1;
-                ($redCounter >= $this->MAX_DIFFERENCE_BORDER) ?: $penaltiePoints += 3;
+                ($redCounter >= RatingModel::MAX_DIFFERENCE_BORDER) ?: $penaltiePoints += 3;
             }
-            else if(($greenCounter >= $this->NO_PIXEL && $this->primaryColor["primaryColor"] != "green") && ($greenCounter >= $this->NO_PIXEL && $this->secondaryColor["secondaryColor"] != "green")){
+            else if(($greenCounter >= RatingModel::NO_PIXEL && $this->primaryColor["primaryColor"] != "green") && ($greenCounter >= RatingModel::NO_PIXEL && $this->secondaryColor["secondaryColor"] != "green")){
                 $penaltiePoints += 1;
-                ($greenCounter >= $this->MAX_DIFFERENCE_BORDER) ?: $penaltiePoints += 3;
+                ($greenCounter >= RatingModel::MAX_DIFFERENCE_BORDER) ?: $penaltiePoints += 3;
             }
-            else if(($blueCounter >= $this->NO_PIXEL && $this->primaryColor["primaryColor"] != "blue") && ($blueCounter >= $this->NO_PIXEL && $this->secondaryColor["secondaryColor"] != "blue")){
+            else if(($blueCounter >= RatingModel::NO_PIXEL && $this->primaryColor["primaryColor"] != "blue") && ($blueCounter >= RatingModel::NO_PIXEL && $this->secondaryColor["secondaryColor"] != "blue")){
                 $penaltiePoints += 1;
-                ($blueCounter >= $this->MAX_DIFFERENCE_BORDER) ?: $penaltiePoints += 3;
+                ($blueCounter >= RatingModel::MAX_DIFFERENCE_BORDER) ?: $penaltiePoints += 3;
             }
-            else if(($yellowCounter >= $this->NO_PIXEL && $this->primaryColor["primaryColor"] != "yellow") && ($yellowCounter >= $this->NO_PIXEL && $this->secondaryColor["secondaryColor"] != "yellow")){
+            else if(($yellowCounter >= RatingModel::NO_PIXEL && $this->primaryColor["primaryColor"] != "yellow") && ($yellowCounter >= RatingModel::NO_PIXEL && $this->secondaryColor["secondaryColor"] != "yellow")){
                 $penaltiePoints += 1;
                 ($yellowCounter >= 200) ?: $penaltiePoints += 3;
             }
-            else if(($orangeCounter >= $this->NO_PIXEL && $this->primaryColor["primaryColor"] != "orange") && ($orangeCounter >= $this->NO_PIXEL && $this->secondaryColor["secondaryColor"] != "orange")){
+            else if(($orangeCounter >= RatingModel::NO_PIXEL && $this->primaryColor["primaryColor"] != "orange") && ($orangeCounter >= RatingModel::NO_PIXEL && $this->secondaryColor["secondaryColor"] != "orange")){
                 $penaltiePoints += 1;
-                ($orangeCounter >= $this->MAX_DIFFERENCE_BORDER) ?: $penaltiePoints += 3;
+                ($orangeCounter >= RatingModel::MAX_DIFFERENCE_BORDER) ?: $penaltiePoints += 3;
             }
 
             $penaltiePoints = $this->validatePenaltiePoints($penaltiePoints);
@@ -211,13 +211,18 @@
          * @return: int $penaltiePoints
          */
         function validatePenaltiePoints(int $penaltiePoints){
-            if($penaltiePoints <= $this->MAX_POINTS){
+            if($penaltiePoints <= RatingModel::MAX_POINTS){
                 return $penaltiePoints;
             }
             else{
-                return $this->MAX_POINTS;
+                return RatingModel::MAX_POINTS;
             }
         }
 
+        //Setters and Getters
+        function setPrimaryOptimalColorRatio($ratio){ $this->primaryOptimalColorRatio = $ratio; }
+        function setSecondaryOptimalColorRatio($ratio){ $this->secondaryOptimalColorRatio = $ratio; }
+        function setPrimaryColor($color){ $this->primaryColor = $color; }
+        function setSecondaryColor($color){ $this->secondaryColor = $color; }
     }
 ?>

@@ -21,6 +21,10 @@ body {
     height: 100%;
 }
 
+.SizeContainerSlideShow {
+    height: 100%;
+}
+
 .NoMargin {
     margin: 0px !important;
 }
@@ -64,6 +68,10 @@ body {
 
 .WelcomeText {
     text-align: center;
+}
+
+.selectColorWinner {
+    color: tomato;
 }
 
 .confirmNameButton {
@@ -113,6 +121,40 @@ body {
     height: 90%;
     margin: 1%;
     overflow: scroll;
+}
+
+.content2 {
+    height: 90%;
+    margin: 1%;
+    overflow: auto;
+}
+
+.content3 {
+    height: 100%;
+    margin: 1%;
+    overflow: hidden;
+}
+
+
+/*Flexcontainer*/
+
+.contentFlex {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+
+/*Flexitems*/
+
+.SlideShow {
+    order: 1;
+    flex-grow: 10;
+}
+
+.Tabel {
+    order: 2;
+    flex-grow: 2;
 }
 
 .corbleColor {
@@ -202,4 +244,137 @@ body {
 
 .sketchTitle {
     mix-blend-mode: difference;
+}
+
+
+/* Position the image container (needed to position the left and right arrows) */
+
+.slideShowContainer {
+    position: relative;
+}
+
+
+/* Hide the images by default */
+
+.mySlidesSlideShow {
+    display: none;
+}
+
+.mySlidesSlideShowSelected {
+    display: block;
+}
+
+
+/* Default Text for default picture*/
+
+.defaultText {
+    display: block;
+}
+
+
+/* Add a pointer when hovering over the thumbnail images */
+
+.cursorSlideShow {
+    cursor: pointer;
+    display: block;
+}
+
+
+/* Next & previous buttons */
+
+.prev,
+.next {
+    cursor: pointer;
+    position: absolute;
+    top: 40%;
+    width: auto;
+    padding: 16px;
+    margin-top: -50px;
+    color: white;
+    font-weight: bold;
+    font-size: 20px;
+    border-radius: 0 3px 3px 0;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+
+/* Position the "next button" to the right */
+
+.nextSlideShow {
+    right: 0;
+    border-radius: 3px 0 0 3px;
+}
+
+
+/* On hover, add a black background color with a little bit see-through */
+
+.prev:hover,
+.next:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+
+/* Number text (1/3 etc) */
+
+.numbertextSlideShow {
+    color: #f2f2f2;
+    font-size: 12px;
+    padding: 8px 12px;
+    position: absolute;
+    top: 0;
+}
+
+
+/* Container for image text */
+
+.caption-containerSlideShow {
+    text-align: center;
+    background-color: #222;
+    padding: 2px 16px;
+    color: white;
+}
+
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+
+/* Six columns side by side */
+
+.columnSlideShow {
+    float: left;
+    width: 16.66%;
+}
+
+
+/* Add a transparency effect for thumnbail images */
+
+.demoSlideShow {
+    opacity: 0.6;
+}
+
+.active,
+.demo:hover {
+    opacity: 1;
+}
+
+.pictureWidth {
+    width: 100%;
+}
+
+
+/* Use Flexbox for Picture */
+
+.main {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.largePicture {
+    order: 1;
+    flex-grow: 10;
 }

@@ -109,7 +109,7 @@ session_start();
         //If debugging is required the comment the following in
         //ini_set('display_errors', 1);
         //This is a test for the ImageProcessorModel with our corbleLogo
-        include('php/Model/ImageProcessorModel.php');
+        include_once('php/Model/ImageProcessorModel.php');
         $imageProcessorModel = new ImageProcessorModel("img/CorbleLogo.png");
         $pixelsInArray = $imageProcessorModel->pixelCount();
         echo "<br>";

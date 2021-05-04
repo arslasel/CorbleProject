@@ -30,7 +30,7 @@
          */
         public function rateSketch(){
             foreach($this->sketches as $sketchId => $valueOfSketch) {
-                $this->ratingModel = new RatingModel($sketchId, $valueOfSketch);
+                $this->ratingModel = new RatingModel(new CorbleDatabase(),$sketchId, $valueOfSketch);
                 $this->ratingModel->collectPenalties($sketchId);
             }
         }

@@ -234,7 +234,7 @@ session_start();
     </div>
     <?php
     ini_set('display_errors', 1);
-    include("../Controller/LobbyController.php");
+    include_once("../Controller/LobbyController.php");
     $lobbyController = new LobbyController();
 
     if (isset($_POST['join_submit'])) {

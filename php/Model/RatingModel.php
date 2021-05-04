@@ -1,11 +1,12 @@
 <?php
-    include('ImageProcessorModel.php');
-    include('Database.php');
+    include_once('ImageProcessorModel.php');
+    include_once('Database.php');
 
     /**
      * This class is used to rate the picture which is drawn from the player
      */
 	class RatingModel{
+        private $corbleDatabase;
         private $imageRessource;
         private $imageProcessingController;
         const MAX_POINTS = 10;
@@ -22,15 +23,17 @@
          * @param: String $imageRessource
          * @param: String $word
          */
-        public function __construct(String $imageRessource, String $word){
+        public function __construct($corbleDatabase,String $imageRessource, String $word){
+            $this->corbleDatabase = $corbleDatabase;
+            
             $this->imageRessource = $imageRessource;
             $this->imageProcessingController = new ImageProcessorModel($imageRessource);
             $actualPoints = RatingModel::MAX_POINTS;
 
-            $this->primaryOptimalColorRatio = CorbleDatabase::getPrimaryOptimalColorRatioForWord($word);
-            $this->secondaryOptimalColorRatio = CorbleDatabase::getSecondaryOptimalColorRatioForWord($word);
-            $this->primaryColor = CorbleDatabase::getPrimaryColor($word);
-            $this->secondaryColor = CorbleDatabase::getSecondaryColor($word);
+            $this->primaryOptimalColorRatio = $this->corbleDatabase->getPrimaryOptimalColorRatioForWord($word);
+            $this->secondaryOptimalColorRatio = $this->corbleDatabase->getSecondaryOptimalColorRatioForWord($word);
+            $this->primaryColor = $this->corbleDatabase->getPrimaryColor($word);
+            $this->secondaryColor = $this->corbleDatabase->getSecondaryColor($word);
         }
 
         /**
@@ -94,7 +97,7 @@
             $penaltiePoints += $this->foreignColorsRate();
             $penaltiePoints = $this->validatePenaltiePoints($penaltiePoints);
             $totalPoints = $this->actualPoints - $penaltiePoints;
-            CorbleDatabase::setPointsForSketch($totalPoints, $sketchIndx);
+            $this->corbleDatabase->setPointsForSketch($totalPoints, $sketchIndx);
         }
         
         /**

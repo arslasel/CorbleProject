@@ -144,7 +144,6 @@ session_start();
                                 <th>Name</th>
                             </tr>
                         </thead>
-
                         <tbody>
                             <tr>
                                 <td>6</td>
@@ -168,7 +167,6 @@ session_start();
                             </tr>
                         </tbody>
                     </table>
-
                 </div>
             </div>
         </div>
@@ -176,12 +174,11 @@ session_start();
 
     <div id="voteContainer" class="content">
         <div class="row SizeContainerSlideShow NoMargin">
-
             <div id="slideshowContainer" class="col s12 l10 NoPadding drawcols">
                 <div class="slideShowContainer">
                     <!-- Full-width images with number text -->
-                    <div class="mySlidesSlideShow mySlidesSlideShowSelected pictureWidth">
-                        <div id="image1" class="setPictureInCard" hidden>
+                    <div class="mySlidesSlideShowSelected setPictureInCard">
+                        <div id="image1" hidden>
                             <div class="card sizeOfPicture">
                                 <div class="card-image">
                                     <img src="/img/FIZZ.jpg">
@@ -189,7 +186,7 @@ session_start();
                                 </div>
                             </div>
                         </div>
-                        <div id="image2" class="setPictureInCard" hidden>
+                        <div id="image2" hidden>
                             <div class="card sizeOfPicture">
                                 <div class="card-image">
                                     <img src="/img/Fiora.jpg">
@@ -197,7 +194,7 @@ session_start();
                                 </div>
                             </div>
                         </div>
-                        <div id="image3" class="setPictureInCard" hidden>
+                        <div id="image3" hidden>
                             <div class="card sizeOfPicture">
                                 <div class="card-image">
                                     <img src="/img/Yorrick.jpg">
@@ -205,7 +202,7 @@ session_start();
                                 </div>
                             </div>
                         </div>
-                        <div id="image4" class="setPictureInCard" hidden>
+                        <div id="image4" hidden>
                             <div class="card sizeOfPicture">
                                 <div class="card-image">
                                     <img src="/img/FIZZVOID.png">
@@ -213,7 +210,7 @@ session_start();
                                 </div>
                             </div>
                         </div>
-                        <div id="image5" class="setPictureInCard" hidden>
+                        <div id="image5" hidden>
                             <div class="card sizeOfPicture">
                                 <div class="card-image">
                                     <img src="/img/1542233.jpg">
@@ -221,7 +218,7 @@ session_start();
                                 </div>
                             </div>
                         </div>
-                        <div id="image6" class="setPictureInCard" hidden>
+                        <div id="image6" hidden>
                             <div class="card sizeOfPicture">
                                 <div class="card-image">
                                     <img src="/img/Wukong.jpg">
@@ -230,35 +227,25 @@ session_start();
                             </div>
                         </div>
                     </div>
-                    <!-- Image text -->
-                    <div class="caption-containerSlideShow">
-                        <p id="caption"></p>
-                    </div>
-
-                    <div class="row">
+                    <div class="row miniSlideShow ">
                         <div class="col s2 l2">
-                            <img id="imagePreview1" class="demoSlideShow cursorSlideShow pictureWidth " src="/img/FIZZ.jpg" onclick="selectSlide(this,1)" alt="Fizz">
+                            <img id="imagePreview1" class="demoSlideShow cursorSlideShow pictureWidth " src="/img/FIZZ.jpg" onclick="selectSlide(this,1); selectPicture(1)" alt="Fizz">
                         </div>
                         <div class="col s2 l2">
-                            <img id="imagePreview2" class="demoSlideShow cursorSlideShow pictureWidth " src="/img/Fiora.jpg" onclick="selectSlide(this,2)" alt="Fiora">
+                            <img id="imagePreview2" class="demoSlideShow cursorSlideShow pictureWidth " src="/img/Fiora.jpg" onclick="selectSlide(this,2); selectPicture(2)" alt="Fiora">
                         </div>
                         <div class="col s2 l2">
-                            <img id="imagePreview3" class="demoSlideShow cursorSlideShow pictureWidth " src="/img/Yorrick.jpg" onclick="selectSlide(this,3)" alt="Yorrick">
+                            <img id="imagePreview3" class="demoSlideShow cursorSlideShow pictureWidth " src="/img/Yorrick.jpg" onclick="selectSlide(this,3); selectPicture(3)" alt="Yorrick">
                         </div>
                         <div class="col s2 l2">
-                            <img id="imagePreview4" class="demoSlideShow cursorSlideShow pictureWidth " src="/img/FIZZVOID.png" onclick="selectSlide(this,4)" alt="VoidFizz">
+                            <img id="imagePreview4" class="demoSlideShow cursorSlideShow pictureWidth " src="/img/FIZZVOID.png" onclick="selectSlide(this,4); selectPicture(4)" alt="VoidFizz">
                         </div>
                         <div class="col s2 l2">
-                            <img id="imagePreview5" class="demoSlideShow cursorSlideShow pictureWidth" src="/img/1542233.jpg" onclick="selectSlide(this,5)" alt="TRÖMP">
+                            <img id="imagePreview5" class="demoSlideShow cursorSlideShow pictureWidth" src="/img/1542233.jpg" onclick="selectSlide(this,5); selectPicture(5)" alt="TRÖMP">
                         </div>
                         <div class="col s2 l2">
-                            <img id="imagePreview6" class="demoSlideShow cursorSlideShow pictureWidth" src="/img/Wukong.jpg" onclick="selectSlide(this,6)" alt="Wukong">
+                            <img id="imagePreview6" class="demoSlideShow cursorSlideShow pictureWidth" src="/img/Wukong.jpg" onclick="selectSlide(this,6); selectPicture(6)" alt="Wukong">
                         </div>
-                    </div>
-                </div>
-                <div class="row NoMarginRow">
-                    <div class="controllsPull">
-                        <i class="material-icons medium">arrow_drop_down</i>
                     </div>
                 </div>
             </div>
@@ -305,7 +292,7 @@ session_start();
                     </div>
                     <div class="row NoMarginRow">
                         <div class="col s6 NoPadding">
-                            <h5>Time Left</h5>
+                            <h5>Time Left:</h5>
                         </div>
                         <div class="col s6 NoPadding">
                             <h5>23sec</h5>
@@ -314,6 +301,48 @@ session_start();
                 </div>
             </div>
 
+            <div id="endContainer" class="content" style="display: none;">
+                <div class="ex1">
+                    <div class="row">
+                        <h2 class="WelcomeText">Spiel Ende</h2>
+                        <h3 class="WelcomeText">Siegerehrung</h3>
+                    </div>
+                    <div class="row">
+                        <div class="col s12 l4">
+                            <h5 class="WelcomeText">Bestes Bild nach Stimmen</h5>
+                            <div class="card">
+                                <div class="card-image">
+                                    <img src="/img/Ubuntu.png">
+                                    <span class="card-title sketchTitle">Selim</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col s12 l4">
+                            <h5 class="WelcomeText">Bestes Bild nach Algorithmus</h5>
+                            <div class="card">
+                                <div class="card-image">
+                                    <img src="/img/KimJongUn.png">
+                                    <span class="card-title sketchTitle">Selim</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col s12 l4">
+                            <h5 class="WelcomeText">Schlechtestes Bild nach Algorithmus</h5>
+                            <div class="card">
+                                <div class="card-image">
+                                    <img src="/img/1542233.jpg">
+                                    <span class="card-title sketchTitle">Selim</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <h2 class="WelcomeText selectColorWinner">
+                            Gewinner ist: Selim
+                        </h2>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div id="endContainer" class="content" style="display: none;">
@@ -358,62 +387,18 @@ session_start();
                 </div>
             </div>
         </div>
-    </div>
 
-    <div id="endContainer" class="content" style="display: none;">
-        <div class="ex1">
-            <div class="row">
-                <h2 class="WelcomeText">Spiel Ende</h2>
-                <h3 class="WelcomeText">Siegerehrung</h3>
-            </div>
-            <div class="row">
-                <div class="col s12 l4">
-                    <h5 class="WelcomeText">Bestes Bild nach Stimmen</h5>
-                    <div class="card">
-                        <div class="card-image">
-                            <img src="/img/Ubuntu.png">
-                            <span class="card-title sketchTitle">Selim</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col s12 l4">
-                    <h5 class="WelcomeText">Bestes Bild nach Algorithmus</h5>
-                    <div class="card">
-                        <div class="card-image">
-                            <img src="/img/KimJongUn.png">
-                            <span class="card-title sketchTitle">Selim</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col s12 l4">
-                    <h5 class="WelcomeText">Schlechtestes Bild nach Algorithmus</h5>
-                    <div class="card">
-                        <div class="card-image">
-                            <img src="/img/1542233.jpg">
-                            <span class="card-title sketchTitle">Selim</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <h2 class="WelcomeText selectColorWinner">
-                    Gewinner ist: Selim
-                </h2>
-            </div>
-        </div>
-    </div>
-
-    <?php
-    ini_set('display_errors', 1);
-    if (isset($_SESSION["lobby_username"])) {
-        echo "<script>
+        <?php
+        ini_set('display_errors', 1);
+        if (isset($_SESSION["lobby_username"])) {
+            echo "<script>
             var usernameElement = document.getElementById('username_display');
             usernameElement.innerHTML = '" . $_SESSION["lobby_username"] . "';
         </script>";
-    }
+        }
 
-    echo "<script>M.AutoInit()</script>"; // init all materiallize components
-    ?>
+        echo "<script>M.AutoInit()</script>"; // init all materiallize components
+        ?>
 </body>
 
 </html>

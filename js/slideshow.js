@@ -10,7 +10,6 @@ function currentSlide(n) {
 
 function selectSlide(caller, n) {
     var element = document.getElementById("image" + n.toString());
-    var captionElement = document.getElementById("caption");
     if (element != null) {
         element.removeAttribute("hidden")
     }
@@ -21,9 +20,19 @@ function selectSlide(caller, n) {
             hideElemment.setAttribute("hidden", "true");
         }
     }
-
-    captionElement.innerHTML = caller.alt;
 }
+
+function selectPicture(n) {
+    var littelpicture = document.getElementById("imagePreview" + n.toString());
+    littelpicture.classList.add("selectedPicture");
+    for (let index = 1; index < 7; index++) {
+        var temp = document.getElementById("imagePreview" + index.toString())
+        if (temp != littelpicture) {
+            temp.classList.remove("selectedPicture");
+        }
+    }
+}
+
 
 setTimeout(() => {
     selectSlide(document.getElementById("imagePreview1"), 1);

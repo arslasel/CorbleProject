@@ -58,6 +58,14 @@
             RoundModel::saveRatingFromPlayer($sketchIndx);
         }
 
+        /**
+         * Returns array with key value pair of player and his score
+         * @param $lobbyIndx Integer index of lobby
+         */
+        public function getLeaderBoard($lobbyIndx){
+            RoundModel::getLeaderBoard($lobbyIndx);
+        }
+
         /////////////////////////////////////////////////////////////////////
         /////////////// Helper Methods
         /////////////////////////////////////////////////////////////////////

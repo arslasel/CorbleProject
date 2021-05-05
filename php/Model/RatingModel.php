@@ -148,7 +148,15 @@
          * @param: string $secondaryColor
          * @return: list(float $actualPrimaryRatio, float $actualSecondaryRatio)
          */
-        function calculateRatio(int $blackCounter, int $redCounter, int $greenCounter, int $blueCounter, int $yellowCounter, int $orangeCounter, string $primaryColor, string $secondaryColor){
+        function calculateRatio(
+                int $blackCounter, 
+                int $redCounter, 
+                int $greenCounter, 
+                int $blueCounter, 
+                int $yellowCounter, 
+                int $orangeCounter, 
+                string $primaryColor, 
+                string $secondaryColor){
             $primaryColorCounterNum = $this->setupColorCounter($blackCounter, $redCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter, $primaryColor);
             $secondaryColorCounterNum = $this->setupColorCounter($blackCounter, $redCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter, $secondaryColor);
             $totalCount = $primaryColorCounterNum + $secondaryColorCounterNum;
@@ -170,9 +178,14 @@
         function calculatePenaltiesRatio(float $primaryOptimalColorRatio, float $secondaryOptimalColorRatio, float $actualPrimaryRatio, float $actualSecondaryRatio){
             $penaltiePoints = 0;
 
-            if($primaryOptimalColorRatio["primaryOptimalColorRatio"] != NULL &&  $secondaryOptimalColorRatio["secondaryOptimalColorRatio"] != NULL && $actualPrimaryRatio != NULL && $actualSecondaryRatio != NULL){
-                $differencePrimary = abs($primaryOptimalColorRatio["primaryOptimalColorRatio"] - $actualPrimaryRatio);
-                $differenceSecondary = abs($secondaryOptimalColorRatio["secondaryOptimalColorRatio"] - $actualSecondaryRatio);
+            if( 
+                $primaryOptimalColorRatio != NULL &&
+                $secondaryOptimalColorRatio != NULL &&
+                $actualPrimaryRatio != NULL && 
+                $actualSecondaryRatio != NULL){
+
+                $differencePrimary = abs($primaryOptimalColorRatio - $actualPrimaryRatio);
+                $differenceSecondary = abs($secondaryOptimalColorRatio - $actualSecondaryRatio);
                 $penaltiePoints += $this->setPenaltiesRatioPoints($differencePrimary, $penaltiePoints);
                 $penaltiePoints += $this->setPenaltiesRatioPoints($differenceSecondary, $penaltiePoints);
             }
@@ -200,7 +213,7 @@
             else if($difference > 1 && $difference <= $penaltieRangeNotGood){
                 $penaltiePoints += 2;
             }
-            else if($difference > $penaltieRangeCatastrophic){
+            else{
                 $penaltiePoints += 3;
             }
 
@@ -228,4 +241,3 @@
         function setPrimaryColor($color){ $this->primaryColor = $color; }
         function setSecondaryColor($color){ $this->secondaryColor = $color; }
     }
-?>

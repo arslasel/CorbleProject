@@ -279,8 +279,8 @@ class CorbleDatabase
         }
     }
 
-    public static function getAllSketches($roundIndx){
-        $sql = "SELECT path as path FROM tbl_sketch WHERE fk_round_indx = ".$roundIndx;
+    public static function getAllSketches($roundIndx, $playerindx){
+        $sql = "SELECT path as path FROM tbl_sketch WHERE fk_round_indx = ".$roundIndx . " AND fk_player_indx_sketch <>  ".$playerindx;
         $conn = self::createConnection();
         $result = $conn->query($sql);
         if($result){
@@ -397,6 +397,24 @@ class CorbleDatabase
         $conn = self::createConnection();
         $conn->query($sql);
     }
+
+    /**
+     * Returns all scores of all pictures of a given player
+     * @param $playerIndx String with index of player
+     * @return array|int|null Returns a list or one value with all scores of aplayser
+     */
+    public static function getScoreOfPlayer($playerIndx){
+        $sql = "SELECT votes FROM tbl_sketch WHERE fk_player_indx_sketch = " .$playerIndx;
+        $conn = self::createConnection();
+        $result = $conn->query($sql);
+        if($result){
+            return $result->fetch_assoc();
+        }
+        else {
+            return 0;
+        }
+    }
+
 }
 
 return;

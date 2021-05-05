@@ -292,7 +292,21 @@ class CorbleDatabase
             return 0;
         }
     }
-
+  
+    public static function getAllSketches($roundIndx, $playerindx){
+        $sql = "SELECT path as path FROM tbl_sketch WHERE fk_round_indx = ".$roundIndx . " AND fk_player_indx_sketch <>  ".$playerindx;
+        $conn = self::createConnection();
+        $result = $conn->query($sql);
+        if($result){
+            $results = array();
+            while($row = $result->fetch_row()){
+                $results[] = $row;
+            }
+            return $results;
+        }else{
+            return 0;
+        }
+    }
 
     public function getPlayerWithBestAlogrithmSketch($lobbyIndex){
         $sql1 = "SELECT index FROM tbl_round WHERE fk_lobby_index = " . $lobbyIndex;
@@ -337,6 +351,63 @@ class CorbleDatabase
             return 0;
         }
     }
+  
+    public static function saveRatingFromPlayer($sketchIndx){
+        //Todo: This needs to made thread safe but on database level.
+
+        $sql = "SELECT votes  AS votes FROM tbl_sketch WHERE indx = ".$sketchIndx;
+        $conn = self::createConnection();
+        $result = $conn->query($sql);
+        if ($result->num_rows > 0) {
+            $votes = $result->fetch_assoc();
+            
+            $votes = $votes + 1;
+
+            $sql = "UPDATE tbl_sketch SET votes = " .$votes ."WHERE indx = " .$sketchIndx .";";
+            $conn = self::createConnection();
+            if($conn->query($sql) === TRUE){
+                return $conn->insert_id;
+            }  
+        }else{
+            return 0;
+        }
+    }
+
+    public static function savePicture($path, $playerIndx){
+        $sql = "INSERT INTO `tbl_sketch` (`path`, `computerscore`, `fk_player_indx_sketch`, `fk_word_indx_sketch`, `votes`, `fk_round_indx`) VALUES (".$path.", '0', ".$playerIndx.", '', '0', '')";
+
+    $conn = self::createConnection();
+    
+    // Check connection
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    } else {
+        if($conn->query($sql) === TRUE){
+            return $conn->insert_id;
+        }
+        echo $sql;
+        echo("Error description: " . $conn->error);
+        return 0;
+    }
+    }
+
+
+    /**
+     * This method gets the round index of a specific sketch
+     * @param: int $sketchIndx
+     * @return: int array() $result->fetch_assoc()
+     */
+    public static function getRoundIndexOfSketch($sketchIndx){
+        $sql = "SELECT fk_round_indx_round_sketch FROM tbl_round_sketch WHERE fk_sketch_indx_round_sketch = " .$sketchIndx .";";
+        $conn = self::createConnection();
+        $result = $conn->query($sql);
+        if($result){
+            return $result->fetch_assoc();
+        }
+        else{
+            return 0;
+        }
+    }
 
     public function getSketchWorstAlgorithm($lobbyIndex){
         $sql1 = "SELECT index FROM tbl_round WHERE fk_lobby_index = " . $lobbyIndex;
@@ -351,6 +422,25 @@ class CorbleDatabase
             return 0;
         }
     }
+  
+    /**
+     * This method gives back all wordIds of a category
+     * @param: int $categoryId
+     * @return: int array() $result->fetch_assoc()
+     */
+    public static function getAllWordIdsOfCategory($categoryId){
+        $sql = "SELECT fk_word_indx_wordpool_word FROM tbl_wordpool_word WHERE fk_wordpool_indx_wordpool_word = " .$categoryId .";";
+        $conn = self::createConnection();
+        $result = $conn->query($sql);
+        if($result){
+            return $result->fetch_assoc();
+        }
+        else{
+
+            return 0;
+        }
+    }
+
 
     public function getSketchBestAlgorithm($lobbyIndex){
         $sql1 = "SELECT index FROM tbl_round WHERE fk_lobby_index = " . $lobbyIndex;
@@ -378,6 +468,50 @@ class CorbleDatabase
         if ($result) {
             return $result->fetch_assoc();
         } else {
+            return 0;
+        }
+    }
+
+   /**
+     * This method gets the votes for a specific sketch index.
+     * @param: int $sketchIndx
+     * @return: int array() result->fetch_assoc()
+     */
+    public static function getVotes($sketchIndx){
+        $sql = "SELECT votes FROM tbl_sketch WHERE indx = " .$sketchIndx ." LIMIT 1 FOR UPDATE;"; //TODO: The readlock with FOR UPDATE currently doesn't work
+        $conn = self::createConnection();
+        $result = $conn->query($sql);
+        if($result){
+            return $result->fetch_assoc();
+        }
+        else{
+            return 0;
+        }
+    }
+
+    /**
+     * This method sets the vote for a specific sketch index.
+     * @param: int $sketchIndx
+     */
+    public static function setVotes($sketchIndx){ //TODO: is duplicated with function saveRatingFromPlayer()
+        $sql = "UPDATE tbl_sketch SET votes = " .CorbleDatabase::getVotes($sketchIndx)[0] + 1 ." WHERE indx = " .$sketchIndx .";";
+        $conn = self::createConnection();
+        $conn->query($sql);
+    }
+
+    /**
+     * Returns all scores of all pictures of a given player
+     * @param $playerIndx String with index of player
+     * @return array|int|null Returns a list or one value with all scores of aplayser
+     */
+    public static function getScoreOfPlayer($playerIndx){
+        $sql = "SELECT votes FROM tbl_sketch WHERE fk_player_indx_sketch = " .$playerIndx;
+        $conn = self::createConnection();
+        $result = $conn->query($sql);
+        if($result){
+            return $result->fetch_assoc();
+        }
+        else {
             return 0;
         }
     }

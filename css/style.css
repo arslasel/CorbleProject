@@ -357,11 +357,23 @@ body {
     height: 60%;
     position: relative;
     display: block;
-    /*
-  top: 50%;
-  left: 50%;
-  min-height: 100%;
-  min-width: 100%;
-  transform: translate(-50%, -50%);
-  */
+}
+
+
+/*
+Style for Text in About and Rules
+*/
+
+.textShadow {
+    text-align: center;
+    text-shadow: 2px 2px 5px red;
+}
+
+.textformating {
+    text-align: center;
+    letter-spacing: 5px;
+}
+
+.background {
+    background-color: lightgray;
 }

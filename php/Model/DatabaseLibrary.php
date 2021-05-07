@@ -17,13 +17,13 @@ class DatabaseLibrary{
     }
 
     /**
-     * @param $user
-     * @return bool
+     * Returns true if a user given by the name exists on the database
+     * @param $user string Username
+     * @return bool True iff the user exists on the database
      */
     public static function checkIfUserExists($user){
         $sql = "SELECT COUNT(*) as matches FROM  tbl_player WHERE name = '".$user."'";
-        $conn = self::createConnection();
-        $result = $conn->query($sql);
+        $result = DatabaseConnection::executeQuery($sql);
         if($result){
             $row = $result->fetch_assoc();
             if($row['matches']==0){
@@ -34,36 +34,32 @@ class DatabaseLibrary{
         }
     }
 
-    public static function generateLobby($votetime,$rawtime,$starttimeUNIX,$maxplayer,$joincode,$playerINDX){
+    /**
+     * Insert a new entry to the table tbl_lobby with all parameters
+     * @param $votetime int Time to vote for the best drawn picture
+     * @param $rawtime int Time to draw a picture
+     * @param $starttimeUNIX int Time where the game started
+     * @param $maxplayer int Maximum amount of players
+     * @param $joincode string String to join the lobby
+     * @param $playerINDX string Strin with index of the player who is lobby-leader
+     * @return int boolean if the insert has worked
+     */
+    public function generateLobby($votetime,$rawtime,$starttimeUNIX,$maxplayer,$joincode,$playerINDX){
         $sql = "INSERT INTO tbl_lobby (votetime,drawtime,starttime,maxplayer,joincode,fk_player_indx_lobby,state) 
-            VALUES (
-            " . $votetime . ",
-            " . $rawtime . ",
-            " . $starttimeUNIX . ",
-            " . $maxplayer . ",
-            " . $joincode . ",
-            " . $playerINDX . ",
-            'WaitForPlayers')";
-
-        $conn = self::createConnection();
+            VALUES ('" . $votetime . "','" . $rawtime . "',''" . $starttimeUNIX . "','" . $maxplayer . "','"
+            . $joincode . "','" . $playerINDX . "', WaitForPlayers')";
         
-        // Check connection
-        if ($conn->connect_error) {
-            die("Connection failed: " . $conn->connect_error);
-        } else {
-            if($conn->query($sql) === TRUE){
-                return $conn->insert_id;
-            }
-            echo $sql;
-            echo("Error description: " . $conn->error);
-            return 0;
-        }
+        return DatabaseConnection::executeInsertQuery($sql);
     }
 
-    public static function checkIfJoinCodeExists($joincode){
+    /**
+     * Checks if a joincode exists
+     * @param $joincode string Joincode to be checked on the database
+     * @return bool True iff the join-code exists
+     */
+    public function checkIfJoinCodeExists($joincode){
         $sql = "SELECT COUNT(*) as matches FROM  tbl_lobby WHERE joincode = '".$joincode."'";
-        $conn = self::createConnection();
-        $result = $conn->query($sql);
+        $result = DatabaseConnection::executeQuery($sql);
         if($result){
             $row = $result->fetch_assoc();
             if($row['matches']==0){
@@ -72,14 +68,18 @@ class DatabaseLibrary{
                 return true;
             }
         }
-    } 
+    }
 
-    public static function addWordCategoriesToLobby($worldpools,$lobbyIndx){
-        $sql = "INSERT INTO tbl_lobby_wordpool (fk_lobby_indx_lobby_wordpool,fk_wordpool_indx_lobby_wordpool)"; 
-       
-        $conn = self::createConnection();
-        
-        // Check connection
+    /**
+     * Adds an array of wordpools to the lobby
+     * @param $worldpools array List of wordpools
+     * @param $lobbyIndx string Database index of worpool
+     * @return int Error-Code
+     */
+    public function addWordCategoriesToLobby($worldpools,$lobbyIndx){
+        $sql = "INSERT INTO tbl_lobby_wordpool (fk_lobby_indx_lobby_wordpool,fk_wordpool_indx_lobby_wordpool)";
+        $conn = DatabaseConnection::createConnection($sql);
+
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
         } else {
@@ -95,10 +95,14 @@ class DatabaseLibrary{
         }
     }
 
+    /**
+     * Gets lobby index by Join-code - if not existing returns 0
+     * @param $joincode String Joincode searhed in table tbl_lobby
+     * @return int|mixed Lobby-index if a lobby with join-code exists else 0
+     */
     public static function getLobbyIndxByJoincode($joincode){
-        $sql = "SELECT indx FROM tbl_lobby WHERE joincode=" . $joincode ;
-        $conn = self::createConnection();
-        $result = $conn->query($sql);
+        $sql = "SELECT indx FROM tbl_lobby WHERE joincode= '". $joincode ."'";
+        $result = DatabaseConnection::executeQuery($sql);
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
             return $row['indx'];
@@ -106,17 +110,21 @@ class DatabaseLibrary{
             return 0;
         }
     }
-    
+
+    /**
+     * Gets all players of a lobby by a given lobby index
+     * @param $lobbyIndx string Lobby index
+     * @return array List with all players (can be empty array)
+     */
     public static function getPlayersOfLobby($lobbyIndx){
         $players = array();
         $sql = "
             SELECT tbl_player.name, tbl_player.indx
             FROM tbl_lobby_player, tbl_player 
             WHERE tbl_player.indx = tbl_lobby_player.fk_player_indx_lobby_player 
-            AND tbl_lobby_player.fk_lobby_indx_Lobby_player = ".$lobbyIndx."";
-        
-            $conn = self::createConnection();
-        $result = $conn->query($sql);
+            AND tbl_lobby_player.fk_lobby_indx_Lobby_player = '" .$lobbyIndx. "'";
+
+        $result = DatabaseConnection::executeQuery($sql);
         if($result->num_rows > 0){
             while($row = $result->fetch_assoc()){
                 $players[$row["indx"]] = new PlayerModel($row["name"],$row["indx"]);
@@ -125,13 +133,18 @@ class DatabaseLibrary{
         return $players;
     }
 
+    /**
+     * Get Wordpools of lobby
+     * @param $lobbyIndx string Index of lobby
+     * @return array Array with all wordpools
+     */
     public static function getWordpoolsOfLobby($lobbyIndx){
         $wordpools = array();
         $sql = "
             SELECT tbl_wordpool.word as name, tbl_wordpool.indx
             FROM tbl_lobby_wordpool, tbl_wordpool 
             WHERE tbl_wordpool.indx = tbl_lobby_wordpool.fk_wordpool_indx_lobby_wordpool 
-            AND tbl_lobby_wordpool.fk_lobby_indx_lobby_wordpool  = ".$lobbyIndx."";
+            AND tbl_lobby_wordpool.fk_lobby_indx_lobby_wordpool  = '". $lobbyIndx ."'";
 
         $result = DatabaseLibrary::executeQuery($sql);
         if($result->num_rows > 0){
@@ -142,32 +155,36 @@ class DatabaseLibrary{
         return $wordpools;
     }
 
+    /**
+     * Returns lobby information of a given join-code
+     * @param $joincode string JoinCode
+     * @return mixed Table
+     */
     public static function readLobbyDataFromDB($joincode){
-        $sql = "SELECT * FROM tbl_lobby WHERE joincode = ".$joincode."";
-        $conn = self::createConnection();
-        return $conn->query($sql);
+        $sql = "SELECT * FROM tbl_lobby WHERE joincode = ''" .$joincode ."'";
+        return DatabaseConnection::executeQuery($sql);
     }
 
+    /**
+     * Adds a player to an existing lobby
+     * @param $playerIndx string Index of player
+     * @param $lobbyIndx string Index of lobby
+     * @param $partyLeaderString string index of player that is party-leader
+     * @return int returns 0 on success else dies
+     */
     public static function addPlayerToLobby($playerIndx,$lobbyIndx,$partyLeaderString){
         $sql = "INSERT INTO tbl_lobby_player (fk_player_indx_lobby_player,fk_lobby_indx_Lobby_player,partyLeader) 
-        VALUES (
-            " . $playerIndx . ",
-            " . $lobbyIndx . ",
-            " . $partyLeaderString . ")";
+        VALUES ('" . $playerIndx . "','". $lobbyIndx . "','" . $partyLeaderString . "')";
        
-        $conn = self::createConnection();
-        
-        //Check connection
-        if ($conn->connect_error) {
-            die("Connection failed: " . $conn->connect_error);
-        } else {
-            return $conn->query($sql);
-        }
-        return 0;
+        return DatabaseConnection::executeInsertQuery($sql);
     }
 
-    public static function getPlayerbyIndex($name){
-
+    /**
+     * Returns player 
+     * @param $name
+     * @return int|mixed
+     */
+    public static function getPlayerByIndex($name){
         $sql = "SELECT indx FROM tbl_player WHERE name='" . $name . "'";
         $conn = self::createConnection();
         $result = $conn->query($sql);

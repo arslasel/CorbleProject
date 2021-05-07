@@ -20,7 +20,7 @@ class PlayerModel{
         } else {
             return 0;
         }*/
-        return DatabaseLibrary::getPlayerbyIndex($name);
+        return DatabaseLibrary::getPlayerByIndex($name);
     }
 
     public function getName(){

@@ -1,9 +1,18 @@
 <?php
 
     include_once('Database.php');
+    include_once('PlayerModel.php');
 
     class RoundModel{
-        
+
+        /**
+         * Save picture from player on database
+         * @param $root String with root directory
+         * @param $base64 String with base64 coded picture to be saved as png
+         * @param $lobbyIndx String with database lobby index
+         * @param $roundIndx String with database round index
+         * @param $playerIndx String with database player index
+         */
         public static function savePicture($root,$base64, $lobbyIndx,$roundIndx,$playerIndx){
            $IoModel = new IOModel($root);
            $path = $IoModel->savePicture($base64,$lobbyIndx,$roundIndx,$playerIndx);
@@ -12,19 +21,43 @@
            }
         }
 
+        /**
+         * Adds a vote to a sketch (+1)
+         *
+         * @param $sketchIndx String with database index of scetch
+         */
         public static function saveRatingFromPlayer($sketchIndx){
             CorbleDatabase::saveRatingFromPlayer($sketchIndx);
         }
 
-        public static function getAllSketches($roundIndx){
-            return CorbleDatabase::getAllSketches($roundIndx);
+        /**
+         * Get all sketches as an array but not the one of the player (no possiblity to vote for the own sketch)
+         * @param $roundIndx String with database index of the round
+         * @param $playerIndx String with database index of the player
+         * @return array|int Path to all sketches (but not the players one)
+         */
+        public static function getAllSketches($roundIndx, $playerIndx){
+            return CorbleDatabase::getAllSketches($roundIndx, $playerIndx);
         }
 
-        public static function getRoundIndexOfSketch($sketchId){}
-
-        public static function getAllWordIdsOfCategory($categoryId){
-            return [];
+        /**
+         * Get key-value array to display the leaderboard with name and score for each player
+         * @param $lobbyIndx String with index of lobby
+         */
+        public static function getLeaderBoard($lobbyIndx){
+            $players = array(CorbleDatabase::getPlayersOfLobby($lobbyIndx));
+            $leaderboard = array();
+            foreach ($players as $player){
+                $playerScore = 0;
+                $result = CorbleDatabase::getScoreOfPlayer($player::getIndx());
+                foreach($result as $res){
+                    $playerScore = $playerScore + $res;
+                }
+                $leaderboard[$player::getName()] = $playerScore;
+            }
+            return arsort($leaderboard);
         }
+
     }
 ?>
 

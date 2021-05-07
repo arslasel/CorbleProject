@@ -4,6 +4,10 @@
     include_once('PlayerModel.php');
 
     class RoundModel{
+        private $corbleDatabase;
+        public function __construct($corbleDatabase){
+            $this->corbleDatabase = $corbleDatabase;
+        }
 
         /**
          * Save picture from player on database
@@ -13,11 +17,11 @@
          * @param $roundIndx String with database round index
          * @param $playerIndx String with database player index
          */
-        public static function savePicture($root,$base64, $lobbyIndx,$roundIndx,$playerIndx){
+        public function savePicture($root,$base64, $lobbyIndx,$roundIndx,$playerIndx){
            $IoModel = new IOModel($root);
            $path = $IoModel->savePicture($base64,$lobbyIndx,$roundIndx,$playerIndx);
            if($path =! null){
-                CorbleDatabase::savePicture($path, $playerIndx);
+            $this->corbleDatabase->savePicture($path, $playerIndx);
            }
         }
 
@@ -26,8 +30,8 @@
          *
          * @param $sketchIndx String with database index of scetch
          */
-        public static function saveRatingFromPlayer($sketchIndx){
-            CorbleDatabase::saveRatingFromPlayer($sketchIndx);
+        public function saveRatingFromPlayer($sketchIndx){
+            $this->corbleDatabase->saveRatingFromPlayer($sketchIndx);
         }
 
         /**
@@ -36,20 +40,20 @@
          * @param $playerIndx String with database index of the player
          * @return array|int Path to all sketches (but not the players one)
          */
-        public static function getAllSketches($roundIndx, $playerIndx){
-            return CorbleDatabase::getAllSketches($roundIndx, $playerIndx);
+        public function getAllSketches($roundIndx, $playerIndx){
+            return $this->corbleDatabase->getAllSketches($roundIndx, $playerIndx);
         }
 
         /**
          * Get key-value array to display the leaderboard with name and score for each player
          * @param $lobbyIndx String with index of lobby
          */
-        public static function getLeaderBoard($lobbyIndx){
-            $players = array(CorbleDatabase::getPlayersOfLobby($lobbyIndx));
+        public function getLeaderBoard($lobbyIndx){
+            $players = array($this->corbleDatabase->getPlayersOfLobby($lobbyIndx));
             $leaderboard = array();
             foreach ($players as $player){
                 $playerScore = 0;
-                $result = CorbleDatabase::getScoreOfPlayer($player::getIndx());
+                $result = $this->corbleDatabase->getScoreOfPlayer($player::getIndx());
                 foreach($result as $res){
                     $playerScore = $playerScore + $res;
                 }

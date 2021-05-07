@@ -1,10 +1,10 @@
 <?php
 class CorbleDatabase
 {
-    private static $servername = "corble.ch";
-    private static $username = "rigpdqdi_kaya";
-    private static $password = "Zhaw-1234!";
-    private static $db = "rigpdqdi_corbleCh";
+    private $servername = "corble.ch";
+    private $username = "rigpdqdi_kaya";
+    private $password = "Zhaw-1234!";
+    private $db = "rigpdqdi_corbleCh";
 
     public function __construct(){
     }
@@ -13,10 +13,10 @@ class CorbleDatabase
     {
         // Create connection
         $conn = new mysqli(
-            CorbleDatabase::$servername,
-            CorbleDatabase::$username,
-            CorbleDatabase::$password,
-            CorbleDatabase::$db
+            $this->servername,
+            $this->username,
+            $this->password,
+            $this->db
         );
 
         // Check connection
@@ -31,10 +31,10 @@ class CorbleDatabase
     {
         // Create connection
         $conn = new mysqli(
-            CorbleDatabase::$servername,
-            CorbleDatabase::$username,
-            CorbleDatabase::$password,
-            CorbleDatabase::$db
+            $this->servername,
+            $this->username,
+            $this->password,
+            $this->db
         );
 
         // Check connection
@@ -54,10 +54,10 @@ class CorbleDatabase
     private function createConnection(){
         // Create connection
         return new mysqli(
-            CorbleDatabase::$servername,
-            CorbleDatabase::$username,
-            CorbleDatabase::$password,
-            CorbleDatabase::$db
+            $this->servername,
+            $this->username,
+            $this->password,
+            $this->db
         );
     }
 
@@ -174,7 +174,7 @@ class CorbleDatabase
             WHERE tbl_wordpool.indx = tbl_lobby_wordpool.fk_wordpool_indx_lobby_wordpool 
             AND tbl_lobby_wordpool.fk_lobby_indx_lobby_wordpool  = ".$lobbyIndx."";
 
-        $result = CorbleDatabase::executeQuery($sql);
+        $result = $this->executeQuery($sql);
         if($result->num_rows > 0){
             while($row = $result->fetch_assoc()){
                 $wordpools[$row["indx"]] = new WordpoolModel($row["name"],$row["indx"]);
@@ -271,20 +271,20 @@ class CorbleDatabase
         }
     }
 
-    public static function setPointsForSketch($totalPoints, $sketchIndx){
+    public function setPointsForSketch($totalPoints, $sketchIndx){
         $sql = "UPDATE tbl_sketch SET computerscore = " .$totalPoints ."WHERE indx = " .$sketchIndx;
-        $conn = self::createConnection();
+        $conn = $this->createConnection();
         if($conn->query($sql) === TRUE){
             return $conn->insert_id;
         }
     }
 
-    public static function getPlayerWithBestVotedSketch($lobbyIndex){
+    public function getPlayerWithBestVotedSketch($lobbyIndex){
         $sql1 = "SELECT index FROM tbl_round WHERE fk_lobby_index = " . $lobbyIndex;
         $sql2 = "SELECT MAX(votes) FROM tbl_sketch WHERE fk_round_index IN (". $sql1 . ")";
         $sql3 = "SELECT fk_player_index_sketch FROM tbl_sketch WHERE fk_round_index = roundIndex AND votes = (" . $sql2 . ")";
         $sql4 = "SELECT name FROM tbl_player WHERE indx = " . $sql3;
-        $conn = self::createConnection();
+        $conn = $this->createConnection();
         $result = $conn->query($sql4);
         if ($result) {
             return $result->fetch_assoc();
@@ -293,9 +293,9 @@ class CorbleDatabase
         }
     }
   
-    public static function getAllSketches($roundIndx, $playerindx){
+    public function getAllSketches($roundIndx, $playerindx){
         $sql = "SELECT path as path FROM tbl_sketch WHERE fk_round_indx = ".$roundIndx . " AND fk_player_indx_sketch <>  ".$playerindx;
-        $conn = self::createConnection();
+        $conn = $this->createConnection();
         $result = $conn->query($sql);
         if($result){
             $results = array();
@@ -314,7 +314,7 @@ class CorbleDatabase
         $sql3 = "SELECT fk_player_index_sketch FROM tbl_sketch WHERE fk_round_index = roundIndex AND computerscore = (" . $sql2 . ")";
         $sql4 = "SELECT name FROM tbl_player WHERE indx = " . $sql3;
 
-        $conn = self::createConnection();
+        $conn = $this->createConnection();
         $result = $conn->query($sql4);
         if ($result) {
             return $result->fetch_assoc();
@@ -329,7 +329,7 @@ class CorbleDatabase
         $sql3 = "SELECT fk_player_index_sketch FROM tbl_sketch WHERE fk_round_index = roundIndex AND computerscore = (" . $sql2 . ")";
         $sql4 = "SELECT name FROM tbl_player WHERE indx = " . $sql3;
 
-        $conn = self::createConnection();
+        $conn = $this->createConnection();
         $result = $conn->query($sql4);
         if ($result) {
             return $result->fetch_assoc();
@@ -343,7 +343,7 @@ class CorbleDatabase
         $sql2 = "SELECT MAX(votes) FROM tbl_sketch WHERE fk_round_index IN (". $sql1 . ")";
         $sql3 = "SELECT path FROM tbl_sketch WHERE fk_round_index = roundIndex AND votes = (" . $sql2 . ")";
 
-        $conn = self::createConnection();
+        $conn = $this->createConnection();
         $result = $conn->query($sql3);
         if ($result) {
             return $result->fetch_assoc();
@@ -352,7 +352,7 @@ class CorbleDatabase
         }
     }
   
-    public static function saveRatingFromPlayer($sketchIndx){
+    public function saveRatingFromPlayer($sketchIndx){
         //Todo: This needs to made thread safe but on database level.
 
         $sql = "SELECT votes  AS votes FROM tbl_sketch WHERE indx = ".$sketchIndx;
@@ -414,7 +414,7 @@ class CorbleDatabase
         $sql2 = "SELECT MAX(computerscore) FROM tbl_sketch WHERE fk_round_index IN (". $sql1 . ")";
         $sql3 = "SELECT path FROM tbl_sketch WHERE fk_round_index = roundIndex AND computerscore = (" . $sql2 . ")";
 
-        $conn = self::createConnection();
+        $conn = $this->createConnection();
         $result = $conn->query($sql3);
         if ($result) {
             return $result->fetch_assoc();
@@ -447,7 +447,7 @@ class CorbleDatabase
         $sql2 = "SELECT MIN(computerscore) FROM tbl_sketch WHERE fk_round_index IN (". $sql1 . ")";
         $sql3 = "SELECT path FROM tbl_sketch WHERE fk_round_index = roundIndex AND computerscore = (" . $sql1 . ")";
 
-        $conn = self::createConnection();
+        $conn = $this->createConnection();
         $result = $conn->query($sql3);
         if ($result) {
             return $result->fetch_assoc();
@@ -463,7 +463,7 @@ class CorbleDatabase
 
         $sql4 = "SELECT fk_player_index_sketch FROM " . $sql2 . " WHERE total = " . $sql3;
         $sql5 = "SELECT name FROM tbl_player WHERE indx = " . $sql4;
-        $conn = self::createConnection();
+        $conn = $this->createConnection();
         $result = $conn->query($sql5);
         if ($result) {
             return $result->fetch_assoc();
@@ -494,7 +494,7 @@ class CorbleDatabase
      * @param: int $sketchIndx
      */
     public function setVotes($sketchIndx){ //TODO: is duplicated with function saveRatingFromPlayer()
-        $sql = "UPDATE tbl_sketch SET votes = " .CorbleDatabase::getVotes($sketchIndx)[0] + 1 ." WHERE indx = " .$sketchIndx .";";
+        $sql = "UPDATE tbl_sketch SET votes = " .$this->getVotes($sketchIndx)[0] + 1 ." WHERE indx = " .$sketchIndx .";";
         $conn = $this->createConnection();
         $conn->query($sql);
     }
@@ -504,9 +504,9 @@ class CorbleDatabase
      * @param $playerIndx String with index of player
      * @return array|int|null Returns a list or one value with all scores of aplayser
      */
-    public static function getScoreOfPlayer($playerIndx){
+    public function getScoreOfPlayer($playerIndx){
         $sql = "SELECT votes FROM tbl_sketch WHERE fk_player_indx_sketch = " .$playerIndx;
-        $conn = self::createConnection();
+        $conn = $this->createConnection();
         $result = $conn->query($sql);
         if($result){
             return $result->fetch_assoc();

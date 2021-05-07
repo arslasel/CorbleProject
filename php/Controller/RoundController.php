@@ -13,6 +13,7 @@
         private const MIN_WORD_ID = 1;
         private $ratingModel;
         private $roundIndx;
+        private $corbleDatabase;
 
         /**
          * This method is the constructor of the class RoundController
@@ -20,6 +21,7 @@
          * @param: int $category
          */
         public function __construct($sketches, $categoryId){
+            $this->corbleDatabase = new CorbleDatabase();
             $this->sketches = $sketches; //Here are sketch-id and picture information contained
             $this->sketchesIds = array_column($this->sketches, 0);
             $this->categoryId = $categoryId;
@@ -30,7 +32,7 @@
          */
         public function rateSketch(){
             foreach($this->sketches as $sketchId => $valueOfSketch) {
-                $this->ratingModel = new RatingModel(new CorbleDatabase(),$sketchId, $valueOfSketch);
+                $this->ratingModel = new RatingModel($this->corbleDatabase,$sketchId, $valueOfSketch);
                 $this->ratingModel->collectPenalties($sketchId);
             }
         }
@@ -39,7 +41,7 @@
          * This method is used for selecting a random Word out of a category
          */
         public function selectRandomWord(){
-            $wordIds = RoundModel::getAllWordIdsOfCategory($this->categoryId);
+            $wordIds = $this->corbleDatabase->getAllWordIdsOfCategory($this->categoryId);
             if($wordIds != 0){ // if wordIds == 0 then no word was found for category
                 $numOfElements = count($wordIds);
                 $randomNumInArray = rand($this->MIN_WORD_ID, $numOfElements);

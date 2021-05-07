@@ -12,18 +12,28 @@ class DatabaseConnection{
     private static $db = "rigpdqdi_corbleCh";
 
     /**
+     * Creates a simple connection to the database:
+     *  -> Use only if predefined query-methods are not sufficient
+     * @return mysqli Returns a database connection to execute querries
+     */
+    public static function createConnection(){
+        return new mysqli(
+            DatabaseLibrary::$servername,
+            DatabaseLibrary::$username,
+            DatabaseLibrary::$password,
+            DatabaseLibrary::$db
+        );
+    }
+
+
+    /**
      * Creates a connection to the database and executes a querry
      * @param $query String Querry to be executed on the Corble Database
      * @return bool|mysqli_result Result of querry
      */
     public static function executeQuery($query){
         // Create connection
-        $conn = new mysqli(
-            DatabaseLibrary::$servername,
-            DatabaseLibrary::$username,
-            DatabaseLibrary::$password,
-            DatabaseLibrary::$db
-        );
+        $conn = self::createConnection();
 
         // Check connection
         if ($conn->connect_error) {
@@ -38,17 +48,9 @@ class DatabaseConnection{
      * @param $query string with querry to be executed
      * @return int|string Result (Error-Code)
      */
-    public static function executeInsertQuery($query)
-    {
-        // Create connection
-        $conn = new mysqli(
-            DatabaseLibrary::$servername,
-            DatabaseLibrary::$username,
-            DatabaseLibrary::$password,
-            DatabaseLibrary::$db
-        );
+    public static function executeInsertQuery($query){
+        $conn = this.self::createConnection();
 
-        // Check connection
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
         } else {
@@ -60,5 +62,4 @@ class DatabaseConnection{
             return 0;
         }
     }
-
 }

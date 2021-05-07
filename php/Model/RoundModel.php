@@ -1,6 +1,6 @@
 <?php
 
-    include_once('Database.php');
+    include_once('DatabaseLibrary.php');
     include_once('PlayerModel.php');
 
     class RoundModel{
@@ -17,7 +17,7 @@
            $IoModel = new IOModel($root);
            $path = $IoModel->savePicture($base64,$lobbyIndx,$roundIndx,$playerIndx);
            if($path =! null){
-                CorbleDatabase::savePicture($path, $playerIndx);
+                DatabaseLibrary::savePicture($path, $playerIndx);
            }
         }
 
@@ -27,7 +27,7 @@
          * @param $sketchIndx String with database index of scetch
          */
         public static function saveRatingFromPlayer($sketchIndx){
-            CorbleDatabase::saveRatingFromPlayer($sketchIndx);
+            DatabaseLibrary::saveRatingFromPlayer($sketchIndx);
         }
 
         /**
@@ -37,7 +37,7 @@
          * @return array|int Path to all sketches (but not the players one)
          */
         public static function getAllSketches($roundIndx, $playerIndx){
-            return CorbleDatabase::getAllSketches($roundIndx, $playerIndx);
+            return DatabaseLibrary::getAllSketches($roundIndx, $playerIndx);
         }
 
         /**
@@ -45,11 +45,11 @@
          * @param $lobbyIndx String with index of lobby
          */
         public static function getLeaderBoard($lobbyIndx){
-            $players = array(CorbleDatabase::getPlayersOfLobby($lobbyIndx));
+            $players = array(DatabaseLibrary::getPlayersOfLobby($lobbyIndx));
             $leaderboard = array();
             foreach ($players as $player){
                 $playerScore = 0;
-                $result = CorbleDatabase::getScoreOfPlayer($player::getIndx());
+                $result = DatabaseLibrary::getScoreOfPlayer($player::getIndx());
                 foreach($result as $res){
                     $playerScore = $playerScore + $res;
                 }

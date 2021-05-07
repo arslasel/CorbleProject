@@ -1,66 +1,25 @@
 <?php
-class CorbleDatabase
-{
-    private static $servername = "corble.ch";
-    private static $username = "rigpdqdi_kaya";
-    private static $password = "Zhaw-1234!";
-    private static $db = "rigpdqdi_corbleCh";
 
+include_once './DatabaseConnection.php';
+
+/**
+ * Class CorbleDatabase
+ *
+ * Library of methods with sql statements for the corble database using the Database Conneciton class
+ *
+ */
+class DatabaseLibrary{
+
+    /**
+     * DatabaseLibrary default constructor
+     */
     public function __construct(){
     }
 
-    public static function executeQuery($query)
-    {
-        // Create connection
-        $conn = new mysqli(
-            CorbleDatabase::$servername,
-            CorbleDatabase::$username,
-            CorbleDatabase::$password,
-            CorbleDatabase::$db
-        );
-
-        // Check connection
-        if ($conn->connect_error) {
-            die("Connection failed: " . $conn->connect_error);
-        } else {
-            return $conn->query($query);
-        }
-    }
-
-    public static function executeInsertQuery($query)
-    {
-        // Create connection
-        $conn = new mysqli(
-            CorbleDatabase::$servername,
-            CorbleDatabase::$username,
-            CorbleDatabase::$password,
-            CorbleDatabase::$db
-        );
-
-        // Check connection
-        if ($conn->connect_error) {
-            die("Connection failed: " . $conn->connect_error);
-        } else {
-            if($conn->query($query) === TRUE){
-                return $conn->insert_id;
-            }
-            echo $query;
-            echo("Error description: " . $conn->error);
-            return 0;
-        }
-    }
-
-
-    private static function createConnection(){
-        // Create connection
-        return new mysqli(
-            CorbleDatabase::$servername,
-            CorbleDatabase::$username,
-            CorbleDatabase::$password,
-            CorbleDatabase::$db
-        );
-    }
-
+    /**
+     * @param $user
+     * @return bool
+     */
     public static function checkIfUserExists($user){
         $sql = "SELECT COUNT(*) as matches FROM  tbl_player WHERE name = '".$user."'";
         $conn = self::createConnection();
@@ -174,7 +133,7 @@ class CorbleDatabase
             WHERE tbl_wordpool.indx = tbl_lobby_wordpool.fk_wordpool_indx_lobby_wordpool 
             AND tbl_lobby_wordpool.fk_lobby_indx_lobby_wordpool  = ".$lobbyIndx."";
 
-        $result = CorbleDatabase::executeQuery($sql);
+        $result = DatabaseLibrary::executeQuery($sql);
         if($result->num_rows > 0){
             while($row = $result->fetch_assoc()){
                 $wordpools[$row["indx"]] = new WordpoolModel($row["name"],$row["indx"]);
@@ -494,7 +453,7 @@ class CorbleDatabase
      * @param: int $sketchIndx
      */
     public static function setVotes($sketchIndx){ //TODO: is duplicated with function saveRatingFromPlayer()
-        $sql = "UPDATE tbl_sketch SET votes = " .CorbleDatabase::getVotes($sketchIndx)[0] + 1 ." WHERE indx = " .$sketchIndx .";";
+        $sql = "UPDATE tbl_sketch SET votes = " .DatabaseLibrary::getVotes($sketchIndx)[0] + 1 ." WHERE indx = " .$sketchIndx .";";
         $conn = self::createConnection();
         $conn->query($sql);
     }

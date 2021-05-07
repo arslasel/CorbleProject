@@ -20,7 +20,7 @@ class PlayerModel{
         } else {
             return 0;
         }*/
-        return CorbleDatabase::getPlayerbyIndex($name);
+        return DatabaseLibrary::getPlayerbyIndex($name);
     }
 
     public function getName(){

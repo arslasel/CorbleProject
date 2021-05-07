@@ -7,6 +7,9 @@ session_start();
 
 <head>
     <meta charset="utf-8">
+    <meta http-equiv='cache-control' content='no-cache'>
+    <meta http-equiv='expires' content='0'>
+    <meta http-equiv='pragma' content='no-cache'>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
@@ -23,16 +26,45 @@ session_start();
     <script src="../../js/init.js"></script>
     <script src="../../js/canvas.js"></script>
     <script src="../../js/slideshow.js"></script>
+    <script src="../../js/deleteAndBack.js"></script>
     <link rel="icon" type="image/png" href="">
 
 </head>
 
 <body>
+
+    <!--The Modal-->
+    <div id="aboutCorble" class="modal">
+        <!--Modal Content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Modal Header</h2>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+        </div>
+    </div>
+
+    <!--The Modal-->
+    <div id="rulesCorble" class="modal">
+        <!--Modal Content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Modal Header</h2>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+        </div>
+    </div>
+
+
     <ul class="sidenav" id="mobile-nav">
         <li class="usernameDisplay"><a id="username_display" href="#"></a></li>
         <li><a href="#">Leave</a></li>
-        <li><a href="#">About</a></li>
-        <li><a href="#">Rules</a></li>
+        <li><a class="modal-trigger" href="#aboutCorble">About</a></li>
+        <li><a class="modal-trigger" href="#rulesCorble">Rules</a></li>
     </ul>
     <div class="navbar-fixed">
         <nav class="red" style="padding:0px 10px; position: fixed;">
@@ -45,13 +77,14 @@ session_start();
 
                 <ul class="right hide-on-med-and-down ">
                     <li class="usernameDisplay"><a id="username_display" href="#"></a></li>
-                    <li><a href="#">Leave</a></li>
-                    <li><a href="#">About</a></li>
-                    <li><a href="#">Rules</a></li>
+                    <li><a href="#" onclick="goBackToIndex()">Leave</a></li>
+                    <li><a class="modal-trigger" href="#aboutCorble">About</a></li>
+                    <li><a class="modal-trigger" href="#rulesCorble">Rules</a></li>
                 </ul>
             </div>
         </nav>
     </div>
+
 
     <div id="drawContainer" class="content" style="display: none;">
         <div class="row FullHeight NoMargin">
@@ -297,49 +330,6 @@ session_start();
                         <div class="col s6 NoPadding">
                             <h5>23sec</h5>
                         </div>
-                    </div>
-                </div>
-            </div>
-
-            <div id="endContainer" class="content" style="display: none;">
-                <div class="ex1">
-                    <div class="row">
-                        <h2 class="WelcomeText">Spiel Ende</h2>
-                        <h3 class="WelcomeText">Siegerehrung</h3>
-                    </div>
-                    <div class="row">
-                        <div class="col s12 l4">
-                            <h5 class="WelcomeText">Bestes Bild nach Stimmen</h5>
-                            <div class="card">
-                                <div class="card-image">
-                                    <img src="/img/Ubuntu.png">
-                                    <span class="card-title sketchTitle">Selim</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col s12 l4">
-                            <h5 class="WelcomeText">Bestes Bild nach Algorithmus</h5>
-                            <div class="card">
-                                <div class="card-image">
-                                    <img src="/img/KimJongUn.png">
-                                    <span class="card-title sketchTitle">Selim</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col s12 l4">
-                            <h5 class="WelcomeText">Schlechtestes Bild nach Algorithmus</h5>
-                            <div class="card">
-                                <div class="card-image">
-                                    <img src="/img/1542233.jpg">
-                                    <span class="card-title sketchTitle">Selim</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <h2 class="WelcomeText selectColorWinner">
-                            Gewinner ist: Selim
-                        </h2>
                     </div>
                 </div>
             </div>

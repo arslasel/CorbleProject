@@ -7,6 +7,9 @@ session_start();
 
 <head>
     <meta charset="utf-8">
+    <meta http-equiv='cache-control' content='no-cache'>
+    <meta http-equiv='expires' content='0'>
+    <meta http-equiv='pragma' content='no-cache'>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
@@ -26,6 +29,34 @@ session_start();
 </head>
 
 <body>
+
+<!--The Modal-->
+<div id="aboutCorble" class="modal">
+        <!--Modal Content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Modal Header</h2>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+        </div>
+    </div>
+
+    <!--The Modal-->
+    <div id="rulesCorble" class="modal">
+        <!--Modal Content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Modal Header</h2>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+        </div>
+    </div>
+
+
     <div hidden>
         <form name="lobby_overview_refresh" action="#" method="POST">
             <input id="lobby_overview_refresh" type="submit" name="lobby_overview_refresh_submit" />
@@ -35,8 +66,8 @@ session_start();
     <ul class="sidenav" id="mobile-nav">
         <li class="usernameDisplay"><a id="username_display" href="#"></a></li>
         <li><a href="#">Leave</a></li>
-        <li><a href="#">About</a></li>
-        <li><a href="#">Rules</a></li>
+        <li><a class="modal-trigger" href="#aboutCorble">About</a></li>
+        <li><a class="modal-trigger" href="#rulesCorble">Rules</a></li>
     </ul>
     <div class="navbar-fixed">
         <nav class="red" style="padding:0px 10px; position: fixed;">
@@ -50,8 +81,8 @@ session_start();
                 <ul class="right hide-on-med-and-down ">
                     <li class="usernameDisplay"><a id="username_display" href="#"></a></li>
                     <li><a href="#">Leave</a></li>
-                    <li><a href="#">About</a></li>
-                    <li><a href="#">Rules</a></li>
+                    <li><a class="modal-trigger" href="#aboutCorble">About</a></li>
+                    <li><a class="modal-trigger" href="#rulesCorble">Rules</a></li>
                 </ul>
             </div>
         </nav>

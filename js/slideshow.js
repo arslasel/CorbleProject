@@ -23,11 +23,11 @@ function selectSlide(caller, n) {
 }
 
 function selectPicture(n) {
-    var littelpicture = document.getElementById("imagePreview" + n.toString());
-    littelpicture.classList.add("selectedPicture");
+    var littelPicture = document.getElementById("imagePreview" + n.toString());
+    littelPicture.classList.add("selectedPicture");
     for (let index = 1; index < 7; index++) {
         var temp = document.getElementById("imagePreview" + index.toString())
-        if (temp != littelpicture) {
+        if (temp != littelPicture) {
             temp.classList.remove("selectedPicture");
         }
     }

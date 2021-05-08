@@ -1,6 +1,6 @@
 <?php
     include('ImageProcessorModel.php');
-    include('Database.php');
+    include('DatabaseLibrary.php');
 
     /**
      * This class is used to rate the picture which is drawn from the player
@@ -27,10 +27,10 @@
             $this->imageProcessingController = new ImageProcessorModel($imageRessource);
             $actualPoints = $this->MAX_POINTS;
 
-            $this->primaryOptimalColorRatio = CorbleDatabase::getPrimaryOptimalColorRatioForWord($word);
-            $this->secondaryOptimalColorRatio = CorbleDatabase::getSecondaryOptimalColorRatioForWord($word);
-            $this->primaryColor = CorbleDatabase::getPrimaryColor($word);
-            $this->secondaryColor = CorbleDatabase::getSecondaryColor($word);
+            $this->primaryOptimalColorRatio = DatabaseLibrary::getPrimaryOptimalColorRatioForWord($word);
+            $this->secondaryOptimalColorRatio = DatabaseLibrary::getSecondaryOptimalColorRatioForWord($word);
+            $this->primaryColor = DatabaseLibrary::getPrimaryColor($word);
+            $this->secondaryColor = DatabaseLibrary::getSecondaryColor($word);
         }
 
         /**
@@ -94,7 +94,7 @@
             $penaltiePoints += $this->foreignColorsRate();
             $penaltiePoints = $this->validatePenaltiePoints($penaltiePoints);
             $totalPoints = $this->actualPoints - $penaltiePoints;
-            CorbleDatabase::setPointsForSketch($totalPoints, $sketchIndx);
+            DatabaseLibrary::setComputerScoreForSketch($totalPoints, $sketchIndx);
         }
         
         /**

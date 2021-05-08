@@ -9,30 +9,30 @@ class GameEndModel{
     }
 
     public function getPlayerWithBestVotedSketch(){
-        CorbleDatabase::getPlayerWithBestVotedSketch($this->lobbyIndex);
+        DatabaseLibrary::getPlayerWithBestVotedSketch($this->lobbyIndex);
     }
 
     public function getPlayerWithBestAlogrithmSketch(){
-        CorbleDatabase::getPlayerWithBestAlogrithmSketch($this->lobbyIndex);
+        DatabaseLibrary::getPlayerWithBestAlogrithmSketch($this->lobbyIndex);
     }
 
     public function getPlayerWithWorstVotedSketch(){
-        CorbleDatabase::getPlayerWithWORSTAlogrithmSketch($this->lobbyIndex);
+        DatabaseLibrary::getPlayerWithWorstVotedSketch($this->lobbyIndex);
     }
 
     public function getSketchBestVoted(){
-        CorbleDatabase::getSketchBestVoted($this->lobbyIndex);
+        DatabaseLibrary::getSketchBestVoted($this->lobbyIndex);
     }
 
     public function getSketchWorstAlgorithm(){
-        CorbleDatabase::getSketchWorstAlgorithm($this->lobbyIndex);
+        DatabaseLibrary::getSketchWorstAlgorithm($this->lobbyIndex);
     }
 
     public function getSketchBestAlgorithm(){
-        CorbleDatabase::getSketchBestAlgorithm($this->lobbyIndex);
+        DatabaseLibrary::getSketchBestAlgorithm($this->lobbyIndex);
     }
 
     public function getWinner(){
-        CorbleDatabase::getWinner($this->lobbyIndex);
+        DatabaseLibrary::getWinner($this->lobbyIndex);
     }
 }

@@ -100,7 +100,7 @@ class DatabaseLibrary{
      * @param $joincode String Joincode searhed in table tbl_lobby
      * @return int|mixed Lobby-index if a lobby with join-code exists else 0
      */
-    public static function getLobbyIndxByJoincode($joincode){
+    public function getLobbyIndxByJoincode($joincode){
         $sql = "SELECT indx FROM tbl_lobby WHERE joincode= '". $joincode ."'";
         $result = DatabaseConnection::executeQuery($sql);
         if ($result->num_rows > 0) {
@@ -116,7 +116,7 @@ class DatabaseLibrary{
      * @param $lobbyIndx string Lobby index
      * @return array List with all players (can be empty array)
      */
-    public static function getPlayersOfLobby($lobbyIndx){
+    public function getPlayersOfLobby($lobbyIndx){
         $players = array();
         $sql = "
             SELECT tbl_player.name, tbl_player.indx
@@ -138,7 +138,7 @@ class DatabaseLibrary{
      * @param $lobbyIndx string Index of lobby
      * @return array Array with all wordpools
      */
-    public static function getWordpoolsOfLobby($lobbyIndx){
+    public function getWordpoolsOfLobby($lobbyIndx){
         $wordpools = array();
         $sql = "
             SELECT tbl_wordpool.word as name, tbl_wordpool.indx
@@ -160,7 +160,7 @@ class DatabaseLibrary{
      * @param $joincode string JoinCode
      * @return mixed Table
      */
-    public static function readLobbyDataFromDB($joincode){
+    public function readLobbyDataFromDB($joincode){
         $sql = "SELECT * FROM tbl_lobby WHERE joincode = ''" .$joincode ."'";
         return DatabaseConnection::executeQuery($sql);
     }
@@ -172,7 +172,7 @@ class DatabaseLibrary{
      * @param $partyLeaderString string index of player that is party-leader
      * @return int returns 0 on success else dies
      */
-    public static function addPlayerToLobby($playerIndx,$lobbyIndx,$partyLeaderString){
+    public function addPlayerToLobby($playerIndx,$lobbyIndx,$partyLeaderString){
         $sql = "INSERT INTO tbl_lobby_player (fk_player_indx_lobby_player,fk_lobby_indx_Lobby_player,partyLeader) 
         VALUES ('" . $playerIndx . "','". $lobbyIndx . "','" . $partyLeaderString . "')";
        
@@ -180,11 +180,11 @@ class DatabaseLibrary{
     }
 
     /**
-     * Returns player 
-     * @param $name
-     * @return int|mixed
+     * Returns player index by his name
+     * @param $name string with name of player
+     * @return int|mixed string with index if player is in database else 0
      */
-    public static function getPlayerByIndex($name){
+    public function getPlayerByIndex($name){
         $sql = "SELECT indx FROM tbl_player WHERE name='" . $name . "'";
         $conn = self::createConnection();
         $result = $conn->query($sql);
@@ -196,6 +196,10 @@ class DatabaseLibrary{
         }
     }
 
+    /**
+     * Returns an array of Wordpool instances
+     * @return mixed
+     */
     public static function getWordpools(){
         $sql = "SELECT * FROM  tbl_wordpool";
         $conn = self::createConnection();

@@ -94,7 +94,7 @@
             $penaltiePoints += $this->foreignColorsRate();
             $penaltiePoints = $this->validatePenaltiePoints($penaltiePoints);
             $totalPoints = $this->actualPoints - $penaltiePoints;
-            DatabaseLibrary::setPointsForSketch($totalPoints, $sketchIndx);
+            DatabaseLibrary::setComputerScoreForSketch($totalPoints, $sketchIndx);
         }
         
         /**

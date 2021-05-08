@@ -17,7 +17,7 @@ class GameEndModel{
     }
 
     public function getPlayerWithWorstVotedSketch(){
-        DatabaseLibrary::getPlayerWithWORSTAlogrithmSketch($this->lobbyIndex);
+        DatabaseLibrary::getPlayerWithWorstVotedSketch($this->lobbyIndex);
     }
 
     public function getSketchBestVoted(){

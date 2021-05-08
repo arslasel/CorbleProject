@@ -25,9 +25,10 @@
          * Adds a vote to a sketch (+1)
          *
          * @param $sketchIndx String with database index of scetch
+         * TODO: Make this method thread-save
          */
         public static function saveRatingFromPlayer($sketchIndx){
-            DatabaseLibrary::saveRatingFromPlayer($sketchIndx);
+            DatabaseLibrary::setVotes(DatabaseLibrary::getVotes($sketchIndx) + 1, $sketchIndx);
         }
 
         /**

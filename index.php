@@ -28,6 +28,7 @@ session_start();
 </head>
 
 <body>
+
     <!--The Modal-->
     <div id="aboutCorble" class="modal">
         <!--Modal Content-->
@@ -80,18 +81,77 @@ session_start();
         </div>
     </div>
 
+
     <!--The Modal-->
     <div id="rulesCorble" class="modal">
         <!--Modal Content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Modal Header</h2>
+        <div class="modal-content textPosition">
+            <div class="modal-header textShadow">
+                <h2>Corble Rules </h2>
             </div>
+            <div class="textShadowLight">
+                <h4>1. Anmelden und Starten</h4>
+            </div>
+            <p class="textformating">
+                Bevor es losgeht muss du dich mit deinem Künstlernamen anmelden.
+                Danach kannst du einem Spiel beitreten oder selber eines erstellen.
+            </p>
+            <div class="textShadowLight">
+                <h4>2. Beitreten oder Erstellen</h4>
+            </div>
+            <h5>Join Lobby</h5>
+            <ul class="textformating">
+                <li>Trete einem Spiel bei, dafür gibst du den erhaltenen Code ein.</li>
+            </ul>
+            <h5>Create Lobby</h5>
+            <ul class="textformating">
+                <li>Erstelle ein Spiel nach deinen Regeln.</li>
+            </ul>
+            <div class="textShadowLight">
+                <h4>3. Male das Wort</h4>
+            </div>
+            <p class="textformating">
+                In einer vorgegebenen Zeit muss du das angezeigte Wort so genau wie möglich
+                malen.
+            </p>
+            <ul class="textformating">
+                <li>1. Verwende Farben</li>
+                <li>2. Verwende Stiftgrössen</li>
+                <li>3. Mit Clear wird alles gelöst</li>
+                <li>4. Bestätige dein Kunstwerk mit Submit</li>
+            </ul>
+            <div class="textShadowLight">
+                <h4>4. Bestimme das beste Bild</h4>
+            </div>
+            <p class="textformating">
+                Die Qual der Wahl, wer hat das beste Bild kreiert? Nach jeder Malrunden muss du
+                dich entscheiden, wer hat das beste Bild gezeichnet. Aber bedenke du hast nicht
+                ewig Zeit.
+            </p>
+            <ul class="textformating">
+                <li>1. Wähle dein Bild in der Minislideshow.</li>
+                <li>2. Das gewählte Bild wird rot markiert und angezeigt.</li>
+                <li>3. Ist die Zeit abgelaufen, wird das gewählte Bild genommen.</li>
+            </ul>
+            <div class="textShadowLight">
+                <h4>5. Siegerehrung</h4>
+            </div>
+            <p class="textformating">
+                Sind alle Runden gespielt, wird dir am schluss angezeigt wer das Spiel gewonnen hat.
+            </p>
+            <ul class="textformating">
+                <li>Bestes Bild nach Stimmen</li>
+                <li>Bestes Bild nach Algorithmus</li>
+                <li>Schlechtestes Bild nach Algorithmus</li>
+            </ul>
         </div>
         <div class="modal-footer">
             <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
         </div>
     </div>
+
+
+
 
     <ul class="sidenav" id="mobile-nav">
         <li class="usernameDisplay"><a id="username_display" href="#"></a></li>

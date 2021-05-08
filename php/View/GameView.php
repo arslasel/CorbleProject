@@ -299,7 +299,7 @@ session_start();
         </div>
     </div>
 
-    <div id="voteContainer" class="content" style="display: none;">
+    <div id="voteContainer" class="content">
         <div class="row SizeContainerSlideShow NoMargin">
             <div id="slideshowContainer" class="col s12 l10 NoPadding drawcols">
                 <div class="slideShowContainer">
@@ -429,7 +429,7 @@ session_start();
             </div>
         </div>
     </div>
-    <div id="endContainer" class="content">
+    <div id="endContainer" class="content" style="display: none;">
         <div class="row">
             <h2 class="WelcomeText">Spiel Ende</h2>
             <h3 class="WelcomeText">Siegerehrung</h3>

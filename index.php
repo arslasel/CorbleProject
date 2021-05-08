@@ -28,13 +28,51 @@ session_start();
 </head>
 
 <body>
-
     <!--The Modal-->
     <div id="aboutCorble" class="modal">
         <!--Modal Content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Modal Header</h2>
+        <div class="modal-content textPosition">
+            <div class="modal-header textShadow">
+                <h2>About Corble</h2>
+            </div>
+            <div>
+                <p class="textformating">
+                    Corble ist ein kreatives Zeichnugsspiel, bei dem 4 bis 8 Spieler
+                    gegeneinander antreten. Das Ziel ist ein Bild zu malen, welche das
+                    angezeigte Wort am besten darstellt.
+                </p>
+                <div class="textShadow">
+                    <h4>Unsere Mission</h4>
+                </div>
+                <p class="textformating">
+                    Spieler dürfen ihre kreative Seite zeigen und diese froide mit allen
+                    teilen.
+                </p>
+                <div class="textShadow">
+                    <h4>Background</h4>
+                </div>
+                <p class="textformating">
+                    Corble wurde im Auftrag von der ZHAW kreiert. Das Ziel dieses Projekt ist die
+                    Grundkenntnisse von Software Entwicklung 1 zu vertiefen sowie Erkentnisse zu Projekt
+                    Management zu sammeln.
+                </p>
+                <div class="textShadow">
+                    <h4>Gründer</h4>
+                </div>
+                <ul class="textformating">
+                    <li>Alguacil Alonso Dominiqu</li>
+                    <li>Arslan Selim</li>
+                    <li>Berner Roman</li>
+                    <li>Ercihan Kaya</li>
+                    <li>Pio Loco Gino</li>
+                </ul>
+                <div class="textShadow">
+                    <h4>Dozent/in</h4>
+                </div>
+                <ul class="listeStyle textformating">
+                    <li>Bachmann Matthias</li>
+                    <li>Rudin Kirsten</li>
+                </ul>
             </div>
         </div>
         <div class="modal-footer">
@@ -56,6 +94,7 @@ session_start();
     </div>
 
     <ul class="sidenav" id="mobile-nav">
+        <li class="usernameDisplay"><a id="username_display" href="#"></a></li>
         <li><a href="#">Leave</a></li>
         <li><a class="modal-trigger" href="#aboutCorble">About</a></li>
         <li><a class="modal-trigger" href="#rulesCorble">Rules</a></li>
@@ -70,14 +109,13 @@ session_start();
                 </a>
 
                 <ul class="right hide-on-med-and-down ">
+                    <li class="usernameDisplay"><a id="username_display" href="#"></a></li>
                     <li><a href="#">Leave</a></li>
                     <li><a class="modal-trigger" href="#aboutCorble">About</a></li>
                     <li><a class="modal-trigger" href="#rulesCorble">Rules</a></li>
                 </ul>
             </div>
         </nav>
-
-
     </div>
 
     <div>

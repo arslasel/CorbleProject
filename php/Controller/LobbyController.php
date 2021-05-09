@@ -3,9 +3,14 @@
     include_once("../Model/WordpoolModel.php");
     class LobbyController{
         private $lobbyModel;
+        private $corbleDatabase;
+        private $databaseConnection;
         
         public function __construct(){
-            $this->lobbyModel = new LobbyModel();
+            $this->databaseConnection = new DatabaseConnection();
+            $this->corbleDatabase = new DatabaseLibrary($this->databaseConnection);
+            
+            $this->lobbyModel = new LobbyModel($this->corbleDatabase,$this->databaseConnection);
         }
         
         public function login($username){
@@ -13,7 +18,7 @@
         }
 
         public function getWordPools(){
-            return WordpoolModel::getWordPools();
+            return WordpoolModel::getWordPools($this->corbleDatabase);
         }
 
         public function createLobby($votetime,$drawtime,$starttime,$maxplayer,$wordpools){

@@ -1,0 +1,10 @@
+{
+    "autoload": {
+        "classmap": [
+            "php/Model/"
+        ]
+    },
+    "require-dev": {
+        "phpunit/phpunit": ">9.0"
+    }
+}

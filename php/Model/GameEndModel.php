@@ -1,38 +1,40 @@
 <?php
 
-include_once('../Database.php');
+include_once('../DatabaseLibrary.php');
 
 class GameEndModel{
     private $lobbyIndex;
-    public function __construct($lobbyIndex){
+    private $corbleDatabase;
+    public function __construct($corbleDatabase,$lobbyIndex){
         $this->lobbyIndex = $lobbyIndex;
+        $this->corbleDatabase = $corbleDatabase;
     }
 
     public function getPlayerWithBestVotedSketch(){
-        DatabaseLibrary::getPlayerWithBestVotedSketch($this->lobbyIndex);
+        $this->corbleDatabase->getPlayerWithBestVotedSketch($this->lobbyIndex);
     }
 
     public function getPlayerWithBestAlogrithmSketch(){
-        DatabaseLibrary::getPlayerWithBestAlogrithmSketch($this->lobbyIndex);
+        $this->corbleDatabase->getPlayerWithBestAlogrithmSketch($this->lobbyIndex);
     }
 
     public function getPlayerWithWorstVotedSketch(){
-        DatabaseLibrary::getPlayerWithWorstVotedSketch($this->lobbyIndex);
+        $this->corbleDatabase->getPlayerWithWORSTAlogrithmSketch($this->lobbyIndex);
     }
 
     public function getSketchBestVoted(){
-        DatabaseLibrary::getSketchBestVoted($this->lobbyIndex);
+        $this->corbleDatabase->getSketchBestVoted($this->lobbyIndex);
     }
 
     public function getSketchWorstAlgorithm(){
-        DatabaseLibrary::getSketchWorstAlgorithm($this->lobbyIndex);
+        $this->corbleDatabase->getSketchWorstAlgorithm($this->lobbyIndex);
     }
 
     public function getSketchBestAlgorithm(){
-        DatabaseLibrary::getSketchBestAlgorithm($this->lobbyIndex);
+        $this->corbleDatabase->getSketchBestAlgorithm($this->lobbyIndex);
     }
 
     public function getWinner(){
-        DatabaseLibrary::getWinner($this->lobbyIndex);
+        $this->corbleDatabase->getWinner($this->lobbyIndex);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-    include_once('Database.php');
+    include_once('DatabaseLibrary.php');
     include_once('PlayerModel.php');
 
     class RoundModel{
@@ -21,7 +21,7 @@
            $IoModel = new IOModel($root);
            $path = $IoModel->savePicture($base64,$lobbyIndx,$roundIndx,$playerIndx);
            if($path =! null){
-            $this->corbleDatabase->savePicture($path, $playerIndx);
+                DatabaseLibrary::savePicture($path, $playerIndx);
            }
         }
 
@@ -29,9 +29,10 @@
          * Adds a vote to a sketch (+1)
          *
          * @param $sketchIndx String with database index of scetch
+         * TODO: Make this method thread-save
          */
-        public function saveRatingFromPlayer($sketchIndx){
-            $this->corbleDatabase->saveRatingFromPlayer($sketchIndx);
+        public static function saveRatingFromPlayer($sketchIndx){
+            DatabaseLibrary::setVotes(DatabaseLibrary::getVotes($sketchIndx) + 1, $sketchIndx);
         }
 
         /**
@@ -40,20 +41,20 @@
          * @param $playerIndx String with database index of the player
          * @return array|int Path to all sketches (but not the players one)
          */
-        public function getAllSketches($roundIndx, $playerIndx){
-            return $this->corbleDatabase->getAllSketches($roundIndx, $playerIndx);
+        public static function getAllSketches($roundIndx, $playerIndx){
+            return DatabaseLibrary::getAllSketches($roundIndx, $playerIndx);
         }
 
         /**
          * Get key-value array to display the leaderboard with name and score for each player
          * @param $lobbyIndx String with index of lobby
          */
-        public function getLeaderBoard($lobbyIndx){
-            $players = array($this->corbleDatabase->getPlayersOfLobby($lobbyIndx));
+        public static function getLeaderBoard($lobbyIndx){
+            $players = array(DatabaseLibrary::getPlayersOfLobby($lobbyIndx));
             $leaderboard = array();
             foreach ($players as $player){
                 $playerScore = 0;
-                $result = $this->corbleDatabase->getScoreOfPlayer($player::getIndx());
+                $result = DatabaseLibrary::getScoreOfPlayer($player::getIndx());
                 foreach($result as $res){
                     $playerScore = $playerScore + $res;
                 }

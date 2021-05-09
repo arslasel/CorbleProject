@@ -38,8 +38,8 @@ class WordpoolModel{
      * Creates a list of Wordpools
      * @return array With worpools available on database
      */
-    public static function getWordPools(){
-        $res = DatabaseLibrary::getWordpools();
+    public static function getWordPools($corbleDatabase){
+        $res = $corbleDatabase->getWordpools();
         $wordpools = array();
         if ($res->num_rows > 0) {
             while ($row = $res->fetch_assoc()) {

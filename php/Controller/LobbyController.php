@@ -6,7 +6,7 @@
         private $corbleDatabase;
         
         public function __construct(){
-            $this->corbleDatabase = new CorbleDatabase();
+            $this->corbleDatabase = new DatabaseLibrary();
             $this->lobbyModel = new LobbyModel($this->corbleDatabase);
         }
         

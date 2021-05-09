@@ -15,7 +15,7 @@ class RatingModelTest extends TestCase{
     }
 
     public function test_PointValidation(){
-        $stub = $this->createMock(CorbleDatabase::class);
+        $stub = $this->createMock(DatabaseLibrary::class);
         $this->ratingModel = new RatingModel($stub,"../../img/Corble.png","Corble");
         $this->assertEquals(-10, $this->ratingModel->validatePenaltiePoints(-10)); //good
         $this->assertEquals(1,$this->ratingModel->validatePenaltiePoints(1)); //good
@@ -25,7 +25,7 @@ class RatingModelTest extends TestCase{
     }
 
     public function test_SetPenaltiePoints(){
-        $stub = $this->createMock(CorbleDatabase::class);
+        $stub = $this->createMock(DatabaseLibrary::class);
         $this->ratingModel = new RatingModel($stub,"../../img/Corble.png","Corble");
         $this->assertEquals(0.5,$this->ratingModel->setPenaltiesRatioPoints(0.1,0));
         $this->assertEquals(1.5,$this->ratingModel->setPenaltiesRatioPoints(0.1,1));
@@ -41,7 +41,7 @@ class RatingModelTest extends TestCase{
     }
 
     public function test_calculatePenaltiesRatio(){
-        $stub = $this->createMock(CorbleDatabase::class);
+        $stub = $this->createMock(DatabaseLibrary::class);
         $this->ratingModel = new RatingModel($stub,"../../img/Corble.png","Corble");
         $this->assertEquals(1.0,$this->ratingModel->calculatePenaltiesRatio(0.7,0.3,0.1,0.9));
         $this->assertEquals(6.5,$this->ratingModel->calculatePenaltiesRatio(2.7,0.3,0.1,0.9));
@@ -51,7 +51,7 @@ class RatingModelTest extends TestCase{
     }
 
     public function test_calculateRatio(){
-        $stub = $this->createMock(CorbleDatabase::class);
+        $stub = $this->createMock(DatabaseLibrary::class);
         $this->ratingModel = new RatingModel($stub,"../../img/Corble.png","Corble");
 
         $result = $this->ratingModel->calculateRatio(50,50,1,1,1,1,"black","red");
@@ -68,7 +68,7 @@ class RatingModelTest extends TestCase{
     }
 
     public function test_setupColorCounter(){
-        $stub = $this->createMock(CorbleDatabase::class);
+        $stub = $this->createMock(DatabaseLibrary::class);
         $this->ratingModel = new RatingModel($stub,"../../img/Corble.png","Corble");
 
         $this->assertEquals(1,$this->ratingModel->setupColorCounter(1,2,3,4,5,6,"black"));
@@ -83,7 +83,7 @@ class RatingModelTest extends TestCase{
     }
 
     public function test_foreignColorsRate(){
-        $stub = $this->createMock(CorbleDatabase::class);
+        $stub = $this->createMock(DatabaseLibrary::class);
         $this->ratingModel = new RatingModel($stub,"../../img/Corble.png","Corble");
         $this->ratingModel->setPrimaryColor("red");
         $this->ratingModel->setSecondaryColor("blue");
@@ -98,7 +98,7 @@ class RatingModelTest extends TestCase{
     }
     
     public function test_ratioColorsRate(){
-        $stub = $this->createMock(CorbleDatabase::class);
+        $stub = $this->createMock(DatabaseLibrary::class);
         $this->ratingModel = new RatingModel($stub,"../../img/Corble.png","Corble");
         $this->ratingModel->setPrimaryColor("red");
         $this->ratingModel->setSecondaryColor("blue");

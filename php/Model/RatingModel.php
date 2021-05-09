@@ -36,10 +36,10 @@
 
             $actualPoints = $this->MAX_POINTS;
 
-            $this->primaryOptimalColorRatio = DatabaseLibrary::getPrimaryOptimalColorRatioForWord($word);
-            $this->secondaryOptimalColorRatio = DatabaseLibrary::getSecondaryOptimalColorRatioForWord($word);
-            $this->primaryColor = DatabaseLibrary::getPrimaryColor($word);
-            $this->secondaryColor = DatabaseLibrary::getSecondaryColor($word);
+            $this->primaryOptimalColorRatio = $this->corbleDatabase->getPrimaryOptimalColorRatioForWord($word);
+            $this->secondaryOptimalColorRatio = $this->corbleDatabase->getSecondaryOptimalColorRatioForWord($word);
+            $this->primaryColor = $this->corbleDatabase->getPrimaryColor($word);
+            $this->secondaryColor = $this->corbleDatabase->getSecondaryColor($word);
         }
 
         /**
@@ -107,7 +107,7 @@
             $penaltiePoints += $this->foreignColorsRate($blackCounter,$redCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter);
             $penaltiePoints = $this->validatePenaltiePoints($penaltiePoints);
             $totalPoints = $this->actualPoints - $penaltiePoints;
-            DatabaseLibrary::setComputerScoreForSketch($totalPoints, $sketchIndx);
+            $this->corbleDatabase->setComputerScoreForSketch($totalPoints, $sketchIndx);
         }
         
         /**

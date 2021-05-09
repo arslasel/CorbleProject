@@ -28,10 +28,10 @@ class LobbyModel
     public function login($UserName)
     {
         // check if a user with the same name exists
-        if(DatabaseLibrary::checkIfUserExists($UserName)){
+        if ($this->corbleDatabase->checkIfUserExists($UserName)) {
             return false;
         } else { // there is no user with the same name continue login
-            $insertID = DatabaseConnection::executeInsertQuery(
+            $insertID = $this->corbleDatabase->executeInsertQuery(
                 "INSERT INTO tbl_player (name)VALUES ('" . $UserName . "')"
             );
             if ($insertID != 0) {
@@ -40,7 +40,6 @@ class LobbyModel
             }
             return false;
         }
-
     }
 
     public function setUserName($UserName)
@@ -53,31 +52,38 @@ class LobbyModel
         return $this->UserName;
     }
 
-    public function getState(){
+    public function getState()
+    {
         return $this->state;
     }
 
-    public function getVoteTime(){
+    public function getVoteTime()
+    {
         return $this->votetime;
     }
 
-    public function getStartTime(){
+    public function getStartTime()
+    {
         return $this->starttime;
     }
 
-    public function getDrawTime(){
+    public function getDrawTime()
+    {
         return $this->drawtime;
     }
 
-    public function getMaxPlayers(){
+    public function getMaxPlayers()
+    {
         return $this->maxplayer;
     }
 
-    public function getJoinCode(){
+    public function getJoinCode()
+    {
         return $this->joincode;
     }
 
-    public function getPlayers(){
+    public function getPlayers()
+    {
         return $this->players;
     }
 
@@ -90,22 +96,22 @@ class LobbyModel
         $this->wordpools = $wordpools;
 
         $this->generateLobbyDatabaseEntry();
-        $this->joinLobby($this->joincode, $_SESSION["lobby_username"],true);
+        $this->joinLobby($this->joincode, $_SESSION["lobby_username"], true);
     }
 
     private function generateLobbyDatabaseEntry()
     {
         //generate Joincode and check if exists.
-        do{
+        do {
             $this->joincode = rand(100000, 999999);
-        }while(DatabaseLibrary::checkIfJoinCodeExists($this->joincode));
-        
+        } while ($this->corbleDatabase->checkIfJoinCodeExists($this->joincode));
+
         $date = new DateTime();
         $this->starttimeUNIX = $date->getTimestamp() + $this->starttime;
 
         $playerINDX = PlayerModel::getPlayerIndxByName($_SESSION["lobby_username"]);
-        
-        $insertID = DatabaseLibrary::generateLobby($this->votetime,$this->drawtime,$this->starttimeUNIX,$this->maxplayer,$this->joincode,$playerINDX);
+
+        $insertID = $this->corbleDatabase->generateLobby($this->votetime, $this->drawtime, $this->starttimeUNIX, $this->maxplayer, $this->joincode, $playerINDX);
 
         if ($insertID != 0) {
             $_SESSION["lobby_joincode"] = $this->joincode;
@@ -113,31 +119,32 @@ class LobbyModel
         }
     }
 
+    public function addWordCategoriesToLobby()
+    {
+        $this->corbleDatabase->addWordCategoriesToLobby($this->wordpools, $this->indx);
+    }
+
     public function getLobbyIndxByJoincode($joincode)
     {
-            DatabaseLibrary::addWordCategoriesToLobby($this->wordpools,$this->indx);
-        }
+        return $this->corbleDatabase->getLobbyIndxByJoincode($joincode);
     }
 
-    public static function getLobbyIndxByJoincode($joincode)
+    public function getPlayersOfLobby($lobbyINDX)
     {
-        return DatabaseLibrary::getLobbyIndxByJoincode($joincode);
+        return $this->corbleDatabase->getPlayersOfLobby($lobbyINDX);
     }
 
-    public static function getPlayersOfLobby($lobbyINDX){
-        return DatabaseLibrary::getPlayersOfLobby($lobbyINDX);
+    public function getWordpoolsOfLobby($lobbyINDX)
+    {
+        return $this->corbleDatabase->getWordpoolsOfLobby($lobbyINDX);
     }
 
-    public static function getWordpoolsOfLobby($lobbyINDX){
-        return DatabaseLibrary::getWordpoolsOfLobby($lobbyINDX);
-    }
+    public function readLobbyDataFromDB()
+    {
+        $queryResult = $this->corbleDatabase->readLobbyDataFromDB($_SESSION["lobby_joincode"]);
 
-    public function readLobbyDataFromDB(){
-        $queryResult = DatabaseLibrary::readLobbyDataFromDB($_SESSION["lobby_joincode"]);
->>>>>>> feature/AjaxLobby2
-
-        if($queryResult->num_rows > 0){
-            while($row = $queryResult->fetch_assoc()){
+        if ($queryResult->num_rows > 0) {
+            while ($row = $queryResult->fetch_assoc()) {
                 $this->state = $row["state"];
                 $this->votetime = $row["votetime"];
                 $this->starttime = $row["starttime"];
@@ -146,7 +153,7 @@ class LobbyModel
                 $this->joincode = $row["joincode"];
                 $this->players = $this->getPlayersOfLobby($_SESSION["lobby_lobbyINDX"]);
                 //$this->wordpools = LobbyModel::getWordpoolsOfLobby($_SESSION["lobby_lobbyINDX"]);
-                
+
                 break;
             }
         }
@@ -154,7 +161,7 @@ class LobbyModel
 
     public function joinLobby($joincode, $username, $isPartyLeader)
     {
-        $playerINDX = PlayerModel::getPlayerIndxByName($username);
+        $playerINDX = PlayerModel::getPlayerIndxByName($this->corbleDatabase,$username);
         $lobbyINDX = $this->getLobbyIndxByJoincode($joincode);
         $partyLeaderString = "";
         if ($isPartyLeader == true) {
@@ -164,14 +171,13 @@ class LobbyModel
         }
 
         if ($lobbyINDX != 0 && $playerINDX != 0) {
-                $insertID = DatabaseLibrary::addPlayerToLobby($playerINDX,$lobbyINDX,$partyLeaderString);
+            $insertID = $this->corbleDatabase->addPlayerToLobby($playerINDX, $lobbyINDX, $partyLeaderString);
             if ($insertID != 0) {
                 $_SESSION["lobby_lobbyINDX"] = $lobbyINDX;
                 $_SESSION["lobby_joincode"] = $joincode;
             }
         }
     }
-
 }
 
 return;

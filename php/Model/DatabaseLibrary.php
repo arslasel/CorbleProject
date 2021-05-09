@@ -3,7 +3,7 @@
 include_once 'DatabaseConnection.php';
 
 /**
- * Class CorbleDatabase
+ * Class DatabaseLibrary
  *
  * Library of methods with sql statements for the corble database using the Database Conneciton class
  *
@@ -21,7 +21,7 @@ class DatabaseLibrary{
      * @param $user string Username
      * @return bool True iff the user exists on the database
      */
-    public static function checkIfUserExists($user){
+    public function checkIfUserExists($user){
         $sql = "SELECT COUNT(*) as matches FROM  tbl_player WHERE name = '".$user."'";
         $result = DatabaseConnection::executeQuery($sql);
         if($result){
@@ -210,7 +210,7 @@ class DatabaseLibrary{
      * @param $word string Wordname
      * @return int color ratio if word is found else 0
      */
-    public static function getPrimaryOptimalColorRatioForWord($word){
+    public function getPrimaryOptimalColorRatioForWord($word){
         $sql = "SELECT primaryColorRatio AS primaryColorRatio FROM tbl_word WHERE word = '" . $word . "'";
         $result = DatabaseConnection::executeQuery($sql);
         if($result){
@@ -240,7 +240,7 @@ class DatabaseLibrary{
      * @param $word string Word name
      * @return int rgb number of color if not found = 0
      */
-    public static function getPrimaryColor($word){
+    public function getPrimaryColor($word){
         $sql = "SELECT primaryColor  AS primaryColorRatio FROM tbl_word WHERE word = '" . $word . "'";
         $result = DatabaseConnection::executeQuery($sql);
         if($result){
@@ -271,7 +271,7 @@ class DatabaseLibrary{
      * @param $sketchIndx string Index of sketch
      * @return mixed Returns 0 for success else dies
      */
-    public static function setComputerScoreForSketch($totalPoints, $sketchIndx){
+    public function setComputerScoreForSketch($totalPoints, $sketchIndx){
         $sql = "UPDATE tbl_sketch SET computerscore = '" . $totalPoints ."' WHERE indx = '" . $sketchIndx . "'";
         return DatabaseConnection::executeInsertQuery($sql);
     }
@@ -281,7 +281,7 @@ class DatabaseLibrary{
      * @param $lobbyIndex string Index of lobby
      * @return mixed Returns player name or 0 if not found
      */
-    public static function getPlayerWithBestVotedSketch($lobbyIndex){
+    public function getPlayerWithBestVotedSketch($lobbyIndex){
         $sql1 = "SELECT index FROM tbl_round WHERE fk_lobby_index = '" . $lobbyIndex . "'";
         $sql2 = "SELECT MAX(votes) FROM tbl_sketch WHERE fk_round_index IN (". $sql1 . ")";
         $sql3 = "SELECT fk_player_index_sketch FROM tbl_sketch WHERE fk_round_index = roundIndex AND votes = (" . $sql2 . ")";
@@ -300,7 +300,7 @@ class DatabaseLibrary{
      * @param $playerindx string Player index
      * @return array|int Array with paths. if nothing found result is 0
      */
-    public static function getAllSketches($roundIndx, $playerindx){
+    public function getAllSketches($roundIndx, $playerindx){
         $sql = "SELECT path as path FROM tbl_sketch WHERE fk_round_indx = '" . $roundIndx . "' AND fk_player_indx_sketch <> '" . $playerindx . "'";
         $result = DatabaseConnection::executeQuery($sql);
         if($result){
@@ -375,7 +375,7 @@ class DatabaseLibrary{
      * @param $playerIndx string player index
      * @return int|string returns 0 for success
      */
-    public static function savePicture($path, $playerIndx){
+    public function savePicture($path, $playerIndx){
         $sql = "INSERT INTO tbl_sketch (path, computerscore, fk_player_indx_sketch, fk_word_indx_sketch, votes, fk_round_indx) VALUES ('"
             . $path . "', '0', '" . $playerIndx . "', '', '0', '')";
         return DatabaseConnection::executeInsertQuery($sql);
@@ -387,7 +387,7 @@ class DatabaseLibrary{
      * @param: int $sketchIndx
      * @return: int array() $result->fetch_assoc()
      */
-    public static function getRoundIndexOfSketch($sketchIndx){
+    public function getRoundIndexOfSketch($sketchIndx){
         $sql = "SELECT fk_round_indx_round_sketch FROM tbl_round_sketch WHERE fk_sketch_indx_round_sketch = " .$sketchIndx .";";
         $result = DatabaseConnection::executeQuery($sql);
         if($result){

@@ -14,6 +14,7 @@
         private $ratingModel;
         private $roundIndx;
         private $corbleDatabase;
+        private $roundModel;
 
         /**
          * This method is the constructor of the class RoundController
@@ -21,7 +22,8 @@
          * @param: int $category
          */
         public function __construct($sketches, $categoryId){
-            $this->corbleDatabase = new CorbleDatabase();
+            $this->corbleDatabase = new DatabaseLibrary();
+            $this->roundModel = new RoundModel($this->corbleDatabase);
             $this->sketches = $sketches; //Here are sketch-id and picture information contained
             $this->sketchesIds = array_column($this->sketches, 0);
             $this->categoryId = $categoryId;
@@ -57,7 +59,7 @@
          * @param: int $sketchIndx
          */
         public function sketchRateOfPlayer($sketchIndx){
-            RoundModel::saveRatingFromPlayer($sketchIndx);
+            $this->roundModel->saveRatingFromPlayer($sketchIndx);
         }
 
         /**
@@ -65,7 +67,7 @@
          * @param $lobbyIndx Integer index of lobby
          */
         public function getLeaderBoard($lobbyIndx){
-            RoundModel::getLeaderBoard($lobbyIndx);
+            $this->roundModel->getLeaderBoard($lobbyIndx);
         }
 
         /////////////////////////////////////////////////////////////////////
@@ -83,8 +85,8 @@
          * This method refreshes the sketches which are contained in the round.
          */
         public function refreshListOfSketches(){
-            $this->roundIndx = RoundModel::getRoundIndexOfSketch($this->sketchesIds[0]);
-            $this->sketches = RoundModel::getAllSketches($this->roundIndx);
+            $this->roundIndx = $this->corbleDatabase->getRoundIndexOfSketch($this->sketchesIds[0]);
+            $this->sketches = $this->roundModel->getAllSketches($this->roundIndx);
         }
     }
 ?>

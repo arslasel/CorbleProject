@@ -53,13 +53,13 @@ if($result){
 }
 */
 
-include_once("../Model/Database.php");
+include_once("../Model/DatabaseLibrary.php");
 include_once("../Model/PlayerModel.php");
 
 class LobbyViewAjaxUpdate{
 
     public function getData($joincode){
-        $dbLib = new DatabaseLibrary();
+        $dbLib = new DatabaseLibrary(new DatabaseConnection());
         $result = $dbLib->readLobbyDataFromDB($joincode);
        
         if($result){

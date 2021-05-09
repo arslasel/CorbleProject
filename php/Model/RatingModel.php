@@ -1,6 +1,6 @@
 <?php
     include_once('ImageProcessorModel.php');
-    include_once('Database.php');
+    include_once('DatabaseLibrary.php');
 
     /**
      * This class is used to rate the picture which is drawn from the player
@@ -32,9 +32,7 @@
             
             $this->imageRessource = $imageRessource;
             $this->imageProcessingController = new ImageProcessorModel($imageRessource);
-            $actualPoints = RatingModel::MAX_POINTS;
-
-            $actualPoints = $this->MAX_POINTS;
+            $actualPoints = self::MAX_POINTS;
 
             $this->primaryOptimalColorRatio = $this->corbleDatabase->getPrimaryOptimalColorRatioForWord($word);
             $this->secondaryOptimalColorRatio = $this->corbleDatabase->getSecondaryOptimalColorRatioForWord($word);
@@ -245,11 +243,11 @@
          * @return: int $penaltiePoints
          */
         function validatePenaltiePoints(int $penaltiePoints){
-            if($penaltiePoints <= RatingModel::MAX_POINTS){
+            if($penaltiePoints <= self::MAX_POINTS){
                 return $penaltiePoints;
             }
             else{
-                return RatingModel::MAX_POINTS;
+                return self::MAX_POINTS;
             }
         }
 

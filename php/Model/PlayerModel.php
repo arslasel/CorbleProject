@@ -5,7 +5,7 @@ class PlayerModel
     private $name;
     private $indx;
     
-    public function __construct($corbleDatabase, $name, $indx)
+    public function __construct($name, $indx)
     {
         $this->name = $name;
         $this->indx = $indx;

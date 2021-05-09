@@ -4,10 +4,13 @@
     class LobbyController{
         private $lobbyModel;
         private $corbleDatabase;
+        private $databaseConnection;
         
         public function __construct(){
-            $this->corbleDatabase = new DatabaseLibrary();
-            $this->lobbyModel = new LobbyModel($this->corbleDatabase);
+            $this->databaseConnection = new DatabaseConnection();
+            $this->corbleDatabase = new DatabaseLibrary($this->databaseConnection);
+            
+            $this->lobbyModel = new LobbyModel($this->corbleDatabase,$this->databaseConnection);
         }
         
         public function login($username){

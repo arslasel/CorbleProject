@@ -1,10 +1,11 @@
 <?php
-include_once("Database.php");
+include_once("DatabaseLibrary.php");
 include_once("PlayerModel.php");
 include_once("WordpoolModel.php");
 class LobbyModel
 {
     private $corbleDatabase;
+    private $databaseConnection;
 
     private $UserName; //name of the current user
 
@@ -20,8 +21,9 @@ class LobbyModel
 
     private $starttimeUNIX;
 
-    public function __construct($corbleDatabase)
+    public function __construct($corbleDatabase,$databaseConnection)
     {
+        $this->databaseConnection = $databaseConnection;
         $this->corbleDatabase = $corbleDatabase;
     }
 
@@ -31,7 +33,7 @@ class LobbyModel
         if ($this->corbleDatabase->checkIfUserExists($UserName)) {
             return false;
         } else { // there is no user with the same name continue login
-            $insertID = $this->corbleDatabase->executeInsertQuery(
+            $insertID = $this->databaseConnection->executeInsertQuery(
                 "INSERT INTO tbl_player (name)VALUES ('" . $UserName . "')"
             );
             if ($insertID != 0) {

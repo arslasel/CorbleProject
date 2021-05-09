@@ -22,7 +22,7 @@
          * @param: int $category
          */
         public function __construct($sketches, $categoryId){
-            $this->corbleDatabase = new DatabaseLibrary();
+            $this->corbleDatabase = new DatabaseLibrary(new DatabaseConnection());
             $this->roundModel = new RoundModel($this->corbleDatabase);
             $this->sketches = $sketches; //Here are sketch-id and picture information contained
             $this->sketchesIds = array_column($this->sketches, 0);

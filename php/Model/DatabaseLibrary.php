@@ -10,10 +10,13 @@ include_once 'DatabaseConnection.php';
  */
 class DatabaseLibrary{
 
+    private $databaseConnection;
+
     /**
      * DatabaseLibrary default constructor
      */
-    public function __construct(){
+    public function __construct($databaseConnection){
+        $this->databaseConnection = $databaseConnection;
     }
 
     /**
@@ -23,7 +26,7 @@ class DatabaseLibrary{
      */
     public function checkIfUserExists($user){
         $sql = "SELECT COUNT(*) as matches FROM  tbl_player WHERE name = '".$user."'";
-        $result = DatabaseConnection::executeQuery($sql);
+        $result = $this->databaseConnection->executeQuery($sql);
         if($result){
             $row = $result->fetch_assoc();
             if($row['matches']==0){
@@ -49,7 +52,7 @@ class DatabaseLibrary{
             VALUES ('" . $votetime . "','" . $rawtime . "',''" . $starttimeUNIX . "','" . $maxplayer . "','"
             . $joincode . "','" . $playerINDX . "', WaitForPlayers')";
         
-        return DatabaseConnection::executeInsertQuery($sql);
+        return $this->databaseConnection->executeInsertQuery($sql);
     }
 
     /**
@@ -59,7 +62,7 @@ class DatabaseLibrary{
      */
     public function checkIfJoinCodeExists($joincode){
         $sql = "SELECT COUNT(*) as matches FROM  tbl_lobby WHERE joincode = '".$joincode."'";
-        $result = DatabaseConnection::executeQuery($sql);
+        $result = $this->databaseConnection->executeQuery($sql);
         if($result){
             $row = $result->fetch_assoc();
             if($row['matches']==0){
@@ -78,7 +81,7 @@ class DatabaseLibrary{
      */
     public function addWordCategoriesToLobby($worldpools,$lobbyIndx){
         $sql = "INSERT INTO tbl_lobby_wordpool (fk_lobby_indx_lobby_wordpool,fk_wordpool_indx_lobby_wordpool)";
-        $conn = DatabaseConnection::createConnection($sql);
+        $conn = $this->databaseConnection->createConnection($sql);
 
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
@@ -102,7 +105,7 @@ class DatabaseLibrary{
      */
     public function getLobbyIndxByJoincode($joincode){
         $sql = "SELECT indx FROM tbl_lobby WHERE joincode= '". $joincode ."'";
-        $result = DatabaseConnection::executeQuery($sql);
+        $result = $this->databaseConnection->executeQuery($sql);
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
             return $row['indx'];
@@ -124,7 +127,7 @@ class DatabaseLibrary{
             WHERE tbl_player.indx = tbl_lobby_player.fk_player_indx_lobby_player 
             AND tbl_lobby_player.fk_lobby_indx_Lobby_player = '" .$lobbyIndx. "'";
 
-        $result = DatabaseConnection::executeQuery($sql);
+        $result = $this->databaseConnection->executeQuery($sql);
         if($result->num_rows > 0){
             while($row = $result->fetch_assoc()){
                 $players[$row["indx"]] = new PlayerModel($row["name"],$row["indx"]);
@@ -146,7 +149,7 @@ class DatabaseLibrary{
             WHERE tbl_wordpool.indx = tbl_lobby_wordpool.fk_wordpool_indx_lobby_wordpool 
             AND tbl_lobby_wordpool.fk_lobby_indx_lobby_wordpool  = '". $lobbyIndx ."'";
 
-        $result = DatabaseConnection::executeQuery($sql);
+        $result = $this->databaseConnection->executeQuery($sql);
         if($result->num_rows > 0){
             while($row = $result->fetch_assoc()){
                 $wordpools[$row["indx"]] = new WordpoolModel($row["name"],$row["indx"]);
@@ -162,7 +165,7 @@ class DatabaseLibrary{
      */
     public function readLobbyDataFromDB($joincode){
         $sql = "SELECT * FROM tbl_lobby WHERE joincode = ''" .$joincode ."'";
-        return DatabaseConnection::executeQuery($sql);
+        return $this->databaseConnection->executeQuery($sql);
     }
 
     /**
@@ -176,7 +179,7 @@ class DatabaseLibrary{
         $sql = "INSERT INTO tbl_lobby_player (fk_player_indx_lobby_player,fk_lobby_indx_Lobby_player,partyLeader) 
         VALUES ('" . $playerIndx . "','". $lobbyIndx . "','" . $partyLeaderString . "')";
        
-        return DatabaseConnection::executeInsertQuery($sql);
+        return $this->databaseConnection->executeInsertQuery($sql);
     }
 
     /**
@@ -186,7 +189,7 @@ class DatabaseLibrary{
      */
     public function getPlayerByIndex($name){
         $sql = "SELECT indx FROM tbl_player WHERE name='" . $name . "'";
-        $result = DatabaseConnection::executeQuery($sql);
+        $result = $this->databaseConnection->executeQuery($sql);
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
             return $row['indx'];
@@ -201,7 +204,7 @@ class DatabaseLibrary{
      */
     public function getWordpools(){
         $sql = "SELECT * FROM  tbl_wordpool";
-        $result = DatabaseConnection::executeQuery($sql);
+        $result = $this->databaseConnection->executeQuery($sql);
         return $result;
     }
 
@@ -212,7 +215,7 @@ class DatabaseLibrary{
      */
     public function getPrimaryOptimalColorRatioForWord($word){
         $sql = "SELECT primaryColorRatio AS primaryColorRatio FROM tbl_word WHERE word = '" . $word . "'";
-        $result = DatabaseConnection::executeQuery($sql);
+        $result = $this->databaseConnection->executeQuery($sql);
         if($result){
             return $result->fetch_assoc();
         }else{
@@ -227,7 +230,7 @@ class DatabaseLibrary{
      */
     public function getSecondaryOptimalColorRatioForWord($word){
         $sql = "SELECT secondaryColorRatio AS primaryColorRatio FROM tbl_word WHERE word = '" . $word . "'";
-        $result = DatabaseConnection::executeQuery($sql);
+        $result = $this->databaseConnection->executeQuery($sql);
         if($result){
             return $result->fetch_assoc();
         }else{
@@ -242,7 +245,7 @@ class DatabaseLibrary{
      */
     public function getPrimaryColor($word){
         $sql = "SELECT primaryColor  AS primaryColorRatio FROM tbl_word WHERE word = '" . $word . "'";
-        $result = DatabaseConnection::executeQuery($sql);
+        $result = $this->databaseConnection->executeQuery($sql);
         if($result){
             return $result->fetch_assoc();
         }else{
@@ -257,7 +260,7 @@ class DatabaseLibrary{
      */
     public function getSecondaryColor($word){
         $sql = "SELECT secondaryColor  AS primaryColorRatio FROM tbl_word WHERE word = '" . $word . "'";
-        $result = DatabaseConnection::executeQuery($sql);
+        $result = $this->databaseConnection->executeQuery($sql);
         if($result){
             return $result->fetch_assoc();
         }else{
@@ -273,7 +276,7 @@ class DatabaseLibrary{
      */
     public function setComputerScoreForSketch($totalPoints, $sketchIndx){
         $sql = "UPDATE tbl_sketch SET computerscore = '" . $totalPoints ."' WHERE indx = '" . $sketchIndx . "'";
-        return DatabaseConnection::executeInsertQuery($sql);
+        return $this->databaseConnection->executeInsertQuery($sql);
     }
 
     /**
@@ -286,7 +289,7 @@ class DatabaseLibrary{
         $sql2 = "SELECT MAX(votes) FROM tbl_sketch WHERE fk_round_index IN (". $sql1 . ")";
         $sql3 = "SELECT fk_player_index_sketch FROM tbl_sketch WHERE fk_round_index = roundIndex AND votes = (" . $sql2 . ")";
         $sql4 = "SELECT name FROM tbl_player WHERE indx = " . $sql3;
-        $result = DatabaseConnection::executeQuery($sql4);
+        $result = $this->databaseConnection->executeQuery($sql4);
         if ($result) {
             return $result->fetch_assoc();
         } else {
@@ -302,7 +305,7 @@ class DatabaseLibrary{
      */
     public function getAllSketches($roundIndx, $playerindx){
         $sql = "SELECT path as path FROM tbl_sketch WHERE fk_round_indx = '" . $roundIndx . "' AND fk_player_indx_sketch <> '" . $playerindx . "'";
-        $result = DatabaseConnection::executeQuery($sql);
+        $result = $this->databaseConnection->executeQuery($sql);
         if($result){
             $results = array();
             while($row = $result->fetch_row()){
@@ -324,7 +327,7 @@ class DatabaseLibrary{
         $sql2 = "SELECT MAX(computerscore) FROM tbl_sketch WHERE fk_round_index  IN (". $sql1 . ")";
         $sql3 = "SELECT fk_player_index_sketch FROM tbl_sketch WHERE fk_round_index = roundIndex AND computerscore = (" . $sql2 . ")";
         $sql4 = "SELECT name FROM tbl_player WHERE indx = " . $sql3;
-        $result = DatabaseConnection::executeQuery($sql4);
+        $result = $this->databaseConnection->executeQuery($sql4);
         if ($result) {
             return $result->fetch_assoc();
         } else {
@@ -343,7 +346,7 @@ class DatabaseLibrary{
         $sql3 = "SELECT fk_player_index_sketch FROM tbl_sketch WHERE fk_round_index = roundIndex AND computerscore = (" . $sql2 . ")";
         $sql4 = "SELECT name FROM tbl_player WHERE indx = " . $sql3;
 
-        $result = DatabaseConnection::executeQuery($sql4);
+        $result = $this->databaseConnection->executeQuery($sql4);
         if ($result) {
             return $result->fetch_assoc();
         } else {
@@ -361,7 +364,7 @@ class DatabaseLibrary{
         $sql2 = "SELECT MAX(votes) FROM tbl_sketch WHERE fk_round_index IN (". $sql1 . ")";
         $sql3 = "SELECT path FROM tbl_sketch WHERE fk_round_index = roundIndex AND votes = (" . $sql2 . ")";
 
-        $result = DatabaseConnection::executeQuery($sql3);
+        $result = $this->databaseConnection->executeQuery($sql3);
         if ($result) {
             return $result->fetch_assoc();
         } else {
@@ -378,7 +381,7 @@ class DatabaseLibrary{
     public function savePicture($path, $playerIndx){
         $sql = "INSERT INTO tbl_sketch (path, computerscore, fk_player_indx_sketch, fk_word_indx_sketch, votes, fk_round_indx) VALUES ('"
             . $path . "', '0', '" . $playerIndx . "', '', '0', '')";
-        return DatabaseConnection::executeInsertQuery($sql);
+        return $this->databaseConnection->executeInsertQuery($sql);
     }
 
 
@@ -389,7 +392,7 @@ class DatabaseLibrary{
      */
     public function getRoundIndexOfSketch($sketchIndx){
         $sql = "SELECT fk_round_indx_round_sketch FROM tbl_round_sketch WHERE fk_sketch_indx_round_sketch = " .$sketchIndx .";";
-        $result = DatabaseConnection::executeQuery($sql);
+        $result = $this->databaseConnection->executeQuery($sql);
         if($result){
             return $result->fetch_assoc();
         }
@@ -408,7 +411,7 @@ class DatabaseLibrary{
         $sql2 = "SELECT MAX(computerscore) FROM tbl_sketch WHERE fk_round_index IN (". $sql1 . ")";
         $sql3 = "SELECT path FROM tbl_sketch WHERE fk_round_index = roundIndex AND computerscore = (" . $sql2 . ")";
 
-        $result = DatabaseConnection::executeQuery($sql3);
+        $result = $this->databaseConnection->executeQuery($sql3);
         if ($result) {
             return $result->fetch_assoc();
         } else {
@@ -423,7 +426,7 @@ class DatabaseLibrary{
      */
     public function getAllWordIdsOfCategory($categoryId){
         $sql = "SELECT fk_word_indx_wordpool_word FROM tbl_wordpool_word WHERE fk_wordpool_indx_wordpool_word = '" .$categoryId . "'";
-        $result = DatabaseConnection::executeQuery($sql);
+        $result = $this->databaseConnection->executeQuery($sql);
         if($result){
             return $result->fetch_assoc();
         }
@@ -442,7 +445,7 @@ class DatabaseLibrary{
         $sql2 = "SELECT MIN(computerscore) FROM tbl_sketch WHERE fk_round_index IN (". $sql1 . ")";
         $sql3 = "SELECT path FROM tbl_sketch WHERE fk_round_index = roundIndex AND computerscore = (" . $sql2 . ")";
 
-        $result = DatabaseConnection::executeQuery($sql3);
+        $result = $this->databaseConnection->executeQuery($sql3);
         if ($result) {
             return $result->fetch_assoc();
         } else {
@@ -463,7 +466,7 @@ class DatabaseLibrary{
         $sql4 = "SELECT fk_player_index_sketch FROM " . $sql2 . " WHERE total = " . $sql3;
         $sql5 = "SELECT name FROM tbl_player WHERE indx = " . $sql4;
 
-        $result = DatabaseConnection::executeQuery($sql5);
+        $result = $this->databaseConnection->executeQuery($sql5);
         if ($result) {
             return $result->fetch_assoc();
         } else {
@@ -478,7 +481,7 @@ class DatabaseLibrary{
      */
     public function getVotes($sketchIndx){
         $sql = "SELECT votes FROM tbl_sketch WHERE indx = '" . $sketchIndx . "' LIMIT 1 FOR UPDATE";
-        $result = DatabaseConnection::executeQuery($sql);
+        $result = $this->databaseConnection->executeQuery($sql);
         if($result){
             return $result->fetch_assoc();
         }
@@ -493,7 +496,7 @@ class DatabaseLibrary{
      */
     public function setVotes($votes, $sketchIndx){
         $sql = "UPDATE tbl_sketch SET votes = '" . $votes . "' WHERE indx = '" . $sketchIndx . "'";
-        DatabaseConnection::executeQuery($sql);
+        $this->databaseConnection->executeQuery($sql);
     }
 
     /**
@@ -503,7 +506,7 @@ class DatabaseLibrary{
      */
     public function getScoreOfPlayer($playerIndx){
         $sql = "SELECT votes FROM tbl_sketch WHERE fk_player_indx_sketch = '" . $playerIndx . "'";
-        $result = DatabaseConnection::executeQuery($sql);
+        $result = $this->databaseConnection->executeQuery($sql);
         if($result){
             return $result->fetch_assoc();
         }

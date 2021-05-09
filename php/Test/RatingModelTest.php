@@ -20,8 +20,8 @@ class RatingModelTest extends TestCase{
         $this->assertEquals(-10, $this->ratingModel->validatePenaltiePoints(-10)); //good
         $this->assertEquals(1,$this->ratingModel->validatePenaltiePoints(1)); //good
         $this->assertEquals(5,$this->ratingModel->validatePenaltiePoints(5)); //good
-        $this->assertEquals(RatingModel::MAX_POINTS, $this->ratingModel->validatePenaltiePoints(19)); //bad
-        $this->assertEquals(RatingModel::MAX_POINTS, $this->ratingModel->validatePenaltiePoints(5000)); //bad
+        $this->assertEquals(10, $this->ratingModel->validatePenaltiePoints(19)); //bad
+        $this->assertEquals(10, $this->ratingModel->validatePenaltiePoints(5000)); //bad
     }
 
     public function test_SetPenaltiePoints(){

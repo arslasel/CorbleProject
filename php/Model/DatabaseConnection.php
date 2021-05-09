@@ -6,22 +6,22 @@
  * Class with methods to ececute sql statments on the corble database.
  */
 class DatabaseConnection{
-    private static $servername = "corble.ch";
-    private static $username = "rigpdqdi_kaya";
-    private static $password = "Zhaw-1234!";
-    private static $db = "rigpdqdi_corbleCh";
+    private $servername = "corble.ch";
+    private $username = "rigpdqdi_kaya";
+    private $password = "Zhaw-1234!";
+    private $db = "rigpdqdi_corbleCh";
 
     /**
      * Creates a simple connection to the database:
      *  -> Use only if predefined query-methods are not sufficient
      * @return mysqli Returns a database connection to execute querries
      */
-    public static function createConnection(){
+    public function createConnection(){
         return new mysqli(
-            DatabaseConnection::$servername,
-            DatabaseConnection::$username,
-            DatabaseConnection::$password,
-            DatabaseConnection::$db
+            $this->servername,
+            $this->username,
+            $this->password,
+            $this->db
         );
     }
 
@@ -31,9 +31,9 @@ class DatabaseConnection{
      * @param $query String Querry to be executed on the Corble Database
      * @return bool|mysqli_result Result of querry
      */
-    public static function executeQuery($query){
+    public function executeQuery($query){
         // Create connection
-        $conn = self::createConnection();
+        $conn = $this->createConnection();
 
         // Check connection
         if ($conn->connect_error) {
@@ -48,8 +48,8 @@ class DatabaseConnection{
      * @param $query string with querry to be executed
      * @return int|string Result (Error-Code)
      */
-    public static function executeInsertQuery($query){
-        $conn = self::createConnection();
+    public function executeInsertQuery($query){
+        $conn = $this->createConnection();
 
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);

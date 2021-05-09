@@ -302,7 +302,7 @@ session_start();
     </div>
     <?php
     ini_set('display_errors', 1);
-    include("../Controller/LobbyController.php");
+    include_once("../Controller/LobbyController.php");
     $lobbyController = new LobbyController();
 
     if (isset($_POST['join_submit'])) {
@@ -324,11 +324,10 @@ session_start();
         if (!isset($_SESSION["lobby_username"])) {
             echo "<script>document.getElementById('select_name').removeAttribute('hidden'); </script>";
         } else {
-            echo "<script>document.getElementById('select_name').setAttribute(hidden', ''); </script>";
+            echo "<script>document.getElementById('select_name').setAttribute('hidden', ''); </script>";
             echo "<script>document.getElementById('lobby_configurator').removeAttribute('hidden'); </script>";
 
             $wordpools = $lobbyController->getWordPools();
-
             foreach ($wordpools as $wordpool) {
                 echo "<script>
                     var select = document.getElementById('lobby_config_wordpool');
@@ -340,16 +339,52 @@ session_start();
             }
         }
     } else {
-        echo "<script>document.getElementById('select_name').setAttribute(hidden', ''); </script>";
-        echo "<script>document.getElementById('lobby_configurator').setAttribute(hidden', ''); </script>";
+        echo "<script>document.getElementById('select_name').setAttribute('hidden', ''); </script>";
+        echo "<script>document.getElementById('lobby_configurator').setAttribute('hidden', ''); </script>";
         echo "<script>document.getElementById('lobby_overview').removeAttribute('hidden'); </script>";
 
-        echo "<script>
+
+
+        echo "
+        <script>
             window.setInterval(()=>{
-                document.getElementById('lobby_overview_refresh').click();
-                console.log('fetching data');
+                loadLobbyData();
             },1000);
+
+            function loadLobbyData(){
+                var joincode = ". $_SESSION['lobby_joincode'].";
+                $.ajax({
+                    type: 'post',
+                    url: '../Controller/LobbyViewAjaxUpdate.php',
+                    data: {
+                        joincode:joincode,
+                    },
+                    dataType: 'JSON',
+                    success:function(response){
+                        document.getElementById('lobby_overview_state').innerHTML = response.state;
+                        document.getElementById('lobby_overview_votetime').innerHTML = response.votetime;
+                        document.getElementById('lobby_overview_starttime').innerHTML = response.starttime;
+                        document.getElementById('lobby_overview_drawtime').innerHTML = response.drawtime;
+                        document.getElementById('lobby_overview_maxplayer').innerHTML = response.maxplayer;
+                        document.getElementById('lobby_overview_joincode').innerHTML = response.joincode;
+                    }
+                });
+            }
         </script>";
+
+
+
+
+
+
+
+
+        // echo "<script>
+        //     window.setInterval(()=>{
+        //         document.getElementById('lobby_overview_refresh').click();
+        //         console.log('fetching data');
+        //     },1000);
+        // </script>";
 
         if (isset($_POST['lobby_overview_refresh_submit'])) {
             $model = $lobbyController->readLobbyDataFromDB();

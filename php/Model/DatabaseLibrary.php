@@ -1,6 +1,6 @@
 <?php
 
-include_once './DatabaseConnection.php';
+include_once 'DatabaseConnection.php';
 
 /**
  * Class CorbleDatabase
@@ -42,7 +42,7 @@ class DatabaseLibrary{
      * @param $maxplayer int Maximum amount of players
      * @param $joincode string String to join the lobby
      * @param $playerINDX string Strin with index of the player who is lobby-leader
-     * @return int boolean if the insert has worked
+     * @return lobby id
      */
     public function generateLobby($votetime,$rawtime,$starttimeUNIX,$maxplayer,$joincode,$playerINDX){
         $sql = "INSERT INTO tbl_lobby (votetime,drawtime,starttime,maxplayer,joincode,fk_player_indx_lobby,state) 
@@ -146,7 +146,7 @@ class DatabaseLibrary{
             WHERE tbl_wordpool.indx = tbl_lobby_wordpool.fk_wordpool_indx_lobby_wordpool 
             AND tbl_lobby_wordpool.fk_lobby_indx_lobby_wordpool  = '". $lobbyIndx ."'";
 
-        $result = DatabaseLibrary::executeQuery($sql);
+        $result = DatabaseConnection::executeQuery($sql);
         if($result->num_rows > 0){
             while($row = $result->fetch_assoc()){
                 $wordpools[$row["indx"]] = new WordpoolModel($row["name"],$row["indx"]);
@@ -197,18 +197,12 @@ class DatabaseLibrary{
 
     /**
      * Returns an array of Wordpool instances
-     * @return mixed array of wordpools - can be empty
+     * @return resultset $result
      */
     public function getWordpools(){
-        $wordpools = array();
         $sql = "SELECT * FROM  tbl_wordpool";
         $result = DatabaseConnection::executeQuery($sql);
-        if($result->num_rows > 0){
-            while($row = $result->fetch_assoc()){
-                $wordpools[$row["indx"]] = new WordpoolModel($row["name"],$row["indx"]);
-            }
-        }
-        return $wordpools;
+        return $result;
     }
 
     /**
@@ -509,7 +503,7 @@ class DatabaseLibrary{
      */
     public function getScoreOfPlayer($playerIndx){
         $sql = "SELECT votes FROM tbl_sketch WHERE fk_player_indx_sketch = '" . $playerIndx . "'";
-        DatabaseConnection::executeQuery($sql);
+        $result = DatabaseConnection::executeQuery($sql);
         if($result){
             return $result->fetch_assoc();
         }

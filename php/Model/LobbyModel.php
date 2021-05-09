@@ -28,7 +28,7 @@ class LobbyModel
         if(DatabaseLibrary::checkIfUserExists($UserName)){
             return false;
         } else { // there is no user with the same name continue login
-            $insertID = DatabaseLibrary::executeInsertQuery(
+            $insertID = DatabaseConnection::executeInsertQuery(
                 "INSERT INTO tbl_player (name)VALUES ('" . $UserName . "')"
             );
             if ($insertID != 0) {

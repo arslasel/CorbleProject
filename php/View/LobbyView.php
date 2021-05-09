@@ -344,12 +344,48 @@ session_start();
         echo "<script>document.getElementById('lobby_configurator').setAttribute(hidden', ''); </script>";
         echo "<script>document.getElementById('lobby_overview').removeAttribute('hidden'); </script>";
 
-        echo "<script>
+
+
+        echo "
+        <script>
             window.setInterval(()=>{
-                document.getElementById('lobby_overview_refresh').click();
-                console.log('fetching data');
+                loadLobbyData();
             },1000);
+
+            function loadLobbyData(){
+                var joincode = ". $_SESSION['lobby_joincode'].";
+                $.ajax({
+                    type: 'post',
+                    url: '../Controller/LobbyViewAjaxUpdate.php',
+                    data: {
+                        joincode:joincode,
+                    },
+                    dataType: 'JSON',
+                    success:function(response){
+                        document.getElementById('lobby_overview_state').innerHTML = response.state;
+                        document.getElementById('lobby_overview_votetime').innerHTML = response.votetime;
+                        document.getElementById('lobby_overview_starttime').innerHTML = response.starttime;
+                        document.getElementById('lobby_overview_drawtime').innerHTML = response.drawtime;
+                        document.getElementById('lobby_overview_maxplayer').innerHTML = response.maxplayer;
+                        document.getElementById('lobby_overview_joincode').innerHTML = response.joincode;
+                    }
+                });
+            }
         </script>";
+
+
+
+
+
+
+
+
+        // echo "<script>
+        //     window.setInterval(()=>{
+        //         document.getElementById('lobby_overview_refresh').click();
+        //         console.log('fetching data');
+        //     },1000);
+        // </script>";
 
         if (isset($_POST['lobby_overview_refresh_submit'])) {
             $model = $lobbyController->readLobbyDataFromDB();

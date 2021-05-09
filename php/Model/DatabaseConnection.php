@@ -18,10 +18,10 @@ class DatabaseConnection{
      */
     public static function createConnection(){
         return new mysqli(
-            DatabaseLibrary::$servername,
-            DatabaseLibrary::$username,
-            DatabaseLibrary::$password,
-            DatabaseLibrary::$db
+            DatabaseConnection::$servername,
+            DatabaseConnection::$username,
+            DatabaseConnection::$password,
+            DatabaseConnection::$db
         );
     }
 
@@ -49,7 +49,7 @@ class DatabaseConnection{
      * @return int|string Result (Error-Code)
      */
     public static function executeInsertQuery($query){
-        $conn = this.self::createConnection();
+        $conn = self::createConnection();
 
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);

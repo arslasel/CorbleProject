@@ -324,11 +324,10 @@ session_start();
         if (!isset($_SESSION["lobby_username"])) {
             echo "<script>document.getElementById('select_name').removeAttribute('hidden'); </script>";
         } else {
-            echo "<script>document.getElementById('select_name').setAttribute(hidden', ''); </script>";
+            echo "<script>document.getElementById('select_name').setAttribute('hidden', ''); </script>";
             echo "<script>document.getElementById('lobby_configurator').removeAttribute('hidden'); </script>";
 
             $wordpools = $lobbyController->getWordPools();
-
             foreach ($wordpools as $wordpool) {
                 echo "<script>
                     var select = document.getElementById('lobby_config_wordpool');
@@ -340,8 +339,8 @@ session_start();
             }
         }
     } else {
-        echo "<script>document.getElementById('select_name').setAttribute(hidden', ''); </script>";
-        echo "<script>document.getElementById('lobby_configurator').setAttribute(hidden', ''); </script>";
+        echo "<script>document.getElementById('select_name').setAttribute('hidden', ''); </script>";
+        echo "<script>document.getElementById('lobby_configurator').setAttribute('hidden', ''); </script>";
         echo "<script>document.getElementById('lobby_overview').removeAttribute('hidden'); </script>";
 
 

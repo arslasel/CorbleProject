@@ -49,8 +49,8 @@ class DatabaseLibrary{
      */
     public function generateLobby($votetime,$rawtime,$starttimeUNIX,$maxplayer,$joincode,$playerINDX){
         $sql = "INSERT INTO tbl_lobby (votetime,drawtime,starttime,maxplayer,joincode,fk_player_indx_lobby,state) 
-            VALUES ('" . $votetime . "','" . $rawtime . "',''" . $starttimeUNIX . "','" . $maxplayer . "','"
-            . $joincode . "','" . $playerINDX . "', WaitForPlayers')";
+            VALUES (" . $votetime . "," . $rawtime . "," . $starttimeUNIX . "," . $maxplayer . ","
+            . $joincode . "," . $playerINDX . ", 'WaitForPlayers')";
         
         return $this->databaseConnection->executeInsertQuery($sql);
     }
@@ -176,8 +176,15 @@ class DatabaseLibrary{
      * @return int returns 0 on success else dies
      */
     public function addPlayerToLobby($playerIndx,$lobbyIndx,$partyLeaderString){
+        $partyLeaderStringDB = "";
+        if($partyLeaderString == "TRUE"){
+            $partyLeaderStringDB = "1";
+        } else {
+            $partyLeaderStringDB = "0";
+        }
+
         $sql = "INSERT INTO tbl_lobby_player (fk_player_indx_lobby_player,fk_lobby_indx_Lobby_player,partyLeader) 
-        VALUES ('" . $playerIndx . "','". $lobbyIndx . "','" . $partyLeaderString . "')";
+        VALUES (" . $playerIndx . ",". $lobbyIndx . "," .$partyLeaderStringDB .")";
        
         return $this->databaseConnection->executeInsertQuery($sql);
     }
@@ -383,7 +390,6 @@ class DatabaseLibrary{
             . $path . "', '0', '" . $playerIndx . "', '', '0', '')";
         return $this->databaseConnection->executeInsertQuery($sql);
     }
-
 
     /**
      * This method gets the round index of a specific sketch

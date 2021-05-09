@@ -111,7 +111,7 @@ class LobbyModel
         $date = new DateTime();
         $this->starttimeUNIX = $date->getTimestamp() + $this->starttime;
 
-        $playerINDX = PlayerModel::getPlayerIndxByName($_SESSION["lobby_username"]);
+        $playerINDX = PlayerModel::getPlayerIndxByName($this->corbleDatabase,$_SESSION["lobby_username"]);
 
         $insertID = $this->corbleDatabase->generateLobby($this->votetime, $this->drawtime, $this->starttimeUNIX, $this->maxplayer, $this->joincode, $playerINDX);
 

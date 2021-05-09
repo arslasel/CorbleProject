@@ -43,7 +43,7 @@ class WordpoolModel{
         $wordpools = array();
         if ($res->num_rows > 0) {
             while ($row = $res->fetch_assoc()) {
-                $wordpools[$row["indx"]] = new WordpoolModel($corbleDatabase,$row["indx"], $row["name"]);
+                $wordpools[$row["indx"]] = new WordpoolModel($row["indx"], $row["name"]);
             }
         }
         return $wordpools;

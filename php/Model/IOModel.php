@@ -18,7 +18,7 @@ class IOModel
      * @param String $pictureIndex Index of Picture (used as filename)
      */
     public function savePicture(String $pictureBase64, String $lobbyIndex, String $roundIndex, String $pictureIndex){
-        $path = createRoundFolder($lobbyIndex, $roundIndex);
+        $path = $this->createRoundFolder($lobbyIndex, $roundIndex);
         $path .= "/" . $pictureIndex . ".png";
         if(is_file($path) or is_writable($path)) {
             file_put_contents($path, base64_decode($pictureBase64));
@@ -33,7 +33,7 @@ class IOModel
      */
     public function returnPathOfPictureIndex(String $pictureIndex){
         $filename = $pictureIndex . ".txt";
-        return rsearch($this->root, filename);
+        return $this->rsearch($this->root, $filename);
     }
 
     /**
@@ -59,7 +59,7 @@ class IOModel
     }
 
     private function createRoundFolder(String $lobbyIndex, String $roundIndex){
-        $path =  $this->createRoundFolder($lobbyIndex);
+        $path =  $this->createRoundFolder($lobbyIndex); //TODO Roman fix params here
         $path .= "/" . $roundIndex;
 
         if(!file_exists($path)){

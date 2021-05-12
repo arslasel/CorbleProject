@@ -354,22 +354,24 @@ session_start();
             function loadLobbyData(){
                 var joincode = ". $_SESSION['lobby_joincode'].";
                 $.ajax({
-                    type: 'post',
+                    type: 'get',
                     url: '../Controller/LobbyViewAjaxUpdate.php',
                     data: {
                         joincode:joincode,
                     },
-                    dataType: 'JSON',
                     success:function(response){
-                        document.getElementById('lobby_overview_state').innerHTML = response.state;
-                        document.getElementById('lobby_overview_votetime').innerHTML = response.votetime;
-                        document.getElementById('lobby_overview_starttime').innerHTML = response.starttime;
-                        document.getElementById('lobby_overview_drawtime').innerHTML = response.drawtime;
-                        document.getElementById('lobby_overview_maxplayer').innerHTML = response.maxplayer;
-                        document.getElementById('lobby_overview_joincode').innerHTML = response.joincode;
+                        data = JSON.parse(response)
+                        document.getElementById('lobby_overview_state').innerHTML = data.state;
+                        document.getElementById('lobby_overview_votetime').innerHTML = data.votetime;
+                        document.getElementById('lobby_overview_starttime').innerHTML = data.starttime;
+                        document.getElementById('lobby_overview_drawtime').innerHTML = data.drawtime;
+                        document.getElementById('lobby_overview_maxplayer').innerHTML = data.maxplayer;
+                        document.getElementById('lobby_overview_joincode').innerHTML = data.joincode;
                     }
                 });
             }
+
+
         </script>";
 
 
@@ -429,3 +431,18 @@ session_start();
 </body>
 
 </html>
+
+<!-- 
+
+            $.ajax({
+                    type: "GET",
+                    url: "../Controller/LobbyViewAjaxUpdate.php?",
+                    data: {joincode:144104},
+                    success: function (data) {
+                        console.log(data);
+                    }
+                });
+                
+                
+
+-->

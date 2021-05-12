@@ -58,10 +58,14 @@ include_once("../Model/PlayerModel.php");
 
 class LobbyViewAjaxUpdate{
 
-    public function getData($joincode){
+    public function getData(){
+
+        ini_set('display_errors', 1); 
+        error_reporting(E_ALL);
+
         $dbLib = new DatabaseLibrary(new DatabaseConnection());
-        $result = $dbLib->readLobbyDataFromDB($joincode);
-       
+        $result = $dbLib->readLobbyDataFromDB($_GET['joincode']);
+
         if($result){
             $row = $result->fetch_assoc();
         
@@ -98,7 +102,7 @@ class LobbyViewAjaxUpdate{
                 "maxplayer" => $maxplayer,
                 "joincode" => $joincode,
                 "players" => $playerArray
-            );
+            ); 
 
             return $return_arr;
         }
@@ -108,5 +112,11 @@ class LobbyViewAjaxUpdate{
 }
 
 $testclass = new LobbyViewAjaxUpdate();
-echo $testclass->getData($_POST['joincode']);
+try {
+    echo json_encode($testclass->getData());
+}
+catch (Exception $e) {
+    echo json_encode($e->getMessage());
+}
+
 ?>

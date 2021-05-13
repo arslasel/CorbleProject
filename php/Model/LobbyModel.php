@@ -89,16 +89,17 @@ class LobbyModel
         return $this->players;
     }
 
-    public function createLobby($votetime, $drawtime, $starttime, $maxplayer, $wordpools)
+    public function createLobby($votetime, $drawtime, $starttime, $maxplayer, $wordpools,$username)
     {
         $this->votetime = $votetime;
         $this->drawtime = $drawtime;
         $this->starttime = $starttime;
         $this->maxplayer = $maxplayer;
         $this->wordpools = $wordpools;
+        $this->UserName = $username;
 
         $this->generateLobbyDatabaseEntry();
-        $this->joinLobby($this->joincode, $_SESSION["lobby_username"], true);
+        $this->joinLobby($this->joincode, $username, true);
     }
 
     private function generateLobbyDatabaseEntry()
@@ -111,14 +112,13 @@ class LobbyModel
         $date = new DateTime();
         $this->starttimeUNIX = $date->getTimestamp() + $this->starttime;
 
-        $playerINDX = PlayerModel::getPlayerIndxByName($this->corbleDatabase,$_SESSION["lobby_username"]);
-
+        $playerINDX = PlayerModel::getPlayerIndxByName($this->corbleDatabase,$this->UserName);
         $insertID = $this->corbleDatabase->generateLobby($this->votetime, $this->drawtime, $this->starttimeUNIX, $this->maxplayer, $this->joincode, $playerINDX);
 
         if ($insertID != 0) {
-            $_SESSION["lobby_joincode"] = $this->joincode;
             $this->indx = $insertID;
         }
+        $this->addWordCategoriesToLobby();
     }
 
     public function addWordCategoriesToLobby()

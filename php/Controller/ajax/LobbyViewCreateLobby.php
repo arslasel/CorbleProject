@@ -20,7 +20,8 @@ class LobbyViewCreateLobby{
             $_GET['votetime'],
             $_GET['starttime'], 
             $_GET['maxplayer'], 
-            $wordpools);
+            $wordpools,
+            $_GET['username']);
         
         return 0;
     }

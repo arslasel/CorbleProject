@@ -81,7 +81,9 @@ class DatabaseLibrary{
      */
     public function addWordCategoriesToLobby($worldpools,$lobbyIndx){
         $sql = "INSERT INTO tbl_lobby_wordpool (fk_lobby_indx_lobby_wordpool,fk_wordpool_indx_lobby_wordpool)";
-        $conn = $this->databaseConnection->createConnection($sql);
+        $conn = $this->databaseConnection->createConnection();
+
+        echo "<script>alert('sql1".$sql."')";
 
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
@@ -91,6 +93,8 @@ class DatabaseLibrary{
                     VALUES (
                     " . $lobbyIndx . ",
                     " .  $wordpool. ")";
+
+                    echo "<script>alert('sql2".$sql."')";
 
                 $conn->query($sql);
             }

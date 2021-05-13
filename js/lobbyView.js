@@ -47,7 +47,8 @@ function createLobby() {
             votetime: document.getElementById('lobby_config_votetime').value,
             starttime: document.getElementById('lobby_config_starttime').value,
             maxplayer: document.getElementById("lobby_config_maxplayer").value,
-            wordpools: selected
+            wordpools: selected,
+            username: lobby_username
 
         },
         success: function (response) {
@@ -74,6 +75,28 @@ function login(){
     });
 }
 
+function loadWordPools(){
+    $.ajax({
+        type: 'get',
+        url: '../Controller/ajax/LobbyViewLoadWordPools.php',
+        data: {},
+        success: function (response) {
+            json = JSON.parse(response);
+
+            var select = document.getElementById('lobby_config_wordpool');
+            select.innerHTML = "";
+            json.forEach(wordpool => {
+                var opt = document.createElement('option');
+                opt.value = wordpool.index;
+                opt.innerHTML = wordpool.name;
+                select.appendChild(opt);
+            });
+
+            M.AutoInit();
+        }
+    });
+}
+
 function loadView(){
     if(lobby_username == ""){
         //user is not logged in load login div
@@ -92,6 +115,6 @@ function loadView(){
 }
 
 setTimeout(() => {
-    M.AutoInit()
     loadView();
-}, 100);
+    loadWordPools();
+}, 50);

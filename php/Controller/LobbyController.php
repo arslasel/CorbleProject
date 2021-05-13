@@ -21,8 +21,8 @@
             return WordpoolModel::getWordPools($this->corbleDatabase);
         }
 
-        public function createLobby($votetime,$drawtime,$starttime,$maxplayer,$wordpools){
-            return $this->lobbyModel->createLobby($votetime,$drawtime,$starttime,$maxplayer,$wordpools);
+        public function createLobby($votetime,$drawtime,$starttime,$maxplayer,$wordpools,$username){
+            return $this->lobbyModel->createLobby($votetime,$drawtime,$starttime,$maxplayer,$wordpools,$username);
         }
 
         public function joinLobby($joincode){

@@ -1,5 +1,8 @@
 <?php
-    include_once('ImageProcessorModel.php');
+
+use function PHPUnit\Framework\isNull;
+
+include_once('ImageProcessorModel.php');
     include_once('DatabaseLibrary.php');
 
     /**
@@ -170,6 +173,7 @@
                 string $secondaryColor){
             $primaryColorCounterNum = $this->setupColorCounter($blackCounter, $redCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter, $primaryColor);
             $secondaryColorCounterNum = $this->setupColorCounter($blackCounter, $redCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter, $secondaryColor);
+            //throw new Exception("primaryColorCounterNum: " .$primaryColorCounterNum ."   and secondaryColorCounterNum: " .$secondaryColorCounterNum);
             $totalCount = $primaryColorCounterNum + $secondaryColorCounterNum;
             
             if($totalCount > 0){
@@ -192,18 +196,12 @@
          * @return: int $penaltiePoints
          */
         function calculatePenaltiesRatio(float $primaryOptimalColorRatio, float $secondaryOptimalColorRatio, float $actualPrimaryRatio, float $actualSecondaryRatio){
-            $penaltiePoints = 0;
-
-            if( 
-                $primaryOptimalColorRatio != NULL &&
-                $secondaryOptimalColorRatio != NULL &&
-                $actualPrimaryRatio != NULL && 
-                $actualSecondaryRatio != NULL){
-
-                $differencePrimary = abs($primaryOptimalColorRatio - $actualPrimaryRatio);
-                $differenceSecondary = abs($secondaryOptimalColorRatio - $actualSecondaryRatio);
-                $penaltiePoints += $this->setPenaltiesRatioPoints($differencePrimary, $penaltiePoints);
-                $penaltiePoints += $this->setPenaltiesRatioPoints($differenceSecondary, $penaltiePoints);
+            $penaltiePoints = 0.0;
+            if(isNull($primaryOptimalColorRatio) && isNull($secondaryOptimalColorRatio) && isNull($actualPrimaryRatio) && isNull($actualSecondaryRatio)) {
+                $differencePrimary = (float)abs($primaryOptimalColorRatio - $actualPrimaryRatio);
+                $differenceSecondary = (float)abs($secondaryOptimalColorRatio - $actualSecondaryRatio);
+                $penaltiePoints = $this->setPenaltiesRatioPoints($differencePrimary, $penaltiePoints);
+                $penaltiePoints = $this->setPenaltiesRatioPoints($differenceSecondary, $penaltiePoints);
             }
             else{
                 throw new Exception('One of the ratios is NULL!');
@@ -218,19 +216,22 @@
          * @param: int $penaltiePoints
          * @return: int $penaltiePoints
          */
-        function setPenaltiesRatioPoints(float $difference, int $penaltiePoints){
-            $penaltieRangeHarmless = 1;
-            $penaltieRangeNotGood = 2;
-            $penaltieRangeCatastrophic = 3;
+        function setPenaltiesRatioPoints(float $difference, float $penaltiePoints){
+            $penaltieRangeHarmless = 0.31;
+            $penaltieRangeNotGood = 0.61;
+            $penaltieRangeCatastrophic = 0.8;
 
-            if($difference <= $penaltieRangeHarmless){
+            if($difference < 0.1){
+                return $penaltiePoints;
+            }
+            else if($difference < $penaltieRangeHarmless){
                 $penaltiePoints += 0.5;
             }
-            else if($difference > 1 && $difference <= $penaltieRangeNotGood){
-                $penaltiePoints += 2;
+            else if($difference > $penaltieRangeHarmless && $difference < $penaltieRangeNotGood){
+                $penaltiePoints += 2.0;
             }
             else{
-                $penaltiePoints += 3;
+                $penaltiePoints += 3.0;
             }
 
             return $penaltiePoints;

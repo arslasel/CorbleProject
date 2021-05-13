@@ -299,7 +299,7 @@ session_start();
         </div>
     </div>
 
-    <div id="voteContainer" class="content" style="display: none;">
+    <div id="voteContainer" class="content"  style="display: none;">
         <div class="row SizeContainerSlideShow NoMargin">
             <div id="slideshowContainer" class="col s12 l10 NoPadding drawcols">
                 <div class="slideShowContainer">

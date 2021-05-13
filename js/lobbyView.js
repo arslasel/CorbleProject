@@ -1,3 +1,5 @@
+lobby_username = "";
+
 function loadLobbyData(joincode) {
     $.ajax({
         type: 'get',
@@ -37,7 +39,6 @@ function createLobby() {
             } 
         }
     }
-    console.log(selected)
     $.ajax({
         type: 'get',
         url: '../Controller/ajax/LobbyViewCreateLobby.php',
@@ -54,3 +55,43 @@ function createLobby() {
         }
     });
 }
+
+function login(){
+    $.ajax({
+        type: 'get',
+        url: '../Controller/ajax/LobbyViewLogin.php',
+        data: {
+            username: document.getElementById('username').value
+        },
+        success: function (response) {
+            if(response == "success"){
+                lobby_username = document.getElementById('username').value
+                loadView();
+            }else{
+                alert(response)    
+            }
+        }
+    });
+}
+
+function loadView(){
+    if(lobby_username == ""){
+        //user is not logged in load login div
+        document.getElementById("select_name").removeAttribute("hidden");
+        document.getElementById("lobby_configurator").setAttribute("hidden","1");
+        document.getElementById("lobby_overview").setAttribute("hidden","1");
+    }else{
+
+        document.getElementById("username_displaym").innerHTML = lobby_username;
+        document.getElementById("username_displayd").innerHTML = lobby_username;
+        //user is logged in show lobby create / join view
+        document.getElementById("lobby_configurator").removeAttribute("hidden");
+        document.getElementById("select_name").setAttribute("hidden","1");
+        document.getElementById("lobby_overview").setAttribute("hidden","1");
+    }
+}
+
+setTimeout(() => {
+    M.AutoInit()
+    loadView();
+}, 100);

@@ -1,0 +1,28 @@
+{
+    "remotePath": "./",
+    "host": "corble.ch",
+    "username": "gino@corble.ch",
+    "password": "Zhaw-1234!",
+    "secure": false,
+    "protocol": "ftp",
+    "uploadOnSave": true,
+    "extensionsToInclude": [],
+    "path": "F:/PM3",
+    "passive": false,
+    "debug": false,
+    "privateKeyPath": null,
+    "passphrase": null,
+    "agent": null,
+    "allow": [],
+    "ignore": [
+        "\\.vscode",
+        "\\.git",
+        "\\.DS_Store"
+    ],
+    "generatedFiles": {
+        "extensionsToInclude": [
+            ""
+        ],
+        "path": ""
+    }
+}

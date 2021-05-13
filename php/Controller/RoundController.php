@@ -13,6 +13,8 @@
         private const MIN_WORD_ID = 1;
         private $ratingModel;
         private $roundIndx;
+        private $corbleDatabase;
+        private $roundModel;
 
         /**
          * This method is the constructor of the class RoundController
@@ -20,6 +22,8 @@
          * @param: int $category
          */
         public function __construct($sketches, $categoryId){
+            $this->corbleDatabase = new DatabaseLibrary(new DatabaseConnection());
+            $this->roundModel = new RoundModel($this->corbleDatabase);
             $this->sketches = $sketches; //Here are sketch-id and picture information contained
             $this->sketchesIds = array_column($this->sketches, 0);
             $this->categoryId = $categoryId;
@@ -30,7 +34,7 @@
          */
         public function rateSketch(){
             foreach($this->sketches as $sketchId => $valueOfSketch) {
-                $this->ratingModel = new RatingModel($sketchId, $valueOfSketch);
+                $this->ratingModel = new RatingModel($this->corbleDatabase,$sketchId, $valueOfSketch);
                 $this->ratingModel->collectPenalties($sketchId);
             }
         }
@@ -39,7 +43,7 @@
          * This method is used for selecting a random Word out of a category
          */
         public function selectRandomWord(){
-            $wordIds = RoundModel::getAllWordIdsOfCategory($this->categoryId);
+            $wordIds = $this->corbleDatabase->getAllWordIdsOfCategory($this->categoryId);
             if($wordIds != 0){ // if wordIds == 0 then no word was found for category
                 $numOfElements = count($wordIds);
                 $randomNumInArray = rand($this->MIN_WORD_ID, $numOfElements);
@@ -55,7 +59,7 @@
          * @param: int $sketchIndx
          */
         public function sketchRateOfPlayer($sketchIndx){
-            RoundModel::saveRatingFromPlayer($sketchIndx);
+            $this->roundModel->saveRatingFromPlayer($sketchIndx);
         }
 
         /**
@@ -63,7 +67,7 @@
          * @param $lobbyIndx Integer index of lobby
          */
         public function getLeaderBoard($lobbyIndx){
-            RoundModel::getLeaderBoard($lobbyIndx);
+            $this->roundModel->getLeaderBoard($lobbyIndx);
         }
 
         /////////////////////////////////////////////////////////////////////
@@ -81,8 +85,8 @@
          * This method refreshes the sketches which are contained in the round.
          */
         public function refreshListOfSketches(){
-            $this->roundIndx = RoundModel::getRoundIndexOfSketch($this->sketchesIds[0]);
-            $this->sketches = RoundModel::getAllSketches($this->roundIndx);
+            $this->roundIndx = $this->corbleDatabase->getRoundIndexOfSketch($this->sketchesIds[0]);
+            $this->sketches = $this->roundModel->getAllSketches($this->roundIndx);
         }
     }
 ?>

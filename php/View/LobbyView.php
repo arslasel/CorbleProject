@@ -24,6 +24,7 @@ session_start();
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="../../js/init.js"></script>
+    <script src="../../js/lobbyView.js"></script>
     <link rel="icon" type="image/png" href="">
 
 </head>
@@ -289,7 +290,7 @@ session_start();
                             </td>
                             <td>
                                 <div class="row TableDiv">
-                                    <div id="lobby_overview_players"></div>
+                                    <div id="lobby_overview_players">&nbsp;</div>
                                 </div>
                             </td>
                         </tr>
@@ -344,47 +345,13 @@ session_start();
         echo "<script>document.getElementById('lobby_overview').removeAttribute('hidden'); </script>";
 
 
-
         echo "
         <script>
             window.setInterval(()=>{
-                loadLobbyData();
+                loadLobbyData(".$_SESSION['lobby_joincode'].");
             },1000);
-
-            function loadLobbyData(){
-                var joincode = ". $_SESSION['lobby_joincode'].";
-                $.ajax({
-                    type: 'post',
-                    url: '../Controller/LobbyViewAjaxUpdate.php',
-                    data: {
-                        joincode:joincode,
-                    },
-                    dataType: 'JSON',
-                    success:function(response){
-                        document.getElementById('lobby_overview_state').innerHTML = response.state;
-                        document.getElementById('lobby_overview_votetime').innerHTML = response.votetime;
-                        document.getElementById('lobby_overview_starttime').innerHTML = response.starttime;
-                        document.getElementById('lobby_overview_drawtime').innerHTML = response.drawtime;
-                        document.getElementById('lobby_overview_maxplayer').innerHTML = response.maxplayer;
-                        document.getElementById('lobby_overview_joincode').innerHTML = response.joincode;
-                    }
-                });
-            }
         </script>";
 
-
-
-
-
-
-
-
-        // echo "<script>
-        //     window.setInterval(()=>{
-        //         document.getElementById('lobby_overview_refresh').click();
-        //         console.log('fetching data');
-        //     },1000);
-        // </script>";
 
         if (isset($_POST['lobby_overview_refresh_submit'])) {
             $model = $lobbyController->readLobbyDataFromDB();
@@ -402,16 +369,6 @@ session_start();
                 div.innerHTML = '';
                 div.appendChild(ul);
             </script>";
-
-            //TODO add word pools to lobby overview
-            foreach ($model->getPlayers() as $player) {
-                echo "<script>
-                var ul = document.getElementById('lobby_overview_players_list');
-                var li = document.createElement('li');
-                li.textContent = '" . $player->getName() . "';
-                ul.appendChild(li);
-            </script>";
-            }
         }
     }
 

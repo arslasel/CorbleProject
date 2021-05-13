@@ -1,5 +1,6 @@
 <?php
 session_start();
+include_once('../Controller/GameEndConotroller.php');
 ?>
 
 <!DOCTYPE HTML>
@@ -299,7 +300,7 @@ session_start();
         </div>
     </div>
 
-    <div id="voteContainer" class="content"  style="display: none;">
+    <div id="voteContainer" class="content" style="display: none;">
         <div class="row SizeContainerSlideShow NoMargin">
             <div id="slideshowContainer" class="col s12 l10 NoPadding drawcols">
                 <div class="slideShowContainer">
@@ -439,7 +440,12 @@ session_start();
                 <h5 class="WelcomeText">Bestes Bild nach Stimmen</h5>
                 <div class="card">
                     <div class="card-image">
-                        <img src="/img/Ubuntu.png">
+                        <!--<img src="/img/Ubuntu.png">-->
+                        <?php
+                        // TODO Prüfen ob das Stimmt. (Selim)
+                        $gameEndController = new GameEndController($_SESSION["lobby_lobbyINDX"]);
+                        echo $gameEndController->getSketchBestVoted();
+                        ?>
                         <span class="card-title sketchTitle">Selim</span>
                     </div>
                 </div>
@@ -448,7 +454,12 @@ session_start();
                 <h5 class="WelcomeText">Bestes Bild nach Algorithmus</h5>
                 <div class="card">
                     <div class="card-image">
-                        <img src="/img/KimJongUn.png">
+                        <!-- <img src="/img/KimJongUn.png"> -->
+                        <?php
+                        // TODO Prüfen ob das Stimmt. (Selim)
+                        $gameEndController = new GameEndController($_SESSION["lobby_lobbyINDX"]);
+                        echo $gameEndController->getSketchBestAlgorithm();
+                        ?>
                         <span class="card-title sketchTitle">Selim</span>
                     </div>
                 </div>
@@ -457,7 +468,12 @@ session_start();
                 <h5 class="WelcomeText">Schlechtestes Bild nach Algorithmus</h5>
                 <div class="card">
                     <div class="card-image">
-                        <img src="/img/1542233.jpg">
+                        <!--<img src="/img/1542233.jpg">-->
+                        <?php
+                        // TODO Prüfen ob das Stimmt. (Selim)
+                        $gameEndController = new GameEndController($_SESSION["lobby_lobbyINDX"]);
+                        echo $gameEndController->getSketchWorstAlgorithm();
+                        ?>
                         <span class="card-title sketchTitle">Selim</span>
                     </div>
                 </div>
@@ -465,7 +481,13 @@ session_start();
         </div>
         <div class="row">
             <h2 class="WelcomeText selectColorWinner">
-                Gewinner ist: Selim
+                <span id="winnerMessage">
+                    <!--Wird nur als Lernhilfe für selim verwendet-->
+                    <?php
+                    $gameEndController = new GameEndController($_SESSION["lobby_lobbyINDX"]);
+                    echo "Der Gewinner ist: " . $gameEndController->getWinner();
+                    ?>
+                </span>
             </h2>
         </div>
     </div>

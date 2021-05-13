@@ -29,25 +29,21 @@ class RatingModelTest extends TestCase{
         $this->ratingModel = new RatingModel($stub,"../../img/Corble.png","Corble");
         $this->assertEquals(0.5,$this->ratingModel->setPenaltiesRatioPoints(0.1,0));
         $this->assertEquals(1.5,$this->ratingModel->setPenaltiesRatioPoints(0.1,1));
-        $this->assertEquals(0.5,$this->ratingModel->setPenaltiesRatioPoints(1,0));
-        $this->assertEquals(2,$this->ratingModel->setPenaltiesRatioPoints(1.1,0));
-        $this->assertEquals(2,$this->ratingModel->setPenaltiesRatioPoints(2,0));
-        $this->assertEquals(3,$this->ratingModel->setPenaltiesRatioPoints(2,1));
-        $this->assertEquals(2,$this->ratingModel->setPenaltiesRatioPoints(2,0));
-        $this->assertEquals(58,$this->ratingModel->setPenaltiesRatioPoints(3,55));
-        $this->assertEquals(3,$this->ratingModel->setPenaltiesRatioPoints(3.4,0));
-        $this->assertEquals(103,$this->ratingModel->setPenaltiesRatioPoints(100,100));
-        $this->assertEquals($this->ratingModel->setPenaltiesRatioPoints(-1,0), 0.5);
+        $this->assertEquals(0.5,$this->ratingModel->setPenaltiesRatioPoints(0.3,0));
+        $this->assertEquals(2,$this->ratingModel->setPenaltiesRatioPoints(0.4,0));
+        $this->assertEquals(2,$this->ratingModel->setPenaltiesRatioPoints(0.6,0));
+        $this->assertEquals(3,$this->ratingModel->setPenaltiesRatioPoints(0.6,1));
+        $this->assertEquals(3,$this->ratingModel->setPenaltiesRatioPoints(0.7,0));
+        $this->assertEquals(0,$this->ratingModel->setPenaltiesRatioPoints(0,0));
     }
 
     public function test_calculatePenaltiesRatio(){
         $stub = $this->createMock(DatabaseLibrary::class);
         $this->ratingModel = new RatingModel($stub,"../../img/Corble.png","Corble");
-        $this->assertEquals(1.0,$this->ratingModel->calculatePenaltiesRatio(0.7,0.3,0.1,0.9));
-        $this->assertEquals(6.5,$this->ratingModel->calculatePenaltiesRatio(2.7,0.3,0.1,0.9));
-        $this->assertEquals(6.5,$this->ratingModel->calculatePenaltiesRatio(10,5,1,5));
-        $this->assertEquals(6.5,$this->ratingModel->calculatePenaltiesRatio(10,5,1,5));
-        $this->assertEquals(1,$this->ratingModel->calculatePenaltiesRatio(10,5,10,5));
+        $this->assertEquals(4.0,$this->ratingModel->calculatePenaltiesRatio(0.7,0.3,0.1,0.9));
+        $this->assertEquals(5.0,$this->ratingModel->calculatePenaltiesRatio(2.7,0.3,0.1,0.9));
+        $this->assertEquals(3.5,$this->ratingModel->calculatePenaltiesRatio(0.6,0.8,0.3,0));
+        $this->assertEquals(0.5,$this->ratingModel->calculatePenaltiesRatio(0.1,0.5,0.1,0.2));
     }
 
     public function test_calculateRatio(){
@@ -105,10 +101,9 @@ class RatingModelTest extends TestCase{
         $this->ratingModel->setPrimaryOptimalColorRatio(0.5);
         $this->ratingModel->setSecondaryOptimalColorRatio(0.5);
 
-        $this->assertEquals(0.5,$this->ratingModel->ratioColorsRate(1,23,43,0,0,0));
+        $this->assertEquals(4,$this->ratingModel->ratioColorsRate(1,23,43,0,0,0));
         $this->assertEquals(4,$this->ratingModel->ratioColorsRate(RatingModel::MAX_DIFFERENCE_BORDER,0,0,0,0,0));
     }
     
 }
-
 ?>

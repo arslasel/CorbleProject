@@ -56,6 +56,16 @@ if($result){
 include_once("../Model/DatabaseLibrary.php");
 include_once("../Model/PlayerModel.php");
 
+class LobbyViewAjaxData{
+    public $state;
+    public $votetime;
+    public $starttime;
+    public $drawtime;
+    public $maxplayer;
+    public $joincode;
+    public $players;
+}
+
 class LobbyViewAjaxUpdate{
 
     public function getData(){
@@ -70,41 +80,21 @@ class LobbyViewAjaxUpdate{
             $row = $result->fetch_assoc();
         
             $players = $dbLib->getPlayersOfLobby($row['indx']);
-        
-            
-
-            $playerArray = '[';
-
-            foreach($players as $player) { 
-                $playerArray .= $player->getName() .",";
-            }
-
-            //If array has value delete last ','
-            if(sizeof($players) > 0){
-                $playerArray = substr($playerArray, 0, -1);
+            $JSONplayers = array();
+            foreach ($players as $player) {
+                array_push($JSONplayers,$player->getName());
             }
             
-            $playerArray .= ']';
+            $result = new LobbyViewAjaxData();
+            $result->state = $row["state"];
+            $result->votetime = $row["votetime"];
+            $result->starttime = $row["starttime"];
+            $result->drawtime = $row["drawtime"];
+            $result->maxplayer = $row["maxplayer"];
+            $result->joincode = $row["joincode"];
+            $result->players = array_values($JSONplayers);
 
-            //build JSON
-            $state = $row["state"];
-            $votetime = $row["votetime"];
-            $starttime = $row["starttime"];
-            $drawtime = $row["drawtime"];
-            $maxplayer = $row["maxplayer"];
-            $joincode = $row["joincode"];
-        
-            $return_arr = array(
-                "state" => $state,
-                "votetime" => $votetime,
-                "starttime" => $starttime,
-                "drawtime" => $drawtime,
-                "maxplayer" => $maxplayer,
-                "joincode" => $joincode,
-                "players" => $playerArray
-            ); 
-
-            return $return_arr;
+            return $result;
         }
 
         return 0;

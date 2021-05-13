@@ -1,6 +1,6 @@
 <?php
-    include_once("../Model/LobbyModel.php");
-    include_once("../Model/WordpoolModel.php");
+    include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/LobbyModel.php");
+    include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/WordpoolModel.php");
     class LobbyController{
         private $lobbyModel;
         private $corbleDatabase;

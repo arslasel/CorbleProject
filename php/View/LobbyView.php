@@ -197,9 +197,9 @@ session_start();
                             </div>
                             <div class="col s12">
                                 <div class="input-field col s12">
-                                    <select name="lobby_config_maxplayer" required>
+                                    <select id="lobby_config_maxplayer" name="lobby_config_maxplayer" required>
                                         <option value="" disabled selected>Choose your option</option>
-                                        <option value="4">4</option>
+                                        <option value="4">4</option>    
                                         <option value="5">5</option>
                                         <option value="6">6</option>
                                         <option value="7">7</option>
@@ -209,7 +209,7 @@ session_start();
                                 </div>
                             </div>
                             <div class="col s12">
-                                <input hidden id="createLobbySubmit" type="submit" name="lobby_config__submit" />
+                                <input hidden id="createLobbySubmit" type="submit" onclick="createLobby()" />
                             </div>
                         </div>
                     </form>
@@ -303,23 +303,26 @@ session_start();
     </div>
     <?php
     ini_set('display_errors', 1);
-    include_once("../Controller/LobbyController.php");
+    include_once($_SERVER['DOCUMENT_ROOT']."/php/Controller/LobbyController.php");
     $lobbyController = new LobbyController();
 
     if (isset($_POST['join_submit'])) {
         $lobbyController->joinLobby($_POST['join_joincode']);
     }
 
+    
     if (isset($_POST['login_submit'])) {
         $returnOfHW = $lobbyController->login($_POST['login_username']);
         if ($returnOfHW == false) {
             echo "<script> alert('username taken') </script>";
         }
     };
-
+    
+    /*
     if (isset($_POST['lobby_config__submit'])) {
         $lobbyController->createLobby($_POST['lobby_config_votetime'], $_POST['lobby_config_drawtime'], $_POST['lobby_config_starttime'], $_POST['lobby_config_maxplayer'], $_POST['lobby_config_wordpool']);
     };
+    */
 
     if (!isset($_SESSION["lobby_lobbyINDX"])) {
         if (!isset($_SESSION["lobby_username"])) {

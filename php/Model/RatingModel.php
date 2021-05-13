@@ -1,6 +1,6 @@
 <?php
-    include_once('ImageProcessorModel.php');
-    include_once('DatabaseLibrary.php');
+    include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/ImageProcessorModel.php");
+    include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/DatabaseLibrary.php");
 
     /**
      * This class is used to rate the picture which is drawn from the player

@@ -1,7 +1,7 @@
 <?php
-include_once("DatabaseLibrary.php");
-include_once("PlayerModel.php");
-include_once("WordpoolModel.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/DatabaseLibrary.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/PlayerModel.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/WordpoolModel.php");
 class LobbyModel
 {
     private $corbleDatabase;

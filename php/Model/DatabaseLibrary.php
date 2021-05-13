@@ -164,7 +164,7 @@ class DatabaseLibrary{
      * @return mixed Table
      */
     public function readLobbyDataFromDB($joincode){
-        $sql = "SELECT * FROM tbl_lobby WHERE joincode = ''" .$joincode ."'";
+        $sql = "SELECT * FROM tbl_lobby WHERE joincode = " .$joincode;
         return $this->databaseConnection->executeQuery($sql);
     }
 

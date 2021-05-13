@@ -13,9 +13,7 @@ class LobbyViewCreateLobby{
             array_push($wordpools,$wordpool);
         }
 
-        echo "lobbyusername".$_SESSION["lobby_username"];
-
-        $lobbyController->createLobby(
+        $joincode = $lobbyController->createLobby(
             $_GET['drawtime'],
             $_GET['votetime'],
             $_GET['starttime'], 
@@ -23,7 +21,7 @@ class LobbyViewCreateLobby{
             $wordpools,
             $_GET['username']);
         
-        return 0;
+        return $joincode;
     }
 
     

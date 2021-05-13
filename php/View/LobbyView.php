@@ -150,12 +150,11 @@ session_start();
                 <div class="modal-content">
                     <h4>Join Lobby</h4>
                     <form name="join" action="#" method="POST">
-                        <input type="text" name="join_joincode" required />
-                        <input hidden id="joinLobbySubmit" type="submit" name="join_submit" />
+                        <input id="lobby_joincode_field" type="text" name="join_joincode" required />
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <a onclick="document.getElementById('joinLobbySubmit').click()" href="#!" class="modal-close waves-effect waves-green btn-flat">Join</a>
+                    <a onclick="join_lobby()" href="#!" class="modal-close waves-effect waves-green btn-flat">Join</a>
                 </div>
             </div>
 
@@ -288,18 +287,6 @@ session_start();
             <div class="col s0 l2"></div>
         </div>
     </div>
-    <?php
-    ini_set('display_errors', 1);
-    include_once($_SERVER['DOCUMENT_ROOT'] . "/php/Controller/LobbyController.php");
-    /*
-        <script>
-            window.setInterval(()=>{
-                loadLobbyData(" . $_SESSION['lobby_joincode'] . ");
-            },1000);
-        </script>";
-    */
-    
-    ?>
 </body>
 
 </html>

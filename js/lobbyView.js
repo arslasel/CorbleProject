@@ -1,4 +1,5 @@
 lobby_username = "";
+lobby_joincode = 0;
 
 function loadLobbyData(joincode) {
     $.ajax({
@@ -18,7 +19,6 @@ function loadLobbyData(joincode) {
             document.getElementById('lobby_overview_maxplayer').innerHTML = data.maxplayer;
             document.getElementById('lobby_overview_joincode').innerHTML = data.joincode;
 
-
             var ul = document.getElementById('lobby_overview_players');
             ul.innerHTML = "";
             data.players.forEach(player => {
@@ -26,6 +26,10 @@ function loadLobbyData(joincode) {
                 li.textContent = player;
                 ul.appendChild(li);
             });
+
+            if(data.starttime - currentTime == 0){
+                alert("game starts now");
+            }
         }
     });
 }
@@ -52,7 +56,13 @@ function createLobby() {
 
         },
         success: function (response) {
-            console.log(response)
+            lobby_joincode = parseInt(response);
+            if(lobby_joincode>0){
+                loadView();
+                window.setInterval(()=>{
+                    loadLobbyData(lobby_joincode);
+                },1000);
+            }
         }
     });
 }
@@ -97,6 +107,24 @@ function loadWordPools(){
     });
 }
 
+function join_lobby(){
+    $.ajax({
+        type: 'get',
+        url: '../Controller/ajax/LobbyViewJoin.php',
+        data: {
+            joincode: document.getElementById('lobby_joincode_field').value,
+            username: lobby_username
+        },
+        success: function (response) {
+            lobby_joincode = document.getElementById('lobby_joincode_field').value
+            loadView();
+            window.setInterval(()=>{
+                loadLobbyData(lobby_joincode);
+            },1000);
+        }
+    });
+}
+
 function loadView(){
     if(lobby_username == ""){
         //user is not logged in load login div
@@ -104,13 +132,20 @@ function loadView(){
         document.getElementById("lobby_configurator").setAttribute("hidden","1");
         document.getElementById("lobby_overview").setAttribute("hidden","1");
     }else{
-
+        //display username
         document.getElementById("username_displaym").innerHTML = lobby_username;
         document.getElementById("username_displayd").innerHTML = lobby_username;
-        //user is logged in show lobby create / join view
-        document.getElementById("lobby_configurator").removeAttribute("hidden");
-        document.getElementById("select_name").setAttribute("hidden","1");
-        document.getElementById("lobby_overview").setAttribute("hidden","1");
+
+        if(lobby_joincode == 0){
+            //user is logged in show lobby create / join view
+            document.getElementById("lobby_configurator").removeAttribute("hidden");
+            document.getElementById("select_name").setAttribute("hidden","1");
+            document.getElementById("lobby_overview").setAttribute("hidden","1");
+        }else{
+            document.getElementById("lobby_overview").removeAttribute("hidden");
+            document.getElementById("select_name").setAttribute("hidden","1");
+            document.getElementById("lobby_configurator").setAttribute("hidden","1");
+        }
     }
 }
 

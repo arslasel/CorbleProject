@@ -100,6 +100,8 @@ class LobbyModel
 
         $this->generateLobbyDatabaseEntry();
         $this->joinLobby($this->joincode, $username, true);
+
+        return $this->joincode;
     }
 
     private function generateLobbyDatabaseEntry()

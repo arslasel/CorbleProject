@@ -32,3 +32,20 @@ function loadPictureBestAlgoVote() {
         }
     });
 }
+
+function loadPictureWorstAlgoVote() {
+    $.ajax({
+        type: "GET",
+        url: '/php/Controller/ajax/GameViewEndLoadPictureWorstAlgo.php',
+        /**
+         * data: Variablen müssen nocht angegeben werden mit dem Spielindex
+         * siehe Beispiel Lobbyview
+         */
+        data: {
+            //TODO
+        },
+        success: function(data) {
+            document.getElementById("get_img_worstAlgoVote").appendChild(data);
+        }
+    });
+}

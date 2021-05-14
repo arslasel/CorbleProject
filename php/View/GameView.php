@@ -446,13 +446,7 @@ include_once('../Controller/GameEndConotroller.php');
                         $gameEndController = new GameEndController($_SESSION["lobby_lobbyINDX"]);
                         echo $gameEndController->getSketchBestVoted();
                         ?>
-                        <span class="card-title sketchTitle">                        
-                            <?php
-                            // TODO Prüfen ob das Stimmt. (Roman)
-                            $gameEndController = new GameEndController($_SESSION["lobby_lobbyINDX"]);
-                            echo $gameEndController->getPlayerWithBestVotedSketch();
-                            ?>
-                         </span>
+                        <span class="card-title sketchTitle">Selim</span>
                     </div>
                 </div>
             </div>
@@ -466,13 +460,7 @@ include_once('../Controller/GameEndConotroller.php');
                         $gameEndController = new GameEndController($_SESSION["lobby_lobbyINDX"]);
                         echo $gameEndController->getSketchBestAlgorithm();
                         ?>
-                        <span class="card-title sketchTitle">
-                            <?php
-                            // TODO Prüfen ob das Stimmt. (Roman)
-                            $gameEndController = new GameEndController($_SESSION["lobby_lobbyINDX"]);
-                            echo $gameEndController->getPlayerWithBestAlogrithmSketch();
-                            ?>
-                        </span>
+                        <span class="card-title sketchTitle">Selim</span>
                     </div>
                 </div>
             </div>
@@ -486,13 +474,7 @@ include_once('../Controller/GameEndConotroller.php');
                         $gameEndController = new GameEndController($_SESSION["lobby_lobbyINDX"]);
                         echo $gameEndController->getSketchWorstAlgorithm();
                         ?>
-                        <span class="card-title sketchTitle">
-                            <?php
-                            // TODO Prüfen ob das Stimmt. (Roman)
-                            $gameEndController = new GameEndController($_SESSION["lobby_lobbyINDX"]);
-                            echo $gameEndController->getPlayerWithWorstAlogrithmSketch();
-                            ?>
-                        </span>
+                        <span class="card-title sketchTitle">Selim</span>
                     </div>
                 </div>
             </div>

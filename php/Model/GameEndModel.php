@@ -18,8 +18,8 @@ class GameEndModel{
         $this->corbleDatabase->getPlayerWithBestAlogrithmSketch($this->lobbyIndex);
     }
 
-    public function getPlayerWithWorstAlogrithmSketch(){
-        $this->corbleDatabase->getPlayerWithWorstAlgorithmSketch($this->lobbyIndex);
+    public function getPlayerWithWorstVotedSketch(){
+        $this->corbleDatabase->getPlayerWithWORSTAlogrithmSketch($this->lobbyIndex);
     }
 
     public function getSketchBestVoted(){

@@ -28,6 +28,7 @@ include_once('../Controller/GameEndConotroller.php');
     <script src="../../js/canvas.js"></script>
     <script src="../../js/slideshow.js"></script>
     <script src="../../js/deleteAndBack.js"></script>
+    <script src="../../js/showWinner.js"></script>
     <link rel="icon" type="image/png" href="">
 
 </head>
@@ -441,11 +442,9 @@ include_once('../Controller/GameEndConotroller.php');
                 <div class="card">
                     <div class="card-image">
                         <!--<img src="/img/Ubuntu.png">-->
-                        <?php
-                        // TODO Prüfen ob das Stimmt. (Selim)
-                        $gameEndController = new GameEndController($_SESSION["lobby_lobbyINDX"]);
-                        echo $gameEndController->getSketchBestVoted();
-                        ?>
+                        <div onload="loadDocWinnerVote();">
+                            <img id="get_img_WinnerVoted">
+                        </div>
                         <span class="card-title sketchTitle">Selim</span>
                     </div>
                 </div>
@@ -481,12 +480,14 @@ include_once('../Controller/GameEndConotroller.php');
         </div>
         <div class="row">
             <h2 class="WelcomeText selectColorWinner">
-                <span id="winnerMessage">
-                    <!--Wird nur als Lernhilfe für selim verwendet-->
-                    <?php
-                    $gameEndController = new GameEndController($_SESSION["lobby_lobbyINDX"]);
-                    echo "Der Gewinner ist: " . $gameEndController->getWinner();
-                    ?>
+                Der Gewinner ist:
+                <span id="winnerMessage" onload="loadDocShowWinner();">
+                    <!--Wird nur als Lernhilfe für selim verwendet
+                        //<?php
+                            //$gameEndController = new GameEndController($_SESSION["lobby_lobbyINDX"]);
+                            //echo "Der Gewinner ist: " . $gameEndController->getWinner();
+                            ?>
+                    -->
                 </span>
             </h2>
         </div>

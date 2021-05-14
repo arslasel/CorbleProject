@@ -5,7 +5,7 @@ function loadLobbyData(joincode) {
         data: {
             joincode: joincode,
         },
-        success: function (response) {
+        success: function(response) {
             data = JSON.parse(response)
             document.getElementById('lobby_overview_state').innerHTML = data.state;
             document.getElementById('lobby_overview_votetime').innerHTML = data.votetime;

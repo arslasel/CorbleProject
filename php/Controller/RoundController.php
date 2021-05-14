@@ -1,7 +1,7 @@
 <?php
     //Includes required for using the RoundController functionality
-    include_once('../Model/RatingModel.php');
-    include_once('../Model/RoundModel.php');
+    include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/RatingModel.php");
+    include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/RoundModel.php");
     /**
      * The class RoundController will be used for doing the whole logic part of the game round
      */

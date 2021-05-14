@@ -1,6 +1,6 @@
 <?php
 
-include_once('../DatabaseLibrary.php');
+include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/DatabaseLibrary.php");
 
 class GameEndModel{
     private $lobbyIndex;

@@ -1,6 +1,6 @@
 <?php
 
-include_once 'DatabaseConnection.php';
+include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/DatabaseConnection.php");
 
 /**
  * Class DatabaseLibrary
@@ -81,7 +81,7 @@ class DatabaseLibrary{
      */
     public function addWordCategoriesToLobby($worldpools,$lobbyIndx){
         $sql = "INSERT INTO tbl_lobby_wordpool (fk_lobby_indx_lobby_wordpool,fk_wordpool_indx_lobby_wordpool)";
-        $conn = $this->databaseConnection->createConnection($sql);
+        $conn = $this->databaseConnection->createConnection();
 
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);

@@ -1,6 +1,6 @@
 <?php
-    include_once("../Model/LobbyModel.php");
-    include_once("../Model/WordpoolModel.php");
+    include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/LobbyModel.php");
+    include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/WordpoolModel.php");
     class LobbyController{
         private $lobbyModel;
         private $corbleDatabase;
@@ -21,12 +21,12 @@
             return WordpoolModel::getWordPools($this->corbleDatabase);
         }
 
-        public function createLobby($votetime,$drawtime,$starttime,$maxplayer,$wordpools){
-            return $this->lobbyModel->createLobby($votetime,$drawtime,$starttime,$maxplayer,$wordpools);
+        public function createLobby($votetime,$drawtime,$starttime,$maxplayer,$wordpools,$username){
+            return $this->lobbyModel->createLobby($votetime,$drawtime,$starttime,$maxplayer,$wordpools,$username);
         }
 
-        public function joinLobby($joincode){
-            return $this->lobbyModel->joinLobby($joincode,$_SESSION["lobby_username"],false);
+        public function joinLobby($joincode,$username){
+            return $this->lobbyModel->joinLobby($joincode,$username,false);
         }
 
         public function readLobbyDataFromDB(){

@@ -31,7 +31,7 @@ class IOModel
      */
     public function returnPathOfPictureIndex(String $pictureIndex){
         $filename = $pictureIndex . ".txt";
-        return $this->rsearch($this->root, filename);
+        return $this->rsearch($this->root, $filename);
     }
 
     /**
@@ -57,7 +57,7 @@ class IOModel
     }
 
     private function createRoundFolder(String $lobbyIndex, String $roundIndex){
-        $path =  $this->createRoundFolder($lobbyIndex);
+        $path =  $this->createLobbyFolder($lobbyIndex);
         $path .= "/" . $roundIndex;
 
         if(!file_exists($path)){

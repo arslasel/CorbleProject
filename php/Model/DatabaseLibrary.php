@@ -347,7 +347,7 @@ class DatabaseLibrary{
      * @param $lobbyIndex string Index of lobby
      * @return mixed Name of player if nothing found 0
      */
-    public function getPlayerWithWorstVotedSketch($lobbyIndex){
+    public function getPlayerWithWorstAlgorithmSketch($lobbyIndex){
         $sql1 = "SELECT index FROM tbl_round WHERE fk_lobby_index = '" . $lobbyIndex . "'";
         $sql2 = "SELECT MIN(computerscore) FROM tbl_sketch WHERE fk_round_index IN (". $sql1 . ")";
         $sql3 = "SELECT fk_player_index_sketch FROM tbl_sketch WHERE fk_round_index = roundIndex AND computerscore = (" . $sql2 . ")";

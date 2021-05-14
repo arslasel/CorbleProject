@@ -28,7 +28,7 @@ function loadLobbyData(joincode) {
             });
 
             if(data.starttime - currentTime == 0){
-                alert("game starts now");
+                redirectToGame()
             }
         }
     });
@@ -149,7 +149,13 @@ function loadView(){
     }
 }
 
+function redirectToGame(){
+    url = "https://corble.ch/php/View/GameView.php?username="+lobby_username+"&lobby="+lobby_joincode;
+    window.location.replace(url)
+}
+
 setTimeout(() => {
     loadView();
     loadWordPools();
+    onCanvasLoad();
 }, 50);

@@ -26,16 +26,13 @@ session_start();
     <script src="../../js/init.js"></script>
     <script src="../../js/canvas.js"></script>
     <script src="../../js/slideshow.js"></script>
-    <script src="../../js/deleteAndBack.js"></script>
+    <script src="../../js/gameView.js"></script>
     <link rel="icon" type="image/png" href="">
 
 </head>
 
 <body>
-
-    <!--The Modal-->
     <div id="aboutCorble" class="modal">
-        <!--Modal Content-->
         <div class="modal-content textPosition">
             <div class="modal-header textShadow">
                 <h2>About Corble</h2>
@@ -85,9 +82,7 @@ session_start();
         </div>
     </div>
 
-    <!--The Modal-->
     <div id="rulesCorble" class="modal">
-        <!--Modal Content-->
         <div class="modal-content textPosition">
             <div class="modal-header textShadow">
                 <h2>Corble Rules </h2>
@@ -153,9 +148,8 @@ session_start();
         </div>
     </div>
 
-
     <ul class="sidenav" id="mobile-nav">
-        <li class="usernameDisplay"><a id="username_display" href="#"></a></li>
+        <li class="usernameDisplay"><a id="username_displaym" href="#"></a></li>
         <li><a href="#">Leave</a></li>
         <li><a class="modal-trigger" href="#aboutCorble">About</a></li>
         <li><a class="modal-trigger" href="#rulesCorble">Rules</a></li>
@@ -170,8 +164,7 @@ session_start();
                 </a>
 
                 <ul class="right hide-on-med-and-down ">
-                    <li class="usernameDisplay"><a id="username_display" href="#"></a></li>
-                    <li><a href="#" onclick="goBackToIndex()">Leave</a></li>
+                    <li class="usernameDisplay"><a id="username_displayd" href="#"></a></li>
                     <li><a class="modal-trigger" href="#aboutCorble">About</a></li>
                     <li><a class="modal-trigger" href="#rulesCorble">Rules</a></li>
                 </ul>
@@ -180,7 +173,7 @@ session_start();
     </div>
 
 
-    <div id="drawContainer" class="content" style="display: none;">
+    <div hidden id="drawContainer" class="content">
         <div class="row FullHeight NoMargin">
             <div id="drawBoardContainer" class="col s12 l8 NoPadding drawcols">
                 <canvas id="drawBoard">
@@ -194,10 +187,10 @@ session_start();
             <div class="col s12 l2 NoPadding drawcols">
                 <div class="row NoMarginRow">
                     <div class="col s6 NoPadding">
-                        <h6>Time Left</h6>
+                        <h6>Time Left :</h6>
                     </div>
                     <div class="col s6 NoPadding">
-                        <h6>23sec</h6>
+                        <h6 id="timeLeftToDraw"></h6>
                     </div>
                 </div>
                 <div class="row NoMarginRow">
@@ -249,13 +242,8 @@ session_start();
                     <div class="corbleColor corbleWhite" id="line_thickness_l" onclick="select_line_thickness(this)">L</div>
                 </div>
                 <div class="row NoMarginRow">
-                    <div class="col s6">
-                        <button id="submitBtn" class="btn waves-effect waves-light red" type="submit" type="submit" name="login_submit">
-                            Submit
-                        </button>
-                    </div>
-                    <div class="col s6">
-                        <button id="clearBtn" class="btn waves-effect waves-light red" type="submit" type="submit" name="login_submit">
+                    <div class="col s12">
+                        <button id="clearBtn" class="btn waves-effect waves-light red" >
                             Clear
                         </button>
                     </div>
@@ -298,8 +286,7 @@ session_start();
             </div>
         </div>
     </div>
-
-    <div id="voteContainer" class="content">
+    <div hidden id="voteContainer" class="content">
         <div class="row SizeContainerSlideShow NoMargin">
             <div id="slideshowContainer" class="col s12 l10 NoPadding drawcols">
                 <div class="slideShowContainer">
@@ -429,7 +416,7 @@ session_start();
             </div>
         </div>
     </div>
-    <div id="endContainer" class="content" style="display: none;">
+    <div hidden id="endContainer" class="content" >
         <div class="row">
             <h2 class="WelcomeText">Spiel Ende</h2>
             <h3 class="WelcomeText">Siegerehrung</h3>
@@ -469,18 +456,6 @@ session_start();
             </h2>
         </div>
     </div>
-
-    <?php
-    ini_set('display_errors', 1);
-    if (isset($_SESSION["lobby_username"])) {
-        echo "<script>
-            var usernameElement = document.getElementById('username_display');
-            usernameElement.innerHTML = '" . $_SESSION["lobby_username"] . "';
-        </script>";
-    }
-
-    echo "<script>M.AutoInit()</script>"; // init all materiallize components
-    ?>
 </body>
 
 </html>

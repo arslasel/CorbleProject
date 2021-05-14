@@ -28,7 +28,8 @@ include_once('../Controller/GameEndConotroller.php');
     <script src="../../js/canvas.js"></script>
     <script src="../../js/slideshow.js"></script>
     <script src="../../js/deleteAndBack.js"></script>
-    <script src="../../js/showWinner.js"></script>
+    <script src="../../js/loadPlayerName.js"></script>
+    <script src="../../js/loadPicture.js"></script>
     <link rel="icon" type="image/png" href="">
 
 </head>
@@ -442,10 +443,9 @@ include_once('../Controller/GameEndConotroller.php');
                 <div class="card">
                     <div class="card-image">
                         <!--<img src="/img/Ubuntu.png">-->
-                        <div onload="loadDocWinnerVote();">
-                            <img id="get_img_WinnerVoted">
-                        </div>
-                        <span class="card-title sketchTitle">Selim</span>
+                        <img id="get_img_WinnerVoted" onload="loadPictureWinnerVote();">
+                        <span id="bestVotedPlayer" class="card-title sketchTitle" onload="loadPlayerNameOfBestVotedPicture();">
+                        </span>
                     </div>
                 </div>
             </div>
@@ -453,13 +453,10 @@ include_once('../Controller/GameEndConotroller.php');
                 <h5 class="WelcomeText">Bestes Bild nach Algorithmus</h5>
                 <div class="card">
                     <div class="card-image">
-                        <!-- <img src="/img/KimJongUn.png"> -->
-                        <?php
-                        // TODO Prüfen ob das Stimmt. (Selim)
-                        $gameEndController = new GameEndController($_SESSION["lobby_lobbyINDX"]);
-                        echo $gameEndController->getSketchBestAlgorithm();
-                        ?>
-                        <span class="card-title sketchTitle">Selim</span>
+                        <!--<img src="/img/Ubuntu.png">-->
+                        <img id="get_img_BestAlgoVote" onload="loadPictureBestAlgoVote();">
+                        <span id="bestAlgoName" class="card-title sketchTitle" onload="loadPlayerNameOfBestAlgoPicture();">
+                        </span>
                     </div>
                 </div>
             </div>
@@ -468,12 +465,9 @@ include_once('../Controller/GameEndConotroller.php');
                 <div class="card">
                     <div class="card-image">
                         <!--<img src="/img/1542233.jpg">-->
-                        <?php
-                        // TODO Prüfen ob das Stimmt. (Selim)
-                        $gameEndController = new GameEndController($_SESSION["lobby_lobbyINDX"]);
-                        echo $gameEndController->getSketchWorstAlgorithm();
-                        ?>
-                        <span class="card-title sketchTitle">Selim</span>
+                        <img id="get_img_worstAlgoVote" onload="loadPictureWorstAlgoVote();">
+                        <span id="worstAlgoName" class="card-title sketchTitle" onload="loadPlayerNameOfWorstAlgoPicture();">
+                        </span>
                     </div>
                 </div>
             </div>
@@ -481,13 +475,7 @@ include_once('../Controller/GameEndConotroller.php');
         <div class="row">
             <h2 class="WelcomeText selectColorWinner">
                 Der Gewinner ist:
-                <span id="winnerMessage" onload="loadDocShowWinner();">
-                    <!--Wird nur als Lernhilfe für selim verwendet
-                        //<?php
-                            //$gameEndController = new GameEndController($_SESSION["lobby_lobbyINDX"]);
-                            //echo "Der Gewinner ist: " . $gameEndController->getWinner();
-                            ?>
-                    -->
+                <span id="winnerMessage" onload="loadWinnerName();">
                 </span>
             </h2>
         </div>

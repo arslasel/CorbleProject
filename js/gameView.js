@@ -16,6 +16,7 @@ function submitImage() {
     fd.append("imageBase64", blob,"imageBase64.txt");
     fd.append("username",lobby_username);
     fd.append("lobby", lobby_joincode);
+    fd.append("word", 2);
     $.ajax({
         url: '../Controller/ajax/GameViewSubmitImage.php',
         type: 'post',

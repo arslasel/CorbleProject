@@ -1,17 +1,22 @@
 <?php
 
 include_once($_SERVER['DOCUMENT_ROOT'] . "/php/Model/DatabaseLibrary.php");
-include_once($_SERVER['DOCUMENT_ROOT'] . "/php/Model/IOModel.php");
+include_once($_SERVER['DOCUMENT_ROOT'] . "/php/Model/RoundModel.php");
 
 class GameViewSubmitImage
 {
 
     public function submitImage()
     {
-        $io = new IOModel();
+        $io = new RoundModel(new DatabaseLibrary(new DatabaseConnection));
 
         
-        echo $io->savePicture(file_get_contents($_FILES['imageBase64']['tmp_name']),222,111,111);
+        echo $io->savePicture(file_get_contents(
+            $_FILES['imageBase64']['tmp_name']),
+            197,//lobby
+            1,//round
+            213,//user
+            2);//round
     }
 }
 

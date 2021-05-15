@@ -2,6 +2,9 @@
 
 include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/DatabaseLibrary.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/PlayerModel.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/IOModel.php");
+
+
 
 class RoundModel
 {
@@ -19,12 +22,14 @@ class RoundModel
      * @param $roundIndx String with database round index
      * @param $playerIndx String with database player index
      */
-    public function savePicture($root, $base64, $lobbyIndx, $roundIndx, $playerIndx)
+    public function savePicture($base64, $lobbyIndx, $roundIndx, $playerIndx,$wordIndx)
     {
-        $IoModel = new IOModel($root);
+        $IoModel = new IOModel();
         $path = $IoModel->savePicture($base64, $lobbyIndx, $roundIndx, $playerIndx);
-        if ($path = !null) {
-            $this->corbleDatabase->savePicture($path, $playerIndx);
+        echo "PATH".$path."PATH";
+        if (!is_null($path)) {
+            echo "PATH".$path."PATH";
+            $this->corbleDatabase->savePicture($path, $playerIndx,$roundIndx,$wordIndx);
         }
     }
 

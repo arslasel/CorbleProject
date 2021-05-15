@@ -385,9 +385,9 @@ class DatabaseLibrary{
      * @param $playerIndx string player index
      * @return int|string returns 0 for success
      */
-    public function savePicture($path, $playerIndx){
+    public function savePicture($path, $playerIndx,$roundIndex,$wordIndx){
         $sql = "INSERT INTO tbl_sketch (path, computerscore, fk_player_indx_sketch, fk_word_indx_sketch, votes, fk_round_indx) VALUES ('"
-            . $path . "', '0', '" . $playerIndx . "', '', '0', '')";
+            . $path . "', 0, " . $playerIndx . ", ".$wordIndx.", 0 , ".$roundIndex.")";
         return $this->databaseConnection->executeInsertQuery($sql);
     }
 

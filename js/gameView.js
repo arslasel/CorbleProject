@@ -8,6 +8,19 @@ function init() {
     const urlParams = new URLSearchParams(queryString);
     lobby_username = urlParams.get('username')
     lobby_joincode = urlParams.get('lobby')
+    $.when(initGame()).done(function (response) {remainingTime = response.votetime;})
+}
+
+function initGame() {
+    return $.ajax({
+        type: 'get',
+        url: '../Controller/ajax/GameViewInitGame.php',
+        dataType: 'JSON',
+        data: {
+            joincode: lobby_joincode
+        }
+    });
+
 }
 
 function submitImage() {

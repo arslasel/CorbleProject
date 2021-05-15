@@ -520,6 +520,22 @@ class DatabaseLibrary{
             return 0;
         }
     }
+
+    /**
+     * This function returns de drawtime for a round
+     * @param $joinCode int
+     * @return $drawtime int
+     */
+    public function getDrawTime(int $joinCode){
+        $sql = "SELECT votetime FROM tbl_lobby WHERE joincode = " .$joinCode .";";
+        $result = $this->databaseConnection->executeQuery($sql);
+        if($result){
+            return $result->fetch_assoc();
+        }
+        else {
+            return 0;
+        }
+    }
 }
 
 return;

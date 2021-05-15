@@ -12,9 +12,9 @@ include_once('ImageProcessorModel.php');
         private $corbleDatabase;
         private $imageRessource;
         private $imageProcessingController;
-        const MAX_POINTS = 10;
-        const MAX_DIFFERENCE_BORDER = 200;
-        const NO_PIXEL = 0;
+        public const MAX_POINTS = 10;
+        public const MAX_DIFFERENCE_BORDER = 200;
+        public const NO_PIXEL = 0;
         private $actualPoints;
         private $primaryOptimalColorRatio;
         private $secondaryOptimalColorRatio;
@@ -47,7 +47,7 @@ include_once('ImageProcessorModel.php');
          * This function calculates the penalties for wrong color rates of a in the database defined color for a word
          * @return: int penaltiePoints
          */
-        function ratioColorsRate($blackCounter, $redCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter){
+        public function ratioColorsRate($blackCounter, $redCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter){
             list($actualPrimaryRatio, $actualSecondaryRatio) = $this->calculateRatio($blackCounter, $redCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter, $this->primaryColor, $this->secondaryColor);
             $penaltiePoints = $this->calculatePenaltiesRatio($this->primaryOptimalColorRatio, $this->secondaryOptimalColorRatio, $actualPrimaryRatio, $actualSecondaryRatio);
             $penaltiePoints = $this->validatePenaltiePoints($penaltiePoints);
@@ -58,7 +58,7 @@ include_once('ImageProcessorModel.php');
          * This function sets the penalties for wrong applied colors in the picture
          * @return: int penaltiesForForeignColors
          */
-        function foreignColorsRate($blackCounter, $redCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter){
+        public function foreignColorsRate($blackCounter, $redCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter){
             $penaltiePoints = 0;
 
             if(($blackCounter > RatingModel::NO_PIXEL && $this->primaryColor != "black") && ($blackCounter > RatingModel::NO_PIXEL && $this->secondaryColor != "black")){
@@ -91,7 +91,7 @@ include_once('ImageProcessorModel.php');
             return $penaltiePoints;
         }
 
-        function getPixelCountOfImage(){
+        private function getPixelCountOfImage(){
             return $this->imageProcessingController->pixelCount();
         }
         
@@ -100,7 +100,7 @@ include_once('ImageProcessorModel.php');
          * @param: int $sketchIndx 
          * @return: int $totalPoints
          */
-        function collectPenalties($sketchIndx){
+        public function collectPenalties($sketchIndx){
             $penaltiePoints = 0;
             $penaltiePoints = $this->actualPoints;
             list($blackCounter, $redCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter) = $this->getPixelCountOfImage();
@@ -122,7 +122,7 @@ include_once('ImageProcessorModel.php');
          * @param: string $colorToSelect
          * @return: int $colorCounter
          */
-        function setupColorCounter(int $blackCounter, int $redCounter, int $greenCounter, int $blueCounter, int $yellowCounter, int $orangeCounter, string $colorToSelect){
+        public function setupColorCounter(int $blackCounter, int $redCounter, int $greenCounter, int $blueCounter, int $yellowCounter, int $orangeCounter, string $colorToSelect){
             $colorCounter = 0;
             switch ($colorToSelect){
                 case "black":
@@ -162,7 +162,7 @@ include_once('ImageProcessorModel.php');
          * @param: string $secondaryColor
          * @return: list(float $actualPrimaryRatio, float $actualSecondaryRatio)
          */
-        function calculateRatio(
+        public function calculateRatio(
                 int $blackCounter, 
                 int $redCounter, 
                 int $greenCounter, 
@@ -195,7 +195,7 @@ include_once('ImageProcessorModel.php');
          * @param: float $actualSecondaryRatio 
          * @return: int $penaltiePoints
          */
-        function calculatePenaltiesRatio(float $primaryOptimalColorRatio, float $secondaryOptimalColorRatio, float $actualPrimaryRatio, float $actualSecondaryRatio){
+        public function calculatePenaltiesRatio(float $primaryOptimalColorRatio, float $secondaryOptimalColorRatio, float $actualPrimaryRatio, float $actualSecondaryRatio){
             $penaltiePoints = 0.0;
             if(isNull($primaryOptimalColorRatio) && isNull($secondaryOptimalColorRatio) && isNull($actualPrimaryRatio) && isNull($actualSecondaryRatio)) {
                 $differencePrimary = (float)abs($primaryOptimalColorRatio - $actualPrimaryRatio);
@@ -216,7 +216,7 @@ include_once('ImageProcessorModel.php');
          * @param: int $penaltiePoints
          * @return: int $penaltiePoints
          */
-        function setPenaltiesRatioPoints(float $difference, float $penaltiePoints){
+        public function setPenaltiesRatioPoints(float $difference, float $penaltiePoints){
             $penaltieRangeHarmless = 0.31;
             $penaltieRangeNotGood = 0.61;
             $penaltieRangeCatastrophic = 0.8;
@@ -243,7 +243,7 @@ include_once('ImageProcessorModel.php');
          * @param: int $penaltiePoints
          * @return: int $penaltiePoints
          */
-        function validatePenaltiePoints(int $penaltiePoints){
+        public function validatePenaltiePoints(int $penaltiePoints){
             if($penaltiePoints <= self::MAX_POINTS){
                 return $penaltiePoints;
             }
@@ -253,8 +253,8 @@ include_once('ImageProcessorModel.php');
         }
 
         //Setters and Getters
-        function setPrimaryOptimalColorRatio($ratio){ $this->primaryOptimalColorRatio = $ratio; }
-        function setSecondaryOptimalColorRatio($ratio){ $this->secondaryOptimalColorRatio = $ratio; }
-        function setPrimaryColor($color){ $this->primaryColor = $color; }
-        function setSecondaryColor($color){ $this->secondaryColor = $color; }
+        public function setPrimaryOptimalColorRatio($ratio){ $this->primaryOptimalColorRatio = $ratio; }
+        public function setSecondaryOptimalColorRatio($ratio){ $this->secondaryOptimalColorRatio = $ratio; }
+        public function setPrimaryColor($color){ $this->primaryColor = $color; }
+        public function setSecondaryColor($color){ $this->secondaryColor = $color; }
     }

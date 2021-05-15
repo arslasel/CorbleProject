@@ -38,8 +38,8 @@ session_start();
             </div>
             <div>
                 <p class="textformating">
-                    Corble ist ein kreatives Zeichnugsspiel, bei dem 4 bis 8 Spieler
-                    gegeneinander antreten. Das Ziel ist ein Bild zu malen, welche das
+                    Corble ist ein kreatives Zeichnungsspiel, bei dem 4 bis 8 Spieler
+                    gegeneinander antreten. Das Ziel ist ein Bild zu malen, welche das,
                     angezeigte Wort am besten darstellt.
                 </p>
                 <div class="textShadow">
@@ -53,7 +53,7 @@ session_start();
                     <h4>Background</h4>
                 </div>
                 <p class="textformating">
-                    Corble wurde im Auftrag von der ZHAW kreiert. Das Ziel dieses Projekt ist die
+                    Corble wurde im Auftrag von der ZHAW kreiert. Das Ziel dieses Projektes ist, die
                     Grundkenntnisse von Software Entwicklung 1 zu vertiefen sowie Erkentnisse zu Projekt
                     Management zu sammeln.
                 </p>
@@ -94,7 +94,7 @@ session_start();
             </div>
             <p class="textformating">
                 Bevor es losgeht muss du dich mit deinem Künstlernamen anmelden.
-                Danach kannst du einem Spiel beitreten oder selber eines erstellen.
+                Danach kannst du einem Spiel beitreten oder selber eins erstellen.
             </p>
             <div class="textShadowLight">
                 <h4>2. Beitreten oder Erstellen</h4>
@@ -111,7 +111,7 @@ session_start();
                 <h4>3. Male das Wort</h4>
             </div>
             <p class="textformating">
-                In einer vorgegebenen Zeit muss du das angezeigte Wort so genau wie möglich
+                In einer vorgegebenen Zeit, muss du das angezeigte Wort so genau wie möglich
                 malen.
             </p>
             <ul class="textformating">

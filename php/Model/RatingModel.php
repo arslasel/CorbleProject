@@ -97,8 +97,7 @@ include_once('ImageProcessorModel.php');
         
         /**
          * This function collects the penalties from the functions ratioColorsRate() and foreignColorsRate()
-         * @param: int $sketchIndx 
-         * @return: int $totalPoints
+         * @param: int $sketchIndx
          */
         public function collectPenalties($sketchIndx){
             $penaltiePoints = 0;

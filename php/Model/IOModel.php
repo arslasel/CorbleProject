@@ -17,9 +17,15 @@ class IOModel
      */
     public function savePicture(String $pictureBase64, String $lobbyIndex, String $roundIndex, String $pictureIndex){
         $path = $this->createRoundFolder($lobbyIndex, $roundIndex);
-        $path .= "/" . $pictureIndex . ".png";
+        $path .= "/" . $pictureIndex . ".txt";
+        echo "-----".$path."-----";
+
+        $myfile = fopen($path, "w") or die("Unable to open file!");
+        fclose($myfile);
+        echo "isfile : ".is_file($path);
         if(is_file($path) or is_writable($path)) {
-            file_put_contents($path, base64_decode($pictureBase64));
+            echo "put file contents";
+            file_put_contents($path, $pictureBase64);
         }
         return $path;
     }
@@ -48,8 +54,10 @@ class IOModel
     private function createLobbyFolder(String $lobbyIndex){
         $path = $this->root;
         $path .= "/" . $lobbyIndex;
-
+        echo "<l<<<<".$path.">>>>>";
+        echo "lexists : ".file_exists($path);
         if(!file_exists($path)){
+            echo "mkdir";
             mkdir($path, 0777, true);
         }
 
@@ -59,8 +67,11 @@ class IOModel
     private function createRoundFolder(String $lobbyIndex, String $roundIndex){
         $path =  $this->createLobbyFolder($lobbyIndex);
         $path .= "/" . $roundIndex;
+        echo "<<<<<".$path.">>>>>";
+        echo "exists : ".file_exists($path);
 
         if(!file_exists($path)){
+            echo "mkdir";
             mkdir($path , 0777, true);
         }
 

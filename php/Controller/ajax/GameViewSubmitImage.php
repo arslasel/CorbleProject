@@ -10,33 +10,7 @@ class GameViewSubmitImage
     {
         $io = new IOModel();
 
-        /*
-
-        THIS CODE WORKS
-
-        foreach ($_POST as $key => $value) {
-            echo "--------";
-            echo $key;
-            echo "--";
-            echo $value;
-            echo "--------";
-        }
-
-        echo "FILENAME" . $_FILES['imageBase64']['name'];
-
-        $filename = $_FILES['imageBase64']['name'];
-
-        $location = "upload/" . $filename;
-        $imageFileType = pathinfo($location, PATHINFO_EXTENSION);
-        $imageFileType = strtolower($imageFileType);
-
-        if (move_uploaded_file($_FILES['imageBase64']['tmp_name'], $_SERVER['DOCUMENT_ROOT']."/php/Controller/ajax/upload")) {
-            $response = $location;
-        }
-
-        echo "respose" . $response ;
-        */
-
+        
         echo $io->savePicture(file_get_contents($_FILES['imageBase64']['tmp_name']),222,111,111);
     }
 }

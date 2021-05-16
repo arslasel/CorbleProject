@@ -157,5 +157,4 @@ function redirectToGame(){
 setTimeout(() => {
     loadView();
     loadWordPools();
-    onCanvasLoad();
 }, 50);

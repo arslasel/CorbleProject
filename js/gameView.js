@@ -36,7 +36,10 @@ function submitImage() {
     $.ajax({
         url: '../Controller/ajax/GameViewSubmitImage.php',
         type: 'post',
-        data: fd,
+        data: {
+            username: lobby_username,
+            joincode: lobby_joincode
+        },
         contentType: false,
         processData: false,
         success: function (response) {

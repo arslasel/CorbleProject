@@ -39,6 +39,15 @@
             }
         }
 
+
+        /**
+         * Saves a picture to the database
+         */
+        public function saveSketch($file, $lobbyIndex, $userid){
+            $this->roundModel->savePicture(
+                file_get_contents($file), $lobbyIndex, $this->roundIndex, $userid);
+        }
+
         /**
          * This method is used for selecting a random Word out of a category
          */

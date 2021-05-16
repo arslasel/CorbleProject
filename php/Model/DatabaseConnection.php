@@ -31,15 +31,12 @@ class DatabaseConnection{
      * @param $query String Querry to be executed on the Corble Database
      * @return bool|mysqli_result Result of querry
      */
-    public function executeQuery($query){
-        // Create connection
-        $conn = $this->createConnection();
-
+    public function executeQuery($conn, $stmt){      
         // Check connection
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
         } else {
-            return $conn->query($query);
+            return $stmt->execute();
         }
     }
 
@@ -48,17 +45,13 @@ class DatabaseConnection{
      * @param $query string with querry to be executed
      * @return int|string Result (Error-Code)
      */
-    public function executeInsertQuery($query){
-        $conn = $this->createConnection();
-
+    public function executeInsertQuery($conn, $stmt){
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
         } else {
-            if ($conn->query($query) === TRUE) {
+            if ($stmt->execute() === TRUE) {
                 return $conn->insert_id;
             }
-            echo $query;
-            echo("Error description: " . $conn->error);
             return 0;
         }
     }

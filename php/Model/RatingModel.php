@@ -46,8 +46,8 @@ include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/DatabaseLibrary.php");
          * This function calculates the penalties for wrong color rates of a in the database defined color for a word
          * @return: int penaltiePoints
          */
-        public function ratioColorsRate($blackCounter, $redCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter){
-            list($actualPrimaryRatio, $actualSecondaryRatio) = $this->calculateRatio($blackCounter, $redCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter, $this->primaryColor, $this->secondaryColor);
+        public function ratioColorsRate($blackCounter, $redCounter, $brownCounter, $greyCounter, $whiteCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter){
+            list($actualPrimaryRatio, $actualSecondaryRatio) = $this->calculateRatio($blackCounter, $redCounter,  $brownCounter, $greyCounter, $whiteCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter, $this->primaryColor, $this->secondaryColor);
             $penaltiePoints = $this->calculatePenaltiesRatio($this->primaryOptimalColorRatio, $this->secondaryOptimalColorRatio, $actualPrimaryRatio, $actualSecondaryRatio);
             $penaltiePoints = $this->validatePenaltiePoints($penaltiePoints);
             return $penaltiePoints;
@@ -57,7 +57,7 @@ include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/DatabaseLibrary.php");
          * This function sets the penalties for wrong applied colors in the picture
          * @return: int penaltiesForForeignColors
          */
-        public function foreignColorsRate($blackCounter, $redCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter){
+        public function foreignColorsRate($blackCounter, $redCounter, $brownCounter, $greyCounter, $whiteCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter){
             $penaltiePoints = 0;
 
             if(($blackCounter > RatingModel::NO_PIXEL && $this->primaryColor != "black") && ($blackCounter > RatingModel::NO_PIXEL && $this->secondaryColor != "black")){
@@ -68,6 +68,18 @@ include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/DatabaseLibrary.php");
                 $penaltiePoints += 1;
                 ($redCounter >= RatingModel::MAX_DIFFERENCE_BORDER) ? $penaltiePoints += 3 :$this->relax();
             }
+            if(($brownCounter > RatingModel::NO_PIXEL && $this->primaryColor != "brown") && ($brownCounter > RatingModel::NO_PIXEL && $this->secondaryColor != "brown")){
+                $penaltiePoints += 1;
+                ($brownCounter >= RatingModel::MAX_DIFFERENCE_BORDER) ? $penaltiePoints += 3 :$this->relax();
+            }
+            if(($greyCounter > RatingModel::NO_PIXEL && $this->primaryColor != "grey") && ($greyCounter > RatingModel::NO_PIXEL && $this->secondaryColor != "grey")){
+                $penaltiePoints += 1;
+                ($greyCounter >= RatingModel::MAX_DIFFERENCE_BORDER) ? $penaltiePoints += 3 :$this->relax();
+            } 
+            if(($whiteCounter > RatingModel::NO_PIXEL && $this->primaryColor != "white") && ($whiteCounter > RatingModel::NO_PIXEL && $this->secondaryColor != "white")){
+                $penaltiePoints += 1;
+                ($whiteCounter >= RatingModel::MAX_DIFFERENCE_BORDER) ? $penaltiePoints += 3 :$this->relax();
+            }                             
             if(($greenCounter > RatingModel::NO_PIXEL && $this->primaryColor != "green") && ($greenCounter > RatingModel::NO_PIXEL && $this->secondaryColor != "green")){
                 $penaltiePoints += 1;
                 ($greenCounter >= RatingModel::MAX_DIFFERENCE_BORDER) ? $penaltiePoints += 3 :$this->relax();
@@ -101,9 +113,9 @@ include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/DatabaseLibrary.php");
         public function collectPenalties($sketchIndx){
             $penaltiePoints = 0;
             $penaltiePoints = $this->actualPoints;
-            list($blackCounter, $redCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter) = $this->getPixelCountOfImage();
-            $penaltiePoints += $this->ratioColorsRate($blackCounter,$redCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter);
-            $penaltiePoints += $this->foreignColorsRate($blackCounter,$redCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter);
+            list($blackCounter, $brownCounter, $greyCounter, $whiteCounter, $redCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter) = $this->getPixelCountOfImage();
+            $penaltiePoints += $this->ratioColorsRate($blackCounter,$redCounter,  $brownCounter, $greyCounter, $whiteCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter);
+            $penaltiePoints += $this->foreignColorsRate($blackCounter,$redCounter,  $brownCounter, $greyCounter, $whiteCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter);
             $penaltiePoints = $this->validatePenaltiePoints($penaltiePoints);
             $totalPoints = $this->actualPoints - $penaltiePoints;
             $this->corbleDatabase->setComputerScoreForSketch($totalPoints, $sketchIndx);
@@ -120,7 +132,7 @@ include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/DatabaseLibrary.php");
          * @param: string $colorToSelect
          * @return: int $colorCounter
          */
-        public function setupColorCounter(int $blackCounter, int $redCounter, int $greenCounter, int $blueCounter, int $yellowCounter, int $orangeCounter, string $colorToSelect){
+        public function setupColorCounter(int $blackCounter, int $redCounter, int $brownCounter, int $greyCounter, int $whiteCounter, int $greenCounter, int $blueCounter, int $yellowCounter, int $orangeCounter, string $colorToSelect){
             $colorCounter = 0;
             switch ($colorToSelect){
                 case "black":
@@ -128,6 +140,15 @@ include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/DatabaseLibrary.php");
                     break;
                 case "red":
                     $colorCounter = $redCounter;
+                    break;
+                case "brown":
+                    $colorCounter = $brownCounter;
+                    break;
+                case "grey":
+                    $colorCounter = $greyCounter;
+                    break;
+                case "white":
+                    $colorCounter = $whiteCounter;
                     break;
                 case "green":
                     $colorCounter = $greenCounter;
@@ -163,14 +184,17 @@ include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/DatabaseLibrary.php");
         public function calculateRatio(
                 int $blackCounter, 
                 int $redCounter, 
+                int $brownCounter,
+                int $greyCounter,
+                int $whiteCounter,
                 int $greenCounter, 
                 int $blueCounter, 
                 int $yellowCounter, 
                 int $orangeCounter, 
                 string $primaryColor, 
                 string $secondaryColor){
-            $primaryColorCounterNum = $this->setupColorCounter($blackCounter, $redCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter, $primaryColor);
-            $secondaryColorCounterNum = $this->setupColorCounter($blackCounter, $redCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter, $secondaryColor);
+            $primaryColorCounterNum = $this->setupColorCounter($blackCounter, $redCounter, $brownCounter, $greyCounter, $whiteCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter, $primaryColor);
+            $secondaryColorCounterNum = $this->setupColorCounter($blackCounter, $redCounter, $brownCounter, $greyCounter, $whiteCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter, $secondaryColor);
             //throw new Exception("primaryColorCounterNum: " .$primaryColorCounterNum ."   and secondaryColorCounterNum: " .$secondaryColorCounterNum);
             $totalCount = $primaryColorCounterNum + $secondaryColorCounterNum;
             

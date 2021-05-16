@@ -16,7 +16,7 @@ class GameViewEndLoadPictureWinnerVote
 
     public function LoadPicture()
     { 
-        $picture = $this->corbleDatabase->getSketchBestVoted($_GET["username"]);//In der $_Get-Klammer muss no spezifiziert werden
+        $picture = $this->corbleDatabase->getSketchBestVoted(197);//In der $_Get-Klammer muss no spezifiziert werden
         echo $picture;
     }
 }

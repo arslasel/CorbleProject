@@ -309,7 +309,8 @@ class DatabaseLibrary
      * @param $lobbyIndex string Index of lobby
      * @return mixed Returns player name or 0 if not found
      */
-    public function getPlayerWithBestVotedSketch($lobbyIndex){
+    public function getPlayerWithBestVotedSketch($lobbyIndex)
+    {
         $sql1 = "SELECT name FROM tbl_player WHERE indx = (
                 SELECT fk_player_indx_sketch FROM tbl_sketch WHERE fk_round_indx IN (
                 SELECT indx FROM tbl_round WHERE fk_lobby_indx = " . $lobbyIndex . ") AND votes = (
@@ -395,13 +396,12 @@ class DatabaseLibrary
      */
     public function getSketchBestVoted($lobbyIndex)
     {
-        $sql1 = "SELECT index FROM tbl_round WHERE fk_lobby_index = '" . $lobbyIndex . "'";
-        $sql2 = "SELECT MAX(votes) FROM tbl_sketch WHERE fk_round_index IN (" . $sql1 . ")";
-        $sql3 = "SELECT path FROM tbl_sketch WHERE fk_round_index = roundIndex AND votes = (" . $sql2 . ")";
+        $sql1 = "SELECT path FROM tbl_sketch WHERE fk_round_indx IN (SELECT indx FROM tbl_round WHERE fk_lobby_indx = " . $lobbyIndex . ") AND votes = 
+        (SELECT MAX(votes) FROM tbl_sketch WHERE fk_round_indx IN (SELECT indx FROM tbl_round WHERE fk_lobby_indx = " . $lobbyIndex . "))";
 
-        $result = $this->databaseConnection->executeQuery($sql3);
+        $result = $this->databaseConnection->executeQuery($sql1);
         if ($result) {
-            return $result->fetch_assoc();
+            return $result->fetch_assoc()["path"];
         } else {
             return 0;
         }
@@ -449,7 +449,7 @@ class DatabaseLibrary
 
         $result = $this->databaseConnection->executeQuery($sql1);
         if ($result) {
-            return $result->fetch_assoc();
+            return $result->fetch_assoc()["path"];
         } else {
             return 0;
         }
@@ -479,13 +479,12 @@ class DatabaseLibrary
      */
     public function getSketchBestAlgorithm($lobbyIndex)
     {
-        $sql1 = "SELECT index FROM tbl_round WHERE fk_lobby_index = '" . $lobbyIndex . "'";
-        $sql2 = "SELECT MIN(computerscore) FROM tbl_sketch WHERE fk_round_index IN (" . $sql1 . ")";
-        $sql3 = "SELECT path FROM tbl_sketch WHERE fk_round_index = roundIndex AND computerscore = (" . $sql2 . ")";
+        $sql1 = "SELECT path FROM tbl_sketch WHERE fk_round_indx IN ((SELECT indx FROM tbl_round WHERE fk_lobby_indx =  " . $lobbyIndex . ")) AND computerscore = (
+            SELECT MAX(computerscore) FROM tbl_sketch WHERE fk_round_indx IN (SELECT indx FROM tbl_round WHERE fk_lobby_indx =  " . $lobbyIndex . "))";
 
-        $result = $this->databaseConnection->executeQuery($sql3);
+        $result = $this->databaseConnection->executeQuery($sql1);
         if ($result) {
-            return $result->fetch_assoc();
+            return $result->fetch_assoc()["path"];
         } else {
             return 0;
         }

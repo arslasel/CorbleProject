@@ -10,7 +10,7 @@ function init() {
     lobby_joincode = urlParams.get('lobby')
 }
 
-function initGameEnd(){
+function initGameEnd() {
 
     document.getElementById("endContainer").removeAttribute("hidden");
     document.getElementById("drawContainer").setAttribute("hidden", "1");
@@ -21,13 +21,16 @@ function initGameEnd(){
     loadPlayerNameOfWorstAlgoPicture();
     loadPlayerNameOfBestVotedPicture();
     loadPlayerNameOfBestAlgoPicture();
+    loadPictureWinnerVote();
+    loadPictureBestAlgoVote();
+    loadPictureWorstAlgoVote();
 }
 
 function submitImage() {
     var fd = new FormData();
     var blob = new Blob([document.getElementById("drawBoard").toDataURL()], { type: "text/plain" });
-    fd.append("imageBase64", blob,"imageBase64.txt");
-    fd.append("username",lobby_username);
+    fd.append("imageBase64", blob, "imageBase64.txt");
+    fd.append("username", lobby_username);
     fd.append("lobby", lobby_joincode);
     fd.append("word", 2);
     $.ajax({
@@ -55,16 +58,22 @@ function loadView() {
 function loadPictureWinnerVote() {
     $.ajax({
         type: "GET",
-        url: '/php/Controller/ajax/GameViewEndLoadPictureWinnerVote.php',
-        /**
-         * data: Variablen müssen nocht angegeben werden mit dem Spielindex
-         * siehe Beispiel Lobbyview
-         */
+        url: '../Controller/ajax/GameViewEndLoadPictureWinnerVote.php',
         data: {
-            //TODO
+            roundIndex: 1, //insert real round index later,
+            username: lobby_username
         },
-        success: function(data) {
-            document.getElementById("get_img_WinnerVoted").appendChild(data);
+        success: function (data) {
+            $.ajax({
+                type: "GET",
+                url: data.replace('/home/rigpdqdi/public_html/corble.ch', ''),
+                success: function (data) {
+                    document.getElementById('get_img_WinnerVoted')
+                        .setAttribute(
+                            'src', data
+                        );
+                }
+            });
         }
     });
 }
@@ -72,16 +81,22 @@ function loadPictureWinnerVote() {
 function loadPictureBestAlgoVote() {
     $.ajax({
         type: "GET",
-        url: '/php/Controller/ajax/GameViewEndLoadPictureBestAlgo.php',
-        /**
-         * data: Variablen müssen nocht angegeben werden mit dem Spielindex
-         * siehe Beispiel Lobbyview
-         */
+        url: '../Controller/ajax/GameViewEndLoadPictureBestAlgoVote.php',
         data: {
-            //TODO
+            roundIndex: 1, //insert real round index later,
+            username: lobby_username
         },
-        success: function(data) {
-            document.getElementById("get_img_BestAlgoVote").appendChild(data);
+        success: function (data) {
+            $.ajax({
+                type: "GET",
+                url: data.replace('/home/rigpdqdi/public_html/corble.ch', ''),
+                success: function (data) {
+                    document.getElementById('get_img_BestAlgoVote')
+                        .setAttribute(
+                            'src', data
+                        );
+                }
+            });
         }
     });
 }
@@ -89,16 +104,22 @@ function loadPictureBestAlgoVote() {
 function loadPictureWorstAlgoVote() {
     $.ajax({
         type: "GET",
-        url: '/php/Controller/ajax/GameViewEndLoadPictureWorstAlgo.php',
-        /**
-         * data: Variablen müssen nocht angegeben werden mit dem Spielindex
-         * siehe Beispiel Lobbyview
-         */
+        url: '../Controller/ajax/GameViewEndLoadPictureWorstAlgoVote.php',
         data: {
-            //TODO
+            roundIndex: 1, //insert real round index later,
+            username: lobby_username
         },
-        success: function(data) {
-            document.getElementById("get_img_worstAlgoVote").appendChild(data);
+        success: function (data) {
+            $.ajax({
+                type: "GET",
+                url: data.replace('/home/rigpdqdi/public_html/corble.ch', ''),
+                success: function (data) {
+                    document.getElementById('get_img_worstAlgoVote')
+                        .setAttribute(
+                            'src', data
+                        );
+                }
+            });
         }
     });
 }
@@ -108,10 +129,10 @@ function loadPlayerNameOfBestVotedPicture() {
         type: "GET",
         url: '../Controller/ajax/GameViewEndLoadPlayerNamePictureVote.php',
         data: {
-            roundIndex : 1, //insert real round index later,
-            username : lobby_username
+            roundIndex: 1, //insert real round index later,
+            username: lobby_username
         },
-        success: function(data) {
+        success: function (data) {
             span = document.getElementById("bestVotedPlayer");
             span.innerHTML = data;
         }
@@ -123,10 +144,10 @@ function loadPlayerNameOfBestAlgoPicture() {
         type: "GET",
         url: '../Controller/ajax/GameViewEndLoadPlayerNameBestAlgoVote.php',
         data: {
-            roundIndex : 1, //insert real round index later,
-            username : lobby_username
+            roundIndex: 1, //insert real round index later,
+            username: lobby_username
         },
-        success: function(data) {
+        success: function (data) {
             span = document.getElementById("bestAlgoName");
             span.innerHTML = data;
         }
@@ -138,10 +159,10 @@ function loadPlayerNameOfWorstAlgoPicture() {
         type: "GET",
         url: '../Controller/ajax/GameViewEndLoadPlayerNameWorstAlgoVote.php',
         data: {
-            roundIndex : 1, //insert real round index later,
-            username : lobby_username
+            roundIndex: 1, //insert real round index later,
+            username: lobby_username
         },
-        success: function(data) {
+        success: function (data) {
             span = document.getElementById("worstAlgoName");
             span.innerHTML = data;
         }
@@ -153,10 +174,10 @@ function loadWinnerName() {
         type: "GET",
         url: '../Controller/ajax/GameViewEndLoadWinner.php',
         data: {
-            roundIndex : 1, //insert real round index later,
-            username : lobby_username
+            roundIndex: 1, //insert real round index later,
+            username: lobby_username
         },
-        success: function(data) {
+        success: function (data) {
             span = document.getElementById("winnerMessage");
             span.innerHTML = data;
         }

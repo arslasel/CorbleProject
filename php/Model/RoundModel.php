@@ -26,9 +26,7 @@ class RoundModel
     {
         $IoModel = new IOModel();
         $path = $IoModel->savePicture($base64, $lobbyIndx, $roundIndx, $playerIndx);
-        echo "PATH".$path."PATH";
         if (!is_null($path)) {
-            echo "PATH".$path."PATH";
             $this->corbleDatabase->savePicture($path, $playerIndx,$roundIndx,$wordIndx);
         }
     }

@@ -11,8 +11,8 @@ class GameViewSubmitImage
         $io = new RoundModel(new DatabaseLibrary(new DatabaseConnection));
 
         
-        echo $io->savePicture(file_get_contents(
-            $_FILES['imageBase64']['tmp_name']),
+        echo $io->savePicture(
+            file_get_contents($_FILES['imageBase64']['tmp_name']),
             197,//lobby
             1,//round
             213,//user

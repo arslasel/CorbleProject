@@ -472,6 +472,7 @@ class DatabaseLibrary{
         $sql4 = "SELECT fk_player_index_sketch FROM " . $sql2 . " WHERE total = " . $sql3;
         $sql5 = "SELECT name FROM tbl_player WHERE indx = " . $sql4;
 
+        echo "SQL :".$sql5;
         $result = $this->databaseConnection->executeQuery($sql5);
         if ($result) {
             return $result->fetch_assoc();

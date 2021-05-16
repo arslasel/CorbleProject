@@ -1,6 +1,6 @@
 <?php
 
-include_once($_SERVER['DOCUMENT_ROOT'] ."/php/Model/DatabaseLibrary.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/DatabaseLibrary.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/DatabaseConnection.php");
 
 class GameViewEndLoadWinner
@@ -15,8 +15,8 @@ class GameViewEndLoadWinner
     }
 
     public function LoadWinner()
-    { 
-        $winnerName = $this->corbleDatabase->getWinner($_GET["username"]);//In der $_Get-Klammer muss noch spezifiziert werden
+    {
+        $winnerName = $this->corbleDatabase->getWinner(197);// onbtain lobby index the right way
         echo $winnerName;
     }
 }

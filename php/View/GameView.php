@@ -1,5 +1,6 @@
 <?php
 session_start();
+include_once('../Controller/GameEndConotroller.php');
 ?>
 
 <!DOCTYPE HTML>
@@ -39,8 +40,8 @@ session_start();
             </div>
             <div>
                 <p class="textformating">
-                    Corble ist ein kreatives Zeichnugsspiel, bei dem 4 bis 8 Spieler
-                    gegeneinander antreten. Das Ziel ist ein Bild zu malen, welche das
+                    Corble ist ein kreatives Zeichnungsspiel, bei dem 4 bis 8 Spieler
+                    gegeneinander antreten. Das Ziel ist ein Bild zu malen, welche das,
                     angezeigte Wort am besten darstellt.
                 </p>
                 <div class="textShadow">
@@ -54,7 +55,7 @@ session_start();
                     <h4>Background</h4>
                 </div>
                 <p class="textformating">
-                    Corble wurde im Auftrag von der ZHAW kreiert. Das Ziel dieses Projekt ist die
+                    Corble wurde im Auftrag von der ZHAW kreiert. Das Ziel dieses Projektes ist, die
                     Grundkenntnisse von Software Entwicklung 1 zu vertiefen sowie Erkentnisse zu Projekt
                     Management zu sammeln.
                 </p>
@@ -426,8 +427,10 @@ session_start();
                 <h5 class="WelcomeText">Bestes Bild nach Stimmen</h5>
                 <div class="card">
                     <div class="card-image">
-                        <img src="/img/Ubuntu.png">
-                        <span class="card-title sketchTitle">Selim</span>
+                        <!--<img src="/img/Ubuntu.png">-->
+                        <img id="get_img_WinnerVoted" onload="loadPictureWinnerVote();">
+                        <span id="bestVotedPlayer" class="card-title sketchTitle" onload="loadPlayerNameOfBestVotedPicture();">
+                        </span>
                     </div>
                 </div>
             </div>
@@ -435,8 +438,10 @@ session_start();
                 <h5 class="WelcomeText">Bestes Bild nach Algorithmus</h5>
                 <div class="card">
                     <div class="card-image">
-                        <img src="/img/KimJongUn.png">
-                        <span class="card-title sketchTitle">Selim</span>
+                        <!--<img src="/img/Ubuntu.png">-->
+                        <img id="get_img_BestAlgoVote" onload="loadPictureBestAlgoVote();">
+                        <span id="bestAlgoName" class="card-title sketchTitle" onload="loadPlayerNameOfBestAlgoPicture();">
+                        </span>
                     </div>
                 </div>
             </div>
@@ -444,15 +449,19 @@ session_start();
                 <h5 class="WelcomeText">Schlechtestes Bild nach Algorithmus</h5>
                 <div class="card">
                     <div class="card-image">
-                        <img src="/img/1542233.jpg">
-                        <span class="card-title sketchTitle">Selim</span>
+                        <!--<img src="/img/1542233.jpg">-->
+                        <img id="get_img_worstAlgoVote" onload="loadPictureWorstAlgoVote();">
+                        <span id="worstAlgoName" class="card-title sketchTitle" onload="loadPlayerNameOfWorstAlgoPicture();">
+                        </span>
                     </div>
                 </div>
             </div>
         </div>
         <div class="row">
             <h2 class="WelcomeText selectColorWinner">
-                Gewinner ist: Selim
+                Der Gewinner ist:
+                <span id="winnerMessage" onload="loadWinnerName();">
+                </span>
             </h2>
         </div>
     </div>

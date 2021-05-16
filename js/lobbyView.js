@@ -8,7 +8,7 @@ function loadLobbyData(joincode) {
         data: {
             joincode: joincode,
         },
-        success: function (response) {
+        success: function(response) {
             data = JSON.parse(response)
             currentTime = Math.round((new Date()).getTime() / 1000);
             document.getElementById('lobby_overview_state').innerHTML = data.state;

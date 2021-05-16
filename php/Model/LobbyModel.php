@@ -27,16 +27,14 @@ class LobbyModel
         $this->corbleDatabase = $corbleDatabase;
     }
 
-    public function login($UserName)
-    {
+    
+    public function login($UserName){
         // check if a user with the same name exists
         if ($this->corbleDatabase->checkIfUserExists($UserName)) {
             return false;
         } else { // there is no user with the same name continue login
-            $insertID = $this->databaseConnection->executeInsertQuery(
-                "INSERT INTO tbl_player (name)VALUES ('" . $UserName . "')"
-            );
-            if ($insertID != 0) {
+            $result = $this->databaseConnection->insertUser($UserName);
+            if ($result != 0) {
                 $_SESSION["lobby_username"] = $UserName;
                 return true;
             }

@@ -1,22 +1,17 @@
 <?php
 
-include_once($_SERVER['DOCUMENT_ROOT'] ."/php/Model/DatabaseLibrary.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/DatabaseConnection.php");
+include_once($_SERVER['DOCUMENT_ROOT'] ."/php/Controller/GameEndController.php.php");
 
-class GameViewEndLoadPlayerNameWorstAlgoVote
-{
-
-    private $databaseConnection;
-    private $corbleDatabase;
+class GameViewEndLoadPlayerNameWorstAlgoVote{
+    private $gameEndController;
 
     public function __construct(){
-        $this->databaseConnection = new DatabaseConnection();
-        $this->corbleDatabase = new DatabaseLibrary($this->databaseConnection);
+        $this->gameEndController = new GameEndController($_GET['joincode']);
     }
 
     public function LoadName()
     { 
-        $picture = $this->corbleDatabase->getPlayerWithWorstVotedSketch(197);
+        $picture = $this->gameEndController->getPlayerWithWorstVotedSketch();
         echo $picture;
     }
 }

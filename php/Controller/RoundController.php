@@ -42,10 +42,12 @@
 
         /**
          * Saves a picture to the database
+         * @param $joinCode Joincode of loby
          */
-        public function saveSketch($file, $lobbyIndex, $userid){
+        public function saveSketch($file, $joinCode, $username){
             $this->roundModel->savePicture(
-                file_get_contents($file), $lobbyIndex, $this->roundIndex, $userid);
+                file_get_contents($file), $this->corbleDatabase->getLobbyIndxByJoincode($joinCode), 
+                $this->roundIndex,$this->corbleDatabase->getPlayerByIndex($username));
         }
 
         /**

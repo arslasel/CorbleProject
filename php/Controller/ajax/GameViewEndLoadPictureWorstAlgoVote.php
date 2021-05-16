@@ -16,7 +16,7 @@ class GameViewEndLoadPictureWorstAlgoVote
 
     public function LoadPicture()
     { 
-        $picture = $this->corbleDatabase->getSketchWorstAlgorithm($_GET["username"]);//In der $_Get-Klammer muss noch spezifiziert werden
+        $picture = $this->corbleDatabase->getSketchWorstAlgorithm(197);//In der $_Get-Klammer muss noch spezifiziert werden
         echo $picture;
     }
 }

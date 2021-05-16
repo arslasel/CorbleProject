@@ -16,7 +16,7 @@ class GameViewEndLoadPlayerNamePictureVote
 
     public function LoadPlayerName()
     { 
-        $playerName = $this->corbleDatabase->getPlayerWithBestVotedSketch($_SESSION["lobby_lobbyINDX"]);
+        $playerName = $this->corbleDatabase->getPlayerWithBestVotedSketch(197);
         echo $playerName;
     }
 }

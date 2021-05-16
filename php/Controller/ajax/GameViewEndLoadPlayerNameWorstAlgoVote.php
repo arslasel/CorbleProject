@@ -3,7 +3,7 @@
 include_once($_SERVER['DOCUMENT_ROOT'] ."/php/Model/DatabaseLibrary.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/DatabaseConnection.php");
 
-class GameViewEndLoadPlayerNameBestAlgoVote
+class GameViewEndLoadPlayerNameWorstAlgoVote
 {
 
     private $databaseConnection;
@@ -14,16 +14,16 @@ class GameViewEndLoadPlayerNameBestAlgoVote
         $this->corbleDatabase = new DatabaseLibrary($this->databaseConnection);
     }
 
-    public function LoadWinner()
+    public function LoadName()
     { 
-        $winnerName = $this->corbleDatabase->getPlayerWithBestAlogrithmSketch(197);
-        echo $winnerName;
+        $picture = $this->corbleDatabase->getPlayerWithWorstVotedSketch(197);
+        echo $picture;
     }
 }
 
-$instance = new GameViewEndLoadPlayerNameBestAlgoVote();
+$instance = new GameViewEndLoadPlayerNameWorstAlgoVote();
 try {
-    $instance->LoadWinner();
+    $instance->LoadName();
 } catch (Exception $e) {
     echo json_encode($e->getMessage());
 }

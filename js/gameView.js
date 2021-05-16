@@ -10,6 +10,19 @@ function init() {
     lobby_joincode = urlParams.get('lobby')
 }
 
+function initGameEnd(){
+
+    document.getElementById("endContainer").removeAttribute("hidden");
+    document.getElementById("drawContainer").setAttribute("hidden", "1");
+    document.getElementById("voteContainer").setAttribute("hidden", "1");
+
+
+    loadWinnerName();
+    loadPlayerNameOfWorstAlgoPicture();
+    loadPlayerNameOfBestVotedPicture();
+    loadPlayerNameOfBestAlgoPicture();
+}
+
 function submitImage() {
     var fd = new FormData();
     var blob = new Blob([document.getElementById("drawBoard").toDataURL()], { type: "text/plain" });
@@ -93,18 +106,14 @@ function loadPictureWorstAlgoVote() {
 function loadPlayerNameOfBestVotedPicture() {
     $.ajax({
         type: "GET",
-        url: '../Controller/ajax/GameViewEndLoadPlayerName.php',
-        /**
-         * data: Variablen müssen nocht angegeben werden mit dem Spielindex
-         * siehe Beispiel Lobbyview
-         */
+        url: '../Controller/ajax/GameViewEndLoadPlayerNamePictureVote.php',
         data: {
-            //TODO
+            roundIndex : 1, //insert real round index later,
+            username : lobby_username
         },
         success: function(data) {
             span = document.getElementById("bestVotedPlayer");
-            txt = document.createTextNode(data);
-            span.appendChild(txt);
+            span.innerHTML = data;
         }
     });
 }
@@ -113,17 +122,13 @@ function loadPlayerNameOfBestAlgoPicture() {
     $.ajax({
         type: "GET",
         url: '../Controller/ajax/GameViewEndLoadPlayerNameBestAlgoVote.php',
-        /**
-         * data: Variablen müssen nocht angegeben werden mit dem Spielindex
-         * siehe Beispiel Lobbyview
-         */
         data: {
-            //TODO
+            roundIndex : 1, //insert real round index later,
+            username : lobby_username
         },
         success: function(data) {
             span = document.getElementById("bestAlgoName");
-            txt = document.createTextNode(data);
-            span.appendChild(txt);
+            span.innerHTML = data;
         }
     });
 }
@@ -132,17 +137,13 @@ function loadPlayerNameOfWorstAlgoPicture() {
     $.ajax({
         type: "GET",
         url: '../Controller/ajax/GameViewEndLoadPlayerNameWorstAlgoVote.php',
-        /**
-         * data: Variablen müssen nocht angegeben werden mit dem Spielindex
-         * siehe Beispiel Lobbyview
-         */
         data: {
-            //TODO
+            roundIndex : 1, //insert real round index later,
+            username : lobby_username
         },
         success: function(data) {
             span = document.getElementById("worstAlgoName");
-            txt = document.createTextNode(data);
-            span.appendChild(txt);
+            span.innerHTML = data;
         }
     });
 }
@@ -156,12 +157,8 @@ function loadWinnerName() {
             username : lobby_username
         },
         success: function(data) {
-            console.log(data);
-            /*
             span = document.getElementById("winnerMessage");
-            txt = document.createTextNode(data);
-            span.appendChild(txt);
-            */
+            span.innerHTML = data;
         }
     });
 }
@@ -176,9 +173,12 @@ function registerTimeEvents() {
     }, 1000);
 }
 
+
+
 setTimeout(() => {
     init();
     loadView();
     registerTimeEvents();
     onCanvasLoad();
 }, 20);
+

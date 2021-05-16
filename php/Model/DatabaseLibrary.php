@@ -560,39 +560,38 @@ class DatabaseLibrary
      * @param $joinCode int
      * @return $drawtime int
      */
-    public function getDrawTime(int $joinCode){
-        $sql = "SELECT votetime FROM tbl_lobby WHERE joincode = " .$joinCode .";";
+    public function getDrawTime(int $joinCode)
+    {
+        $sql = "SELECT votetime FROM tbl_lobby WHERE joincode = " . $joinCode . ";";
         $result = $this->databaseConnection->executeQuery($sql);
-        if($result){
+        if ($result) {
             return $result->fetch_assoc();
-        }
-        else {
+        } else {
             return 0;
         }
     }
 
 
-    public function getWordpoolIdsofLobby(int $lobbyIndex){
-        $sql = "SELECT fk_wordpool_indx_lobby_wordpool FROM tbl_lobby_wordpool WHERE fk_lobby_indx_lobby_wordpool = " .$lobbyIndex .";";
+    public function getWordpoolIdsofLobby(int $lobbyIndex)
+    {
+        $sql = "SELECT fk_wordpool_indx_lobby_wordpool FROM tbl_lobby_wordpool WHERE fk_lobby_indx_lobby_wordpool = " . $lobbyIndex . ";";
         $result = $this->databaseConnection->executeQuery($sql);
         $wordpools = array();
-        if($result){
-            while($row = mysqli_fetch_array($result)) {
+        if ($result) {
+            while ($row = mysqli_fetch_array($result)) {
                 $wordpools[] = $row['fk_wordpool_indx_lobby_wordpool'];
             }
             return $wordpools;
-        }
-        else {
+        } else {
             return 0;
         }
     }
 
-    public function createRound(int $lobbyIndx, int $wordIndx){
-        $sql = "INSERT INTO tbl_round(fk_lobby_indx, fk_word_indx_round) VALUES (" .$lobbyIndx ."," .$wordIndx .");";
+    public function createRound(int $lobbyIndx, int $wordIndx)
+    {
+        $sql = "INSERT INTO tbl_round(fk_lobby_indx, fk_word_indx_round) VALUES (" . $lobbyIndx . "," . $wordIndx . ");";
         return $this->databaseConnection->executeInsertQuery($sql);
     }
 }
 
 return;
-?>
-<!-- >

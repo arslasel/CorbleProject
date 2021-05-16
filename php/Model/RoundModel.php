@@ -1,8 +1,8 @@
 <?php
 
-include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/DatabaseLibrary.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/PlayerModel.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/IOModel.php");
+include_once($_SERVER['DOCUMENT_ROOT'] . "/php/Model/DatabaseLibrary.php");
+include_once($_SERVER['DOCUMENT_ROOT'] . "/php/Model/PlayerModel.php");
+include_once($_SERVER['DOCUMENT_ROOT'] . "/php/Model/IOModel.php");
 
 
 
@@ -22,12 +22,12 @@ class RoundModel
      * @param $roundIndx String with database round index
      * @param $playerIndx String with database player index
      */
-    public function savePicture($base64, $lobbyIndx, $roundIndx, $playerIndx,$wordIndx)
+    public function savePicture($base64, $lobbyIndx, $roundIndx, $playerIndx, $wordIndx)
     {
         $IoModel = new IOModel();
         $path = $IoModel->savePicture($base64, $lobbyIndx, $roundIndx, $playerIndx);
         if (!is_null($path)) {
-            $this->corbleDatabase->savePicture($path, $playerIndx,$roundIndx,$wordIndx);
+            $this->corbleDatabase->savePicture($path, $playerIndx, $roundIndx, $wordIndx);
         }
     }
 
@@ -72,5 +72,3 @@ class RoundModel
         return arsort($leaderboard);
     }
 }
-?>
-<!-- -->

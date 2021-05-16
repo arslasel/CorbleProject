@@ -1,6 +1,4 @@
 <?php
-    function checkTiming($lobbyIndx){}
-
-
-?>
-<!-- >
+function checkTiming($lobbyIndx)
+{
+}

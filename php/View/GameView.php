@@ -244,7 +244,7 @@ include_once('../Controller/GameEndConotroller.php');
                 </div>
                 <div class="row NoMarginRow">
                     <div class="col s12">
-                        <button id="clearBtn" class="btn waves-effect waves-light red" >
+                        <button id="clearBtn" class="btn waves-effect waves-light red">
                             Clear
                         </button>
                     </div>
@@ -291,7 +291,6 @@ include_once('../Controller/GameEndConotroller.php');
         <div class="row SizeContainerSlideShow NoMargin">
             <div id="slideshowContainer" class="col s12 l10 NoPadding drawcols">
                 <div class="slideShowContainer">
-                    <!-- Full-width images with number text -->
                     <div class="mySlidesSlideShowSelected setPictureInCard">
                         <div id="image1" hidden>
                             <div class="card sizeOfPicture">
@@ -417,7 +416,7 @@ include_once('../Controller/GameEndConotroller.php');
             </div>
         </div>
     </div>
-    <div hidden id="endContainer" class="content" >
+    <div hidden id="endContainer" class="content">
         <div class="row">
             <h2 class="WelcomeText">Spiel Ende</h2>
             <h3 class="WelcomeText">Siegerehrung</h3>

@@ -1,7 +1,7 @@
 <?php
-include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/DatabaseLibrary.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/PlayerModel.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/WordpoolModel.php");
+include_once($_SERVER['DOCUMENT_ROOT'] . "/php/Model/DatabaseLibrary.php");
+include_once($_SERVER['DOCUMENT_ROOT'] . "/php/Model/PlayerModel.php");
+include_once($_SERVER['DOCUMENT_ROOT'] . "/php/Model/WordpoolModel.php");
 class LobbyModel
 {
     private $corbleDatabase;
@@ -21,7 +21,7 @@ class LobbyModel
 
     private $starttimeUNIX;
 
-    public function __construct($corbleDatabase,$databaseConnection)
+    public function __construct($corbleDatabase, $databaseConnection)
     {
         $this->databaseConnection = $databaseConnection;
         $this->corbleDatabase = $corbleDatabase;
@@ -89,7 +89,7 @@ class LobbyModel
         return $this->players;
     }
 
-    public function createLobby($votetime, $drawtime, $starttime, $maxplayer, $wordpools,$username)
+    public function createLobby($votetime, $drawtime, $starttime, $maxplayer, $wordpools, $username)
     {
         $this->votetime = $votetime;
         $this->drawtime = $drawtime;
@@ -114,7 +114,7 @@ class LobbyModel
         $date = new DateTime();
         $this->starttimeUNIX = $date->getTimestamp() + $this->starttime;
 
-        $playerINDX = PlayerModel::getPlayerIndxByName($this->corbleDatabase,$this->UserName);
+        $playerINDX = PlayerModel::getPlayerIndxByName($this->corbleDatabase, $this->UserName);
         $insertID = $this->corbleDatabase->generateLobby($this->votetime, $this->drawtime, $this->starttimeUNIX, $this->maxplayer, $this->joincode, $playerINDX);
 
         if ($insertID != 0) {
@@ -143,7 +143,8 @@ class LobbyModel
         return $this->corbleDatabase->getWordpoolsOfLobby($lobbyINDX);
     }
 
-    public function getWordpoolIdsofLobby($lobbyINDX){
+    public function getWordpoolIdsofLobby($lobbyINDX)
+    {
         return $this->corbleDatabase->getWordpoolIdsofLobby($lobbyINDX);
     }
 
@@ -169,7 +170,7 @@ class LobbyModel
 
     public function joinLobby($joincode, $username, $isPartyLeader)
     {
-        $playerINDX = PlayerModel::getPlayerIndxByName($this->corbleDatabase,$username);
+        $playerINDX = PlayerModel::getPlayerIndxByName($this->corbleDatabase, $username);
         $lobbyINDX = $this->getLobbyIndxByJoincode($joincode);
         $partyLeaderString = "";
         if ($isPartyLeader == true) {
@@ -189,5 +190,3 @@ class LobbyModel
 }
 
 return;
-?>
-<!-- >

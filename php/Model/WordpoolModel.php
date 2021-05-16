@@ -4,7 +4,8 @@
  * Class WordpoolModel
  *
  */
-class WordpoolModel{
+class WordpoolModel
+{
     private $indx;
     private $name;
 
@@ -13,7 +14,8 @@ class WordpoolModel{
      * @param $indx int Database index of wordpool
      * @param $name string String with name of wordpool
      */
-    public function __construct($indx, $name){
+    public function __construct($indx, $name)
+    {
         $this->indx = $indx;
         $this->name = $name;
     }
@@ -22,7 +24,8 @@ class WordpoolModel{
      * Getter for the database index of the Wordpool
      * @return integer database index
      */
-    public function getIndx(){
+    public function getIndx()
+    {
         return $this->indx;
     }
 
@@ -30,7 +33,8 @@ class WordpoolModel{
      * Returns name of Wordpool
      * @return mixed
      */
-    public function getName(){
+    public function getName()
+    {
         return $this->name;
     }
 
@@ -38,7 +42,8 @@ class WordpoolModel{
      * Creates a list of Wordpools
      * @return array With worpools available on database
      */
-    public static function getWordPools($corbleDatabase){
+    public static function getWordPools($corbleDatabase)
+    {
         $res = $corbleDatabase->getWordpools();
         $wordpools = array();
         if ($res->num_rows > 0) {
@@ -51,5 +56,3 @@ class WordpoolModel{
 }
 
 return;
-?>
-<!-- >

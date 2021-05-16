@@ -1,5 +1,6 @@
 <?php
 session_start();
+include_once('../Controller/GameEndConotroller.php');
 ?>
 
 <!DOCTYPE HTML>
@@ -26,24 +27,21 @@ session_start();
     <script src="../../js/init.js"></script>
     <script src="../../js/canvas.js"></script>
     <script src="../../js/slideshow.js"></script>
-    <script src="../../js/deleteAndBack.js"></script>
+    <script src="../../js/gameView.js"></script>
     <link rel="icon" type="image/png" href="">
 
 </head>
 
 <body>
-
-    <!--The Modal-->
     <div id="aboutCorble" class="modal">
-        <!--Modal Content-->
         <div class="modal-content textPosition">
             <div class="modal-header textShadow">
                 <h2>About Corble</h2>
             </div>
             <div>
                 <p class="textformating">
-                    Corble ist ein kreatives Zeichnugsspiel, bei dem 4 bis 8 Spieler
-                    gegeneinander antreten. Das Ziel ist ein Bild zu malen, welche das
+                    Corble ist ein kreatives Zeichnungsspiel, bei dem 4 bis 8 Spieler
+                    gegeneinander antreten. Das Ziel ist ein Bild zu malen, welche das,
                     angezeigte Wort am besten darstellt.
                 </p>
                 <div class="textShadow">
@@ -57,7 +55,7 @@ session_start();
                     <h4>Background</h4>
                 </div>
                 <p class="textformating">
-                    Corble wurde im Auftrag von der ZHAW kreiert. Das Ziel dieses Projekt ist die
+                    Corble wurde im Auftrag von der ZHAW kreiert. Das Ziel dieses Projektes ist, die
                     Grundkenntnisse von Software Entwicklung 1 zu vertiefen sowie Erkentnisse zu Projekt
                     Management zu sammeln.
                 </p>
@@ -85,9 +83,7 @@ session_start();
         </div>
     </div>
 
-    <!--The Modal-->
     <div id="rulesCorble" class="modal">
-        <!--Modal Content-->
         <div class="modal-content textPosition">
             <div class="modal-header textShadow">
                 <h2>Corble Rules </h2>
@@ -153,9 +149,8 @@ session_start();
         </div>
     </div>
 
-
     <ul class="sidenav" id="mobile-nav">
-        <li class="usernameDisplay"><a id="username_display" href="#"></a></li>
+        <li class="usernameDisplay"><a id="username_displaym" href="#"></a></li>
         <li><a href="#">Leave</a></li>
         <li><a class="modal-trigger" href="#aboutCorble">About</a></li>
         <li><a class="modal-trigger" href="#rulesCorble">Rules</a></li>
@@ -170,8 +165,7 @@ session_start();
                 </a>
 
                 <ul class="right hide-on-med-and-down ">
-                    <li class="usernameDisplay"><a id="username_display" href="#"></a></li>
-                    <li><a href="#" onclick="goBackToIndex()">Leave</a></li>
+                    <li class="usernameDisplay"><a id="username_displayd" href="#"></a></li>
                     <li><a class="modal-trigger" href="#aboutCorble">About</a></li>
                     <li><a class="modal-trigger" href="#rulesCorble">Rules</a></li>
                 </ul>
@@ -180,7 +174,7 @@ session_start();
     </div>
 
 
-    <div id="drawContainer" class="content" style="display: none;">
+    <div hidden id="drawContainer" class="content">
         <div class="row FullHeight NoMargin">
             <div id="drawBoardContainer" class="col s12 l8 NoPadding drawcols">
                 <canvas id="drawBoard">
@@ -194,10 +188,10 @@ session_start();
             <div class="col s12 l2 NoPadding drawcols">
                 <div class="row NoMarginRow">
                     <div class="col s6 NoPadding">
-                        <h6>Time Left</h6>
+                        <h6>Time Left :</h6>
                     </div>
                     <div class="col s6 NoPadding">
-                        <h6>23sec</h6>
+                        <h6 id="timeLeftToDraw"></h6>
                     </div>
                 </div>
                 <div class="row NoMarginRow">
@@ -249,13 +243,8 @@ session_start();
                     <div class="corbleColor corbleWhite" id="line_thickness_l" onclick="select_line_thickness(this)">L</div>
                 </div>
                 <div class="row NoMarginRow">
-                    <div class="col s6">
-                        <button id="submitBtn" class="btn waves-effect waves-light red" type="submit" type="submit" name="login_submit">
-                            Submit
-                        </button>
-                    </div>
-                    <div class="col s6">
-                        <button id="clearBtn" class="btn waves-effect waves-light red" type="submit" type="submit" name="login_submit">
+                    <div class="col s12">
+                        <button id="clearBtn" class="btn waves-effect waves-light red" >
                             Clear
                         </button>
                     </div>
@@ -298,8 +287,7 @@ session_start();
             </div>
         </div>
     </div>
-
-    <div id="voteContainer" class="content">
+    <div hidden id="voteContainer" class="content">
         <div class="row SizeContainerSlideShow NoMargin">
             <div id="slideshowContainer" class="col s12 l10 NoPadding drawcols">
                 <div class="slideShowContainer">
@@ -429,7 +417,7 @@ session_start();
             </div>
         </div>
     </div>
-    <div id="endContainer" class="content" style="display: none;">
+    <div hidden id="endContainer" class="content" >
         <div class="row">
             <h2 class="WelcomeText">Spiel Ende</h2>
             <h3 class="WelcomeText">Siegerehrung</h3>
@@ -439,8 +427,10 @@ session_start();
                 <h5 class="WelcomeText">Bestes Bild nach Stimmen</h5>
                 <div class="card">
                     <div class="card-image">
-                        <img src="/img/Ubuntu.png">
-                        <span class="card-title sketchTitle">Selim</span>
+                        <!--<img src="/img/Ubuntu.png">-->
+                        <img id="get_img_WinnerVoted" onload="loadPictureWinnerVote();">
+                        <span id="bestVotedPlayer" class="card-title sketchTitle" onload="loadPlayerNameOfBestVotedPicture();">
+                        </span>
                     </div>
                 </div>
             </div>
@@ -448,8 +438,10 @@ session_start();
                 <h5 class="WelcomeText">Bestes Bild nach Algorithmus</h5>
                 <div class="card">
                     <div class="card-image">
-                        <img src="/img/KimJongUn.png">
-                        <span class="card-title sketchTitle">Selim</span>
+                        <!--<img src="/img/Ubuntu.png">-->
+                        <img id="get_img_BestAlgoVote" onload="loadPictureBestAlgoVote();">
+                        <span id="bestAlgoName" class="card-title sketchTitle" onload="loadPlayerNameOfBestAlgoPicture();">
+                        </span>
                     </div>
                 </div>
             </div>
@@ -457,30 +449,22 @@ session_start();
                 <h5 class="WelcomeText">Schlechtestes Bild nach Algorithmus</h5>
                 <div class="card">
                     <div class="card-image">
-                        <img src="/img/1542233.jpg">
-                        <span class="card-title sketchTitle">Selim</span>
+                        <!--<img src="/img/1542233.jpg">-->
+                        <img id="get_img_worstAlgoVote" onload="loadPictureWorstAlgoVote();">
+                        <span id="worstAlgoName" class="card-title sketchTitle" onload="loadPlayerNameOfWorstAlgoPicture();">
+                        </span>
                     </div>
                 </div>
             </div>
         </div>
         <div class="row">
             <h2 class="WelcomeText selectColorWinner">
-                Gewinner ist: Selim
+                Der Gewinner ist:
+                <span id="winnerMessage" onload="loadWinnerName();">
+                </span>
             </h2>
         </div>
     </div>
-
-    <?php
-    ini_set('display_errors', 1);
-    if (isset($_SESSION["lobby_username"])) {
-        echo "<script>
-            var usernameElement = document.getElementById('username_display');
-            usernameElement.innerHTML = '" . $_SESSION["lobby_username"] . "';
-        </script>";
-    }
-
-    echo "<script>M.AutoInit()</script>"; // init all materiallize components
-    ?>
 </body>
 
 </html>

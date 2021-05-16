@@ -1,10 +1,3 @@
-/**
- * This is done because the canvas element is being loaded after the script tag containing this file
- */
-setTimeout(() => {
-    onCanvasLoad();
-}, 50);
-
 //global variables
 var drawing = false;
 var canvas;
@@ -200,13 +193,8 @@ function onCanvasLoad() {
     //var text = document.getElementById("dataUrl");
     var image = document.getElementById("image");
     var clearBtn = document.getElementById("clearBtn");
-    var submitBtn = document.getElementById("submitBtn");
     clearBtn.addEventListener("click", function(e) {
         clearCanvas();
-    }, false);
-    submitBtn.addEventListener("click", function(e) {
-        var dataUrl = canvas.toDataURL();
-        image.setAttribute("src", dataUrl);
     }, false);
 
     // Set up mouse events for drawing

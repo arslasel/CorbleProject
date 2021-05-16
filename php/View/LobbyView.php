@@ -40,8 +40,8 @@ session_start();
             </div>
             <div>
                 <p class="textformating">
-                    Corble ist ein kreatives Zeichnugsspiel, bei dem 4 bis 8 Spieler
-                    gegeneinander antreten. Das Ziel ist ein Bild zu malen, welche das
+                    Corble ist ein kreatives Zeichnungsspiel, bei dem 4 bis 8 Spieler
+                    gegeneinander antreten. Das Ziel ist ein Bild zu malen, welche das,
                     angezeigte Wort am besten darstellt.
                 </p>
                 <div class="textShadow">
@@ -55,7 +55,7 @@ session_start();
                     <h4>Background</h4>
                 </div>
                 <p class="textformating">
-                    Corble wurde im Auftrag von der ZHAW kreiert. Das Ziel dieses Projekt ist die
+                    Corble wurde im Auftrag von der ZHAW kreiert. Das Ziel dieses Projektes ist, die
                     Grundkenntnisse von Software Entwicklung 1 zu vertiefen sowie Erkentnisse zu Projekt
                     Management zu sammeln.
                 </p>
@@ -86,26 +86,73 @@ session_start();
     <!--The Modal-->
     <div id="rulesCorble" class="modal">
         <!--Modal Content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Modal Header</h2>
+        <div class="modal-content textPosition">
+            <div class="modal-header textShadow">
+                <h2>Corble Rules </h2>
             </div>
+            <div class="textShadowLight">
+                <h4>1. Anmelden und Starten</h4>
+            </div>
+            <p class="textformating">
+                Bevor es losgeht muss du dich mit deinem Künstlernamen anmelden.
+                Danach kannst du einem Spiel beitreten oder selber eins erstellen.
+            </p>
+            <div class="textShadowLight">
+                <h4>2. Beitreten oder Erstellen</h4>
+            </div>
+            <h5>Join Lobby</h5>
+            <ul class="textformating">
+                <li>Trete einem Spiel bei, dafür gibst du den erhaltenen Code ein.</li>
+            </ul>
+            <h5>Create Lobby</h5>
+            <ul class="textformating">
+                <li>Erstelle ein Spiel nach deinen Regeln.</li>
+            </ul>
+            <div class="textShadowLight">
+                <h4>3. Male das Wort</h4>
+            </div>
+            <p class="textformating">
+                In einer vorgegebenen Zeit, muss du das angezeigte Wort so genau wie möglich
+                malen.
+            </p>
+            <ul class="textformating">
+                <li>1. Verwende Farben</li>
+                <li>2. Verwende Stiftgrössen</li>
+                <li>3. Mit Clear wird alles gelöst</li>
+                <li>4. Bestätige dein Kunstwerk mit Submit</li>
+            </ul>
+            <div class="textShadowLight">
+                <h4>4. Bestimme das beste Bild</h4>
+            </div>
+            <p class="textformating">
+                Die Qual der Wahl, wer hat das beste Bild kreiert? Nach jeder Malrunden muss du
+                dich entscheiden, wer hat das beste Bild gezeichnet. Aber bedenke du hast nicht
+                ewig Zeit.
+            </p>
+            <ul class="textformating">
+                <li>1. Wähle dein Bild in der Minislideshow.</li>
+                <li>2. Das gewählte Bild wird rot markiert und angezeigt.</li>
+                <li>3. Ist die Zeit abgelaufen, wird das gewählte Bild genommen.</li>
+            </ul>
+            <div class="textShadowLight">
+                <h4>5. Siegerehrung</h4>
+            </div>
+            <p class="textformating">
+                Sind alle Runden gespielt, wird dir am schluss angezeigt wer das Spiel gewonnen hat.
+            </p>
+            <ul class="textformating">
+                <li>Bestes Bild nach Stimmen</li>
+                <li>Bestes Bild nach Algorithmus</li>
+                <li>Schlechtestes Bild nach Algorithmus</li>
+            </ul>
         </div>
         <div class="modal-footer">
             <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
         </div>
     </div>
 
-
-    <div hidden>
-        <form name="lobby_overview_refresh" action="#" method="POST">
-            <input id="lobby_overview_refresh" type="submit" name="lobby_overview_refresh_submit" />
-        </form>
-    </div>
-
     <ul class="sidenav" id="mobile-nav">
-        <li class="usernameDisplay"><a id="username_display" href="#"></a></li>
-        <li><a href="#">Leave</a></li>
+        <li class="usernameDisplay"><a id="username_displaym" href="#">&nbsp;</a></li>
         <li><a class="modal-trigger" href="#aboutCorble">About</a></li>
         <li><a class="modal-trigger" href="#rulesCorble">Rules</a></li>
     </ul>
@@ -119,8 +166,7 @@ session_start();
                 </a>
 
                 <ul class="right hide-on-med-and-down ">
-                    <li class="usernameDisplay"><a id="username_display" href="#"></a></li>
-                    <li><a href="#">Leave</a></li>
+                    <li class="usernameDisplay"><a id="username_displayd" href="#">&nbsp;</a></li>
                     <li><a class="modal-trigger" href="#aboutCorble">About</a></li>
                     <li><a class="modal-trigger" href="#rulesCorble">Rules</a></li>
                 </ul>
@@ -136,21 +182,19 @@ session_start();
             <div class="col s0 l3"></div>
             <div class="col s12 l6">
                 <h4>Join Lobby</h4>
-                <form name="login" action="#" method="POST" autocomplete="off">
-                    <div class="row">
-                        <div class="col s12">
-                            <input id="username" type="text" name="login_username" placeholder="Choose Username" required />
-                            <label class="active" for="username">Username</label>
-                        </div>
+                <div class="row">
+                    <div class="col s12">
+                        <input id="username" type="text" name="login_username" placeholder="Choose Username" required />
+                        <label class="active" for="username">Username</label>
                     </div>
-                    <div class="row">
-                        <div class="col s12">
-                            <button class="btn waves-effect waves-light red confirmNameButton" type="submit" type="submit" value="Confirm" name="login_submit">Submit
-                                <i class="material-icons right">send</i>
-                            </button>
-                        </div>
+                </div>
+                <div class="row">
+                    <div class="col s12">
+                        <button class="btn waves-effect waves-light red confirmNameButton" value="Confirm" onclick="login()">Submit
+                            <i class="material-icons right">send</i>
+                        </button>
                     </div>
-                </form>
+                </div>
             </div>
             <div class="col s0 l3"></div>
         </div>
@@ -161,58 +205,55 @@ session_start();
                 <div class="modal-content">
                     <h4>Join Lobby</h4>
                     <form name="join" action="#" method="POST">
-                        <input type="text" name="join_joincode" required />
-                        <input hidden id="joinLobbySubmit" type="submit" name="join_submit" />
+                        <input id="lobby_joincode_field" type="text" name="join_joincode" required />
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <a onclick="document.getElementById('joinLobbySubmit').click()" href="#!" class="modal-close waves-effect waves-green btn-flat">Join</a>
+                    <a onclick="join_lobby()" href="#!" class="modal-close waves-effect waves-green btn-flat">Join</a>
                 </div>
             </div>
 
             <div id="createLobbyModal" class="modal">
                 <div class="modal-content">
                     <h4>Create Lobby</h4>
-                    <form name="lobby_config" action="#" method="POST">
-                        <div class="row">
-                            <div class="col s12">
-                                <input id="lobby_config_drawtime" type="number" name="lobby_config_drawtime" required />
-                                <label for="lobby_config_drawtime">Draw Time</label>
-                            </div>
-                            <div class="col s12">
-                                <input id="lobby_config_votetime" type="number" name="lobby_config_votetime" required />
-                                <label for="lobby_config_votetime">Vote Time</label>
-                            </div>
-                            <div class="col s12">
-                                <input id="lobby_config_starttime" type="number" name="lobby_config_starttime" required />
-                                <label for="lobby_config_starttime">Start Time</label>
-                            </div>
-                            <div class="col s12">
-                                <div class="input-field col s12">
-                                    <select id="lobby_config_wordpool" name="lobby_config_wordpool[]" multiple required>
-                                        <option value="" disabled selected>Choose your option</option>
-                                    </select>
-                                    <label>Word Pool</label>
-                                </div>
-                            </div>
-                            <div class="col s12">
-                                <div class="input-field col s12">
-                                    <select name="lobby_config_maxplayer" required>
-                                        <option value="" disabled selected>Choose your option</option>
-                                        <option value="4">4</option>
-                                        <option value="5">5</option>
-                                        <option value="6">6</option>
-                                        <option value="7">7</option>
-                                        <option value="8">8</option>
-                                    </select>
-                                    <label>Lobby Size</label>
-                                </div>
-                            </div>
-                            <div class="col s12">
-                                <input hidden id="createLobbySubmit" type="submit" name="lobby_config__submit" />
+                    <div class="row">
+                        <div class="col s12">
+                            <input id="lobby_config_drawtime" type="number" name="lobby_config_drawtime" required />
+                            <label for="lobby_config_drawtime">Draw Time</label>
+                        </div>
+                        <div class="col s12">
+                            <input id="lobby_config_votetime" type="number" name="lobby_config_votetime" required />
+                            <label for="lobby_config_votetime">Vote Time</label>
+                        </div>
+                        <div class="col s12">
+                            <input id="lobby_config_starttime" type="number" name="lobby_config_starttime" required />
+                            <label for="lobby_config_starttime">Start Time</label>
+                        </div>
+                        <div class="col s12">
+                            <div class="input-field col s12">
+                                <select id="lobby_config_wordpool" name="lobby_config_wordpool[]" multiple required>
+                                    <option value="" disabled selected>Choose your option</option>
+                                </select>
+                                <label>Word Pool</label>
                             </div>
                         </div>
-                    </form>
+                        <div class="col s12">
+                            <div class="input-field col s12">
+                                <select id="lobby_config_maxplayer" name="lobby_config_maxplayer" required>
+                                    <option value="" disabled selected>Choose your option</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                </select>
+                                <label>Lobby Size</label>
+                            </div>
+                        </div>
+                        <div class="col s12">
+                            <input hidden id="createLobbySubmit" onclick="createLobby()" />
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <a onclick="document.getElementById('createLobbySubmit').click()" href="#!" class="modal-close waves-effect waves-green btn-flat">Create</a>
@@ -301,88 +342,6 @@ session_start();
             <div class="col s0 l2"></div>
         </div>
     </div>
-    <?php
-    ini_set('display_errors', 1);
-    include_once("../Controller/LobbyController.php");
-    $lobbyController = new LobbyController();
-
-    if (isset($_POST['join_submit'])) {
-        $lobbyController->joinLobby($_POST['join_joincode']);
-    }
-
-    if (isset($_POST['login_submit'])) {
-        $returnOfHW = $lobbyController->login($_POST['login_username']);
-        if ($returnOfHW == false) {
-            echo "<script> alert('username taken') </script>";
-        }
-    };
-
-    if (isset($_POST['lobby_config__submit'])) {
-        $lobbyController->createLobby($_POST['lobby_config_votetime'], $_POST['lobby_config_drawtime'], $_POST['lobby_config_starttime'], $_POST['lobby_config_maxplayer'], $_POST['lobby_config_wordpool']);
-    };
-
-    if (!isset($_SESSION["lobby_lobbyINDX"])) {
-        if (!isset($_SESSION["lobby_username"])) {
-            echo "<script>document.getElementById('select_name').removeAttribute('hidden'); </script>";
-        } else {
-            echo "<script>document.getElementById('select_name').setAttribute('hidden', ''); </script>";
-            echo "<script>document.getElementById('lobby_configurator').removeAttribute('hidden'); </script>";
-
-            $wordpools = $lobbyController->getWordPools();
-            foreach ($wordpools as $wordpool) {
-                echo "<script>
-                    var select = document.getElementById('lobby_config_wordpool');
-                    var opt = document.createElement('option');
-                    opt.value = '" . $wordpool->getIndx() . "';
-                    opt.innerHTML = '" . $wordpool->getName() . "';
-                    select.appendChild(opt);
-                </script>";
-            }
-        }
-    } else {
-        echo "<script>document.getElementById('select_name').setAttribute('hidden', ''); </script>";
-        echo "<script>document.getElementById('lobby_configurator').setAttribute('hidden', ''); </script>";
-        echo "<script>document.getElementById('lobby_overview').removeAttribute('hidden'); </script>";
-
-
-        echo "
-        <script>
-            window.setInterval(()=>{
-                loadLobbyData(".$_SESSION['lobby_joincode'].");
-            },1000);
-        </script>";
-
-
-        if (isset($_POST['lobby_overview_refresh_submit'])) {
-            $model = $lobbyController->readLobbyDataFromDB();
-            echo "<script>document.getElementById('lobby_overview_state').innerHTML = '" . $model->getState() . "'; </script>";
-            echo "<script>document.getElementById('lobby_overview_votetime').innerHTML = '" . $model->getVoteTime() . "'; </script>";
-            echo "<script>document.getElementById('lobby_overview_starttime').innerHTML = '" . $model->getStartTime() . "'; </script>";
-            echo "<script>document.getElementById('lobby_overview_drawtime').innerHTML = '" . $model->getDrawTime() . "'; </script>";
-            echo "<script>document.getElementById('lobby_overview_maxplayer').innerHTML = '" . $model->getMaxPlayers() . "'; </script>";
-            echo "<script>document.getElementById('lobby_overview_joincode').innerHTML = '" . $model->getJoinCode() . "'; </script>";
-
-            echo "<script>
-                var div = document.getElementById('lobby_overview_players');
-                var ul = document.createElement('ul');
-                ul.id = 'lobby_overview_players_list';
-                div.innerHTML = '';
-                div.appendChild(ul);
-            </script>";
-        }
-    }
-
-    //username_display
-    if (isset($_SESSION["lobby_username"])) {
-        echo "<script>
-            var usernameElement = document.getElementById('username_display');
-            usernameElement.innerHTML = '" . $_SESSION["lobby_username"] . "';
-        </script>";
-    }
-
-
-    echo "<script>M.AutoInit()</script>"; // init all materiallize components
-    ?>
 </body>
 
 </html>

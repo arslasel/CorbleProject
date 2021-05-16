@@ -5,7 +5,7 @@
     "password": "Zhaw-1234!",
     "secure": false,
     "protocol": "ftp",
-    "uploadOnSave": true,
+    "uploadOnSave": false,
     "extensionsToInclude": [],
     "path": "F:/PM3",
     "passive": false,

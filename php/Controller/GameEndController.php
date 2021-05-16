@@ -1,9 +1,14 @@
 <?php
 //Includes required for using the RoundController functionality
-include_once('../GameEndModel.php');
+include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/GameEndModel.php');
 
 class GameEndController{
     private $lobbyIndex;
+
+    public function __construct($lobbyIndex){
+        $this->lobbyIndex = $lobbyIndex;
+    }
+    
 
     public function getPlayerWithBestVotedSketch(){
         GameEndModel::getPlayerWithBestVotedSketch($this->lobbyIndex);

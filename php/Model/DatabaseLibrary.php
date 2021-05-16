@@ -333,12 +333,13 @@ class DatabaseLibrary
      */
     public function getAllSketches($roundIndx, $playerindx)
     {
-        $sql = "SELECT path as path FROM tbl_sketch WHERE fk_round_indx = '" . $roundIndx . "' AND fk_player_indx_sketch <> '" . $playerindx . "'";
+        $sql = "SELECT path, indx FROM tbl_sketch WHERE fk_round_indx = " . $roundIndx . " AND fk_player_indx_sketch <> " . $playerindx . "";
         $result = $this->databaseConnection->executeQuery($sql);
+
         if ($result) {
             $results = array();
             while ($row = $result->fetch_row()) {
-                $results[] = $row;
+                array_push($results, $row);
             }
             return $results;
         } else {

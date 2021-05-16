@@ -1,40 +1,46 @@
 <?php
 //Includes required for using the RoundController functionality
-include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/GameEndModel.php');
+include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/GameEndModel.php");
 
 class GameEndController{
     private $lobbyIndex;
+    private $databaseConnction;
+    private $corbleDatabase;
+    private $gameEndModel;
 
-    public function __construct($lobbyIndex){
-        $this->lobbyIndex = $lobbyIndex;
+    public function __construct($joinCode){
+        $this->databaseConnection = new DatabaseConnection();
+        $this->corbleDatabase = new DatabaseLibrary($this->databaseConnection);
+        $this->lobbyIndex = $this->corbleDatabase->getLobbyIndxByJoincode($joinCode);
+        $this->gameEndModel = new GameEndModel($this->corbleDatabase, $this->lobbyIndex);
     }
     
 
     public function getPlayerWithBestVotedSketch(){
-        GameEndModel::getPlayerWithBestVotedSketch($this->lobbyIndex);
+        $this->gameEndModel->getPlayerWithBestVotedSketch();
     }
 
     public function getPlayerWithBestAlogrithmSketch(){
-        GameEndModel::getPlayerWithBestAlogrithmSketch($this->lobbyIndex);
+        $this->gameEndModel->getPlayerWithBestAlogrithmSketch();
     }
 
     public function getPlayerWithWorstVotedSketch(){
-        GameEndModel::getPlayerWithWORSTAlogrithmSketch($this->lobbyIndex);
+        $this->gameEndModel->getPlayerWithWorstAlogrithmSketch();
     }
 
     public function getSketchBestVoted(){
-        GameEndModel::getSketchBestVoted($this->lobbyIndex);
+        $this->gameEndModel->getSketchBestVoted();
     }
 
     public function getSketchWorstAlgorithm(){
-        GameEndModel::getSketchWorstAlgorithm($this->lobbyIndex);
+        $this->gameEndModel->getSketchWorstAlgorithm();
     }
 
     public function getSketchBestAlgorithm(){
-        GameEndModel::getSketchBestAlgorithm($this->lobbyIndex);
+        $this->gameEndModel->getSketchBestAlgorithm();
     }
 
     public function getWinner(){
-        GameEndModel::getWinner($this->lobbyIndex);
+        $this->gameEndModel->getWinner();
     }
 }

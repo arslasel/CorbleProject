@@ -186,7 +186,7 @@ class DatabaseLibrary
         $stmt = $conn->prepare("SELECT * FROM tbl_lobby WHERE joincode = ?");
         $stmt->bind_param("i", $joincode); 
 
-        $result =  $this->databaseConnection->executeQuery($conn, $stmt);
+        return $this->databaseConnection->executeQuery($conn, $stmt);
     }
 
     /**
@@ -581,6 +581,19 @@ class DatabaseLibrary
         } else {
             return 0;
         }
+    }
+
+    /**
+     * Insert a user to the database if it not existis
+     * @param $useraname to be inserted
+     * @return boolean if insert was sucessfull
+     */
+    public function insertUser($username){
+        $conn = $this->databaseConnection->createConnection();
+        $stmt = $conn->prepare("INSERT INTO tbl_player (name) VALUES (?)");
+        $stmt->bind_param("s", $username);
+
+        return $this->databaseConnection->executeInsertQuery($conn, $stmt);
     }
 
     /**

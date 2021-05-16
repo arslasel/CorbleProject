@@ -57,8 +57,7 @@ class DatabaseConnection
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
         } else {
-            $stmt->execute();
-            if ($stmt->get_result() === TRUE) {
+            if ($stmt->execute() === true) {
                 $id = $conn->insert_id;
                 $stmt->close();
                 $conn->close();

@@ -32,7 +32,7 @@ class LobbyModel
         if ($this->corbleDatabase->checkIfUserExists($UserName)) {
             return false;
         } else { // there is no user with the same name continue login
-            $result = $this->databaseConnection->insertUser($UserName);
+            $result = $this->corbleDatabase->insertUser($UserName);
             if ($result != 0) {
                 $_SESSION["lobby_username"] = $UserName;
                 return true;

@@ -1,5 +1,4 @@
 <?php
-//Includes required for using the RoundController functionality
 include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/GameEndModel.php");
 
 class GameEndController{
@@ -15,8 +14,7 @@ class GameEndController{
         $this->gameEndModel = new GameEndModel($this->corbleDatabase, $this->lobbyIndex);
     }
     
-
-    public function getPlayerWithBestVotedSketch(){
+    public function getPlayerWithBestVotedSketch($joinCode){
         $this->gameEndModel->getPlayerWithBestVotedSketch();
     }
 

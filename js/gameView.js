@@ -61,7 +61,8 @@ function loadPictureWinnerVote() {
         url: '../Controller/ajax/GameViewEndLoadPictureWinnerVote.php',
         data: {
             roundIndex: 1, //insert real round index later,
-            username: lobby_username
+            username: lobby_username,
+            joincode: lobby_joincode
         },
         success: function (data) {
             $.ajax({
@@ -84,7 +85,8 @@ function loadPictureBestAlgoVote() {
         url: '../Controller/ajax/GameViewEndLoadPictureBestAlgoVote.php',
         data: {
             roundIndex: 1, //insert real round index later,
-            username: lobby_username
+            username: lobby_username,
+            joincode: lobby_joincode
         },
         success: function (data) {
             $.ajax({
@@ -107,7 +109,8 @@ function loadPictureWorstAlgoVote() {
         url: '../Controller/ajax/GameViewEndLoadPictureWorstAlgoVote.php',
         data: {
             roundIndex: 1, //insert real round index later,
-            username: lobby_username
+            username: lobby_username,
+            joincode: lobby_joincode
         },
         success: function (data) {
             $.ajax({
@@ -130,7 +133,8 @@ function loadPlayerNameOfBestVotedPicture() {
         url: '../Controller/ajax/GameViewEndLoadPlayerNamePictureVote.php',
         data: {
             roundIndex: 1, //insert real round index later,
-            username: lobby_username
+            username: lobby_username,
+            joincode: lobby_joincode
         },
         success: function (data) {
             span = document.getElementById("bestVotedPlayer");
@@ -145,7 +149,8 @@ function loadPlayerNameOfBestAlgoPicture() {
         url: '../Controller/ajax/GameViewEndLoadPlayerNameBestAlgoVote.php',
         data: {
             roundIndex: 1, //insert real round index later,
-            username: lobby_username
+            username: lobby_username,
+            joincode: lobby_joincode
         },
         success: function (data) {
             span = document.getElementById("bestAlgoName");
@@ -160,7 +165,8 @@ function loadPlayerNameOfWorstAlgoPicture() {
         url: '../Controller/ajax/GameViewEndLoadPlayerNameWorstAlgoVote.php',
         data: {
             roundIndex: 1, //insert real round index later,
-            username: lobby_username
+            username: lobby_username,
+            joincode: lobby_joincode
         },
         success: function (data) {
             span = document.getElementById("worstAlgoName");
@@ -175,7 +181,8 @@ function loadWinnerName() {
         url: '../Controller/ajax/GameViewEndLoadWinner.php',
         data: {
             roundIndex: 1, //insert real round index later,
-            username: lobby_username
+            username: lobby_username,
+            joincode: lobby_joincode
         },
         success: function (data) {
             span = document.getElementById("winnerMessage");
@@ -193,8 +200,6 @@ function registerTimeEvents() {
         }
     }, 1000);
 }
-
-
 
 setTimeout(() => {
     init();

@@ -99,7 +99,7 @@ class DatabaseLibrary
             foreach ($worldpools as $wordpool) {
                 $stmt = $conn->prepare("INSERT INTO tbl_lobby_wordpool (fk_lobby_indx_lobby_wordpool,fk_wordpool_indx_lobby_wordpool) 
                     VALUES (?,?)");
-                $stmt->bind_param("i", $lobbyIndx, $wordpool ); 
+                $stmt->bind_param("ii", $lobbyIndx, $wordpool ); 
                 $stmt->execute();
             }
             return 0;
@@ -644,8 +644,11 @@ class DatabaseLibrary
 
     public function getWordpoolIdsofLobby(int $lobbyIndex)
     {
-        $sql = "SELECT fk_wordpool_indx_lobby_wordpool FROM tbl_lobby_wordpool WHERE fk_lobby_indx_lobby_wordpool = " . $lobbyIndex . ";";
-        $result = $this->databaseConnection->executeQuery($sql);
+        $conn = $this->databaseConnection->createConnection();
+        $stmt = $conn->prepare("SELECT fk_wordpool_indx_lobby_wordpool FROM tbl_lobby_wordpool WHERE fk_lobby_indx_lobby_wordpool = ?;");
+        $stmt->bind_param("i", $lobbyIndex);
+
+        $result = $this->databaseConnection->executeQuery($conn,$stmt);
         $wordpools = array();
         if ($result) {
             while ($row = mysqli_fetch_array($result)) {
@@ -659,8 +662,11 @@ class DatabaseLibrary
 
     public function createRound(int $lobbyIndx, int $wordIndx)
     {
-        $sql = "INSERT INTO tbl_round(fk_lobby_indx, fk_word_indx_round) VALUES (" . $lobbyIndx . "," . $wordIndx . ");";
-        return $this->databaseConnection->executeInsertQuery($sql);
+        $conn = $this->databaseConnection->createConnection();
+        $stmt = $conn->prepare("INSERT INTO tbl_round(fk_lobby_indx, fk_word_indx_round) VALUES (?,?);");
+        $stmt->bind_param("ii", $lobbyIndx,$wordIndx);
+
+        return $this->databaseConnection->executeInsertQuery($conn,$stmt);
     }
 }
 

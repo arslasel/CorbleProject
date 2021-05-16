@@ -23,11 +23,14 @@
             return WordpoolModel::getWordPools($this->corbleDatabase);
         }
 
-        public function createLobby($votetime,$drawtime,$starttime,$maxplayer,$wordpools,$username){$joincode = $this->lobbyModel->createLobby($votetime,$drawtime,$starttime,$maxplayer,$wordpools,$username);
-            $wordPoolsOfLobby = $this->lobbyModel->getWordpoolIdsofLobby($this->lobbyModel->getLobbyIndxByJoincode($joincode));
-            $rand = rand(0,count($wordPoolsOfLobby));
+        public function createLobby($votetime,$drawtime,$starttime,$maxplayer,$wordpools,$username){
+            $joincode = $this->lobbyModel->createLobby($votetime,$drawtime,$starttime,$maxplayer,$wordpools,$username);
+            $lobbyIndex = $this->lobbyModel->getLobbyIndxByJoincode($joincode);
+            $wordPoolsOfLobby = $this->lobbyModel->getWordpoolIdsofLobby($lobbyIndex);
+
+            $rand = rand(0,count($wordPoolsOfLobby)-1);
             $round1 = new RoundController();
-            $round1->createRound($this->lobbyModel->getLobbyIndxByJoincode($joincode),$wordpools[$rand]);
+            $round1->createRound($this->lobbyModel->getLobbyIndxByJoincode($joincode),3);//$wordpools[$rand]
             return $joincode;
         }
 

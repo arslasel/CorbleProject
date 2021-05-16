@@ -512,8 +512,12 @@ class DatabaseLibrary
         $stmt->bind_param("s", $categoryId);
 
         $result =  $this->databaseConnection->executeQuery($conn, $stmt);
-        if($result){
-            return $result->fetch_assoc();
+        $wordIndexes = array();
+        if ($result) {
+            while ($row = mysqli_fetch_array($result)) {
+                $wordIndexes[] = $row['fk_word_indx_wordpool_word'];
+            }
+            return $wordIndexes;
         } else {
             return 0;
         }
@@ -632,8 +636,10 @@ class DatabaseLibrary
      */
     public function getDrawTime(int $joinCode)
     {
-        $sql = "SELECT votetime FROM tbl_lobby WHERE joincode = " . $joinCode . ";";
-        $result = $this->databaseConnection->executeQuery($sql);
+        $conn = $this->databaseConnection->createConnection();
+        $stmt = $conn->prepare("SELECT votetime FROM tbl_lobby WHERE joincode = ?;");
+        $stmt->bind_param("i", $joinCode);
+        $result = $this->databaseConnection->executeQuery($conn, $stmt);
         if ($result) {
             return $result->fetch_assoc();
         } else {

@@ -9,8 +9,8 @@
         //Class variable initializations
         private $sketches = array(); //this should be an array of sketchesIds and imagedata
         private $sketchesIds = array();
-        private $categoryId;
-        private const MIN_WORD_ID = 1;
+        private $categoryId = 1;
+        private const MIN_WORD_ID = 0;
         private $ratingModel;
         private $roundIndx;
         private $corbleDatabase;
@@ -32,7 +32,7 @@
 
         public function createRound(int $lobbyIndx, int $categoryId){
             $wordId = $this->selectRandomWord($categoryId);
-            $this->corbleDatabase->createRound($lobbyIndx, $wordId);
+            return $this->corbleDatabase->createRound($lobbyIndx, $wordId);
         }
 
         /**
@@ -48,11 +48,11 @@
         /**
          * This method is used for selecting a random Word out of a category
          */
-        public function selectRandomWord(){
-            $wordIds = $this->corbleDatabase->getAllWordIdsOfCategory($this->categoryId);
-            if($wordIds != 0){ // if wordIds == 0 then no word was found for category
-                $numOfElements = count($wordIds);
-                $randomNumInArray = rand($this->MIN_WORD_ID, $numOfElements);
+        public function selectRandomWord($categoryId){
+            $wordIds = $this->corbleDatabase->getAllWordIdsOfCategory($categoryId);
+            if(sizeof($wordIds) != 0){ // if wordIds == 0 then no word was found for category
+                $numOfElements = sizeof($wordIds);
+                $randomNumInArray = rand($this->MIN_WORD_ID, $numOfElements-1);
                 return $wordIds[$randomNumInArray];
             }
             else{

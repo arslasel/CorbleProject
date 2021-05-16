@@ -56,7 +56,8 @@ function registerTimeEvents() {
     window.setInterval(() => {
         remainingTime = remainingTime - 1;
         document.getElementById("timeLeftToDraw").innerHTML = remainingTime.toString();
-        if (remainingTime == 0) {
+        if (remainingTime <= 0) {
+            submitImage()
             alert("drawTime over")
         }
     }, 1000);

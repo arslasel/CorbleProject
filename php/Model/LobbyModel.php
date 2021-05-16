@@ -143,6 +143,10 @@ class LobbyModel
         return $this->corbleDatabase->getWordpoolsOfLobby($lobbyINDX);
     }
 
+    public function getWordpoolIdsofLobby($lobbyINDX){
+        return $this->corbleDatabase->getWordpoolIdsofLobby($lobbyINDX);
+    }
+
     public function readLobbyDataFromDB()
     {
         $queryResult = $this->corbleDatabase->readLobbyDataFromDB($_SESSION["lobby_joincode"]);

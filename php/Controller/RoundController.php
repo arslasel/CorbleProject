@@ -21,12 +21,18 @@
          * @param: String array() $sketches
          * @param: int $category
          */
-        public function __construct($sketches, $categoryId){
+        public function __construct(){
             $this->corbleDatabase = new DatabaseLibrary(new DatabaseConnection());
             $this->roundModel = new RoundModel($this->corbleDatabase);
-            $this->sketches = $sketches; //Here are sketch-id and picture information contained
-            $this->sketchesIds = array_column($this->sketches, 0);
-            $this->categoryId = $categoryId;
+            //$this->sketches = $sketches; //Here are sketch-id and picture information contained
+            //$this->sketchesIds = array_column($this->sketches, 0);
+            //$this->categoryId = $categoryId;
+        }
+
+
+        public function createRound(int $lobbyIndx, int $categoryId){
+            $wordId = $this->selectRandomWord($categoryId);
+            $this->corbleDatabase->createRound($lobbyIndx, $wordId);
         }
 
         /**
@@ -84,9 +90,9 @@
         /**
          * This method refreshes the sketches which are contained in the round.
          */
-        public function refreshListOfSketches(){
+        /*public function refreshListOfSketches(){
             $this->roundIndx = $this->corbleDatabase->getRoundIndexOfSketch($this->sketchesIds[0]);
             $this->sketches = $this->roundModel->getAllSketches($this->roundIndx);
-        }
+        }*/
     }
 ?>

@@ -26,3 +26,4 @@ try {
 catch (Exception $e) {
     echo json_encode($e->getMessage());
 }
+?>

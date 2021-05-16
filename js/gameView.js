@@ -1,6 +1,7 @@
 lobby_username = "";
 lobby_joincode = 0;
 remainingTime = 60;
+selectedImgID = 0;
 
 
 function init() {
@@ -39,6 +40,16 @@ function initGameEnd() {
     loadPictureWorstAlgoVote();
 }
 
+function initVote() {
+    remainingTime = 60;
+
+    document.getElementById("voteContainer").removeAttribute("hidden");
+    document.getElementById("drawContainer").setAttribute("hidden", "1");
+    document.getElementById("endContainer").setAttribute("hidden", "1");
+
+    loadPicturesVote();
+}
+
 function submitImage() {
     var fd = new FormData();
     var blob = new Blob([document.getElementById("drawBoard").toDataURL()], { type: "text/plain" });
@@ -66,6 +77,87 @@ function loadView() {
     document.getElementById("drawContainer").removeAttribute("hidden");
     document.getElementById("voteContainer").setAttribute("hidden", "1");
     document.getElementById("endContainer").setAttribute("hidden", "1");
+}
+
+
+// Next/previous controls
+function plusSlides(n) {
+    selectSlide(slideIndex += n);
+}
+
+// Thumbnail image controls
+function currentSlide(n) {
+    selectSlide(slideIndex = n);
+}
+
+function selectSlide(caller, n) {
+    var element = document.getElementById("image" + n.toString());
+    if (element != null) {
+        element.removeAttribute("hidden")
+    }
+
+    for (let index = 1; index < 7; index++) {
+        var hideElemment = document.getElementById("image" + index.toString());
+        if (index != n) {
+            hideElemment.setAttribute("hidden", "true");
+        }
+    }
+}
+
+function selectPicture(n) {
+    var littelPicture = document.getElementById("imagePreview" + n.toString());
+    littelPicture.classList.add("selectedPicture");
+    for (let index = 1; index < 7; index++) {
+        var temp = document.getElementById("imagePreview" + index.toString())
+        if (temp != littelPicture) {
+            temp.classList.remove("selectedPicture");
+        }
+    }
+}
+
+function loadPicturesVote() {
+    $.ajax({
+        type: "GET",
+        url: '../Controller/ajax/GameViewVoteLoadPictures.php',
+        data: {
+            roundIndex: 1, //insert real round index later,
+            username: lobby_username
+        },
+        success: function (data) {
+            images = JSON.parse(data);
+            img_mini_container = document.getElementById("img_mini_container");
+            img_mini_container.innerHTML = "";
+            images.forEach(img => {
+                $.ajax({
+                    type: "GET",
+                    url: img.path.replace('/home/rigpdqdi/public_html/corble.ch', ''),
+                    success: function (data) {
+                        imgdiv = document.createElement('div')
+                        imgdiv.className = "col s2 l2";
+                        imgelement = document.createElement('img')
+                        imgelement.setAttribute("src", data)
+                        imgelement.className = "demoSlideShow cursorSlideShow pictureWidth slideshowpics";
+                        imgelement.onclick = function(){
+                            selectedImgID = img.dbIndex;
+                            document.getElementById("previewImage").setAttribute("src", data);
+                            
+                            list = document.getElementsByClassName("slideshowpics");
+                            for (var i = 0; i < list.length; i++) {
+                                list[i].classList.remove("selectedPicture");
+                            }
+                        
+                            //console.log(this);
+                            this.classList.add("selectedPicture");
+
+                        }
+                        imgdiv.appendChild(imgelement);
+                        img_mini_container.appendChild(imgdiv);
+                        imgelement.click();
+                    }
+                });
+            });
+        }
+    });
 }
 
 function loadPictureWinnerVote() {
@@ -201,10 +293,11 @@ function registerTimeEvents() {
     window.setInterval(() => {
         remainingTime = remainingTime - 1;
         document.getElementById("timeLeftToDraw").innerHTML = remainingTime.toString();
-        if (remainingTime <= 0) {
-            submitImage()
+        document.getElementById("timeLeftToVote").innerHTML = remainingTime.toString();
+        if (remainingTime == 0) {
             alert("drawTime over")
         }
+        if(remainingTime < 0){ remainingTime = -1;}
     }, 1000);
 }
 

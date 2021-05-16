@@ -32,6 +32,9 @@
         	$redCounter = 0;
         	$yellowCounter = 0;
         	$orangeCounter = 0;
+			$brownCounter = 0;
+			$greyCounter = 0;
+			$whiteCounter = 0;
         	
 			//each pixel of the image will be selected, the color will be read out and the right counter will be incremented
         	for ($counterWidth=0; $counterWidth < $width; $counterWidth++) {
@@ -57,13 +60,22 @@
                     else if($r == 255 && $g == 255 && $b == 0){
                         $yellowCounter++;
         			}
+					else if($r == 128 && $g == 128 && $b == 128){
+                        $greyCounter++;
+        			}
+					else if($r == 165 && $g == 42 && $b == 42){
+                        $brownCounter++;
+        			}
+					else if($r == 255 && $g == 255 && $b == 255){
+        			    $whiteCounter++;
+        			}
         			else if($r == 255 && $g == 165 && $b == 0){
         			    $orangeCounter++;
         			}
         		}
         	}
         	
-        	return array($blackCounter, $redCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter);
+        	return array($blackCounter, $redCounter, $brownCounter, $greyCounter, $whiteCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter);
         }
     }
 ?>

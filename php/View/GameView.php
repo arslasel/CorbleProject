@@ -26,7 +26,6 @@ include_once('../Controller/GameEndConotroller.php');
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="../../js/init.js"></script>
     <script src="../../js/canvas.js"></script>
-    <script src="../../js/slideshow.js"></script>
     <script src="../../js/gameView.js"></script>
     <link rel="icon" type="image/png" href="">
 
@@ -176,7 +175,7 @@ include_once('../Controller/GameEndConotroller.php');
 
     <div hidden id="drawContainer" class="content">
         <div class="row FullHeight NoMargin">
-            <div id="drawBoardContainer" class="col s12 l8 NoPadding drawcols">
+            <div id="drawBoardContainer" class="col s12 l10 NoPadding drawcols">
                 <canvas id="drawBoard">
                 </canvas>
                 <div class="row NoMarginRow">
@@ -250,168 +249,28 @@ include_once('../Controller/GameEndConotroller.php');
                     </div>
                 </div>
             </div>
-            <div class="col s12 l2 NoPadding drawcols">
-                <div class="row NoMarginRow">
-                    <h5>Leaderboard</h5>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Score</th>
-                                <th>Name</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>6</td>
-                                <td>Gino</td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>Selim</td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>Kaya</td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Roman</td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Dominique</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
         </div>
     </div>
     <div hidden id="voteContainer" class="content">
+        <div class="row NoMarginRow">
+            <div class="col s6 l2 NoPadding">
+                <h6>Time Left to vote:</h6>
+            </div>
+            <div class="col s6 l10NoPadding">
+                <h6 id="timeLeftToVote"></h6>
+            </div>
+        </div>
         <div class="row SizeContainerSlideShow NoMargin">
-            <div id="slideshowContainer" class="col s12 l10 NoPadding drawcols">
+            <div id="slideshowContainer" class="col s12 l12 NoPadding drawcols">
                 <div class="slideShowContainer">
                     <div class="mySlidesSlideShowSelected setPictureInCard">
-                        <div id="image1" hidden>
-                            <div class="card sizeOfPicture">
-                                <div class="card-image">
-                                    <img src="/img/FIZZ.jpg">
-                                    <div class="numbertextSlideShow">1 / 6</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="image2" hidden>
-                            <div class="card sizeOfPicture">
-                                <div class="card-image">
-                                    <img src="/img/Fiora.jpg">
-                                    <div class="numbertextSlideShow">2 / 6</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="image3" hidden>
-                            <div class="card sizeOfPicture">
-                                <div class="card-image">
-                                    <img src="/img/Yorrick.jpg">
-                                    <div class="numbertextSlideShow">3 / 6</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="image4" hidden>
-                            <div class="card sizeOfPicture">
-                                <div class="card-image">
-                                    <img src="/img/FIZZVOID.png">
-                                    <div class="numbertextSlideShow">4 / 6</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="image5" hidden>
-                            <div class="card sizeOfPicture">
-                                <div class="card-image">
-                                    <img src="/img/1542233.jpg">
-                                    <div class="numbertextSlideShow">5 / 6</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="image6" hidden>
-                            <div class="card sizeOfPicture">
-                                <div class="card-image">
-                                    <img src="/img/Wukong.jpg">
-                                    <div class="numbertextSlideShow">6 / 6</div>
-                                </div>
+                        <div class="card sizeOfPicture">
+                            <div class="card-image">
+                                <img id="previewImage">
                             </div>
                         </div>
                     </div>
-                    <div class="row miniSlideShow ">
-                        <div class="col s2 l2">
-                            <img id="imagePreview1" class="demoSlideShow cursorSlideShow pictureWidth " src="/img/FIZZ.jpg" onclick="selectSlide(this,1); selectPicture(1)" alt="Fizz">
-                        </div>
-                        <div class="col s2 l2">
-                            <img id="imagePreview2" class="demoSlideShow cursorSlideShow pictureWidth " src="/img/Fiora.jpg" onclick="selectSlide(this,2); selectPicture(2)" alt="Fiora">
-                        </div>
-                        <div class="col s2 l2">
-                            <img id="imagePreview3" class="demoSlideShow cursorSlideShow pictureWidth " src="/img/Yorrick.jpg" onclick="selectSlide(this,3); selectPicture(3)" alt="Yorrick">
-                        </div>
-                        <div class="col s2 l2">
-                            <img id="imagePreview4" class="demoSlideShow cursorSlideShow pictureWidth " src="/img/FIZZVOID.png" onclick="selectSlide(this,4); selectPicture(4)" alt="VoidFizz">
-                        </div>
-                        <div class="col s2 l2">
-                            <img id="imagePreview5" class="demoSlideShow cursorSlideShow pictureWidth" src="/img/1542233.jpg" onclick="selectSlide(this,5); selectPicture(5)" alt="TRÖMP">
-                        </div>
-                        <div class="col s2 l2">
-                            <img id="imagePreview6" class="demoSlideShow cursorSlideShow pictureWidth" src="/img/Wukong.jpg" onclick="selectSlide(this,6); selectPicture(6)" alt="Wukong">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col s12 l2 NoPadding drawcols">
-                <div class="row NoMarginRow">
-                    <h5>Leaderboard</h5>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Score</th>
-                                <th>Name</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>6</td>
-                                <td>Gino</td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>Selim</td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>Kaya</td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Roman</td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Dominique</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div class="row NoMarginRow">
-                        <div class="col s6 NoPadding ">
-                            <h5>Runde: </h5>
-                        </div>
-                        <div class="col s6 NoPadding">
-                            <h5>3</h5>
-                        </div>
-                    </div>
-                    <div class="row NoMarginRow">
-                        <div class="col s6 NoPadding">
-                            <h5>Time Left:</h5>
-                        </div>
-                        <div class="col s6 NoPadding">
-                            <h5>23sec</h5>
-                        </div>
-                    </div>
+                    <div id="img_mini_container" class="row miniSlideShow "></div>
                 </div>
             </div>
         </div>

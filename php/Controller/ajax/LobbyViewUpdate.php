@@ -24,6 +24,7 @@ class LobbyViewAjaxUpdate{
         $result = $dbLib->readLobbyDataFromDB($_GET['joincode']);
 
         if($result){
+
             $row = $result->fetch_assoc();
         
             $players = $dbLib->getPlayersOfLobby($row['indx']);
@@ -55,5 +56,3 @@ try {
 catch (Exception $e) {
     echo json_encode($e->getMessage());
 }
-
-?>

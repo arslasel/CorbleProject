@@ -318,6 +318,7 @@ body {
 
 .demoSlideShow {
     opacity: 0.6;
+    margin: 5px!important;
 }
 
 .active,

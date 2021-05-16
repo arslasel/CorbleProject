@@ -23,12 +23,29 @@ function initGame() {
 
 }
 
+function initGameEnd() {
+
+    document.getElementById("endContainer").removeAttribute("hidden");
+    document.getElementById("drawContainer").setAttribute("hidden", "1");
+    document.getElementById("voteContainer").setAttribute("hidden", "1");
+
+
+    loadWinnerName();
+    loadPlayerNameOfWorstAlgoPicture();
+    loadPlayerNameOfBestVotedPicture();
+    loadPlayerNameOfBestAlgoPicture();
+    loadPictureWinnerVote();
+    loadPictureBestAlgoVote();
+    loadPictureWorstAlgoVote();
+}
+
 function submitImage() {
     var fd = new FormData();
     var blob = new Blob([document.getElementById("drawBoard").toDataURL()], { type: "text/plain" });
-    fd.append("imageBase64", blob,"imageBase64.txt");
-    fd.append("username",lobby_username);
+    fd.append("imageBase64", blob, "imageBase64.txt");
+    fd.append("username", lobby_username);
     fd.append("lobby", lobby_joincode);
+    fd.append("word", 2);
     $.ajax({
         url: '../Controller/ajax/GameViewSubmitImage.php',
         type: 'post',
@@ -39,7 +56,6 @@ function submitImage() {
             console.log(response)
         },
     });
-
 }
 
 function loadView() {
@@ -50,6 +66,135 @@ function loadView() {
     document.getElementById("drawContainer").removeAttribute("hidden");
     document.getElementById("voteContainer").setAttribute("hidden", "1");
     document.getElementById("endContainer").setAttribute("hidden", "1");
+}
+
+function loadPictureWinnerVote() {
+    $.ajax({
+        type: "GET",
+        url: '../Controller/ajax/GameViewEndLoadPictureWinnerVote.php',
+        data: {
+            roundIndex: 1, //insert real round index later,
+            username: lobby_username
+        },
+        success: function (data) {
+            $.ajax({
+                type: "GET",
+                url: data.replace('/home/rigpdqdi/public_html/corble.ch', ''),
+                success: function (data) {
+                    document.getElementById('get_img_WinnerVoted')
+                        .setAttribute(
+                            'src', data
+                        );
+                }
+            });
+        }
+    });
+}
+
+function loadPictureBestAlgoVote() {
+    $.ajax({
+        type: "GET",
+        url: '../Controller/ajax/GameViewEndLoadPictureBestAlgoVote.php',
+        data: {
+            roundIndex: 1, //insert real round index later,
+            username: lobby_username
+        },
+        success: function (data) {
+            $.ajax({
+                type: "GET",
+                url: data.replace('/home/rigpdqdi/public_html/corble.ch', ''),
+                success: function (data) {
+                    document.getElementById('get_img_BestAlgoVote')
+                        .setAttribute(
+                            'src', data
+                        );
+                }
+            });
+        }
+    });
+}
+
+function loadPictureWorstAlgoVote() {
+    $.ajax({
+        type: "GET",
+        url: '../Controller/ajax/GameViewEndLoadPictureWorstAlgoVote.php',
+        data: {
+            roundIndex: 1, //insert real round index later,
+            username: lobby_username
+        },
+        success: function (data) {
+            $.ajax({
+                type: "GET",
+                url: data.replace('/home/rigpdqdi/public_html/corble.ch', ''),
+                success: function (data) {
+                    document.getElementById('get_img_worstAlgoVote')
+                        .setAttribute(
+                            'src', data
+                        );
+                }
+            });
+        }
+    });
+}
+
+function loadPlayerNameOfBestVotedPicture() {
+    $.ajax({
+        type: "GET",
+        url: '../Controller/ajax/GameViewEndLoadPlayerNamePictureVote.php',
+        data: {
+            roundIndex: 1, //insert real round index later,
+            username: lobby_username
+        },
+        success: function (data) {
+            span = document.getElementById("bestVotedPlayer");
+            span.innerHTML = data;
+        }
+    });
+}
+
+function loadPlayerNameOfBestAlgoPicture() {
+    $.ajax({
+        type: "GET",
+        url: '../Controller/ajax/GameViewEndLoadPlayerNameBestAlgoVote.php',
+        data: {
+            roundIndex: 1, //insert real round index later,
+            username: lobby_username
+        },
+        success: function (data) {
+            span = document.getElementById("bestAlgoName");
+            span.innerHTML = data;
+        }
+    });
+}
+
+function loadPlayerNameOfWorstAlgoPicture() {
+    $.ajax({
+        type: "GET",
+        url: '../Controller/ajax/GameViewEndLoadPlayerNameWorstAlgoVote.php',
+        data: {
+            roundIndex: 1, //insert real round index later,
+            username: lobby_username
+        },
+        success: function (data) {
+            span = document.getElementById("worstAlgoName");
+            span.innerHTML = data;
+        }
+    });
+}
+
+function loadWinnerName() {
+    $.ajax({
+        type: "GET",
+        url: '../Controller/ajax/GameViewEndLoadWinner.php',
+        data: {
+            roundIndex: 1, //insert real round index later,
+            username: lobby_username
+        },
+        success: function (data) {
+            span = document.getElementById("winnerMessage");
+            span.innerHTML = data;
+        }
+    });
 }
 
 function registerTimeEvents() {
@@ -63,9 +208,12 @@ function registerTimeEvents() {
     }, 1000);
 }
 
+
+
 setTimeout(() => {
     init();
     loadView();
     registerTimeEvents();
     onCanvasLoad();
 }, 20);
+

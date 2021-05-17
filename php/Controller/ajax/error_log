@@ -1,7 +1,0 @@
-[13-May-2021 11:20:22 UTC] PHP Notice:  Undefined variable: lobbyController in /home/rigpdqdi/public_html/corble.ch/php/Controller/ajax/LobbyViewCreateLobby.php on line 9
-[13-May-2021 11:20:22 UTC] PHP Notice:  Undefined variable: lobbyController in /home/rigpdqdi/public_html/corble.ch/php/Controller/ajax/LobbyViewCreateLobby.php on line 16
-[13-May-2021 11:20:22 UTC] PHP Fatal error:  Uncaught Error: Call to a member function createLobby() on null in /home/rigpdqdi/public_html/corble.ch/php/Controller/ajax/LobbyViewCreateLobby.php:16
-Stack trace:
-#0 /home/rigpdqdi/public_html/corble.ch/php/Controller/ajax/LobbyViewCreateLobby.php(31): LobbyViewCreateLobby->createLobby()
-#1 {main}
-  thrown in /home/rigpdqdi/public_html/corble.ch/php/Controller/ajax/LobbyViewCreateLobby.php on line 16

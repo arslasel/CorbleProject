@@ -9,7 +9,7 @@ function init() {
     const urlParams = new URLSearchParams(queryString);
     lobby_username = urlParams.get('username')
     lobby_joincode = urlParams.get('lobby')
-    $.when(initGame()).done(function (response) {remainingTime = response.votetime;})
+    $.when(initGame()).done(function (response) {remainingTime = response.voteTime;})
 }
 
 function initGame() {

@@ -7,7 +7,6 @@
      */
     class RoundController{
         private $sketches = array();
-        private const MIN_WORD_ID = 0;
         private $ratingModel;
         private $roundIndex;
         private $corbleDatabase;
@@ -74,7 +73,7 @@
             $wordIds = $this->corbleDatabase->getAllWordIdsOfCategory($categoryId);
             if(sizeof($wordIds) != 0){ // if wordIds == 0 then no word was found for category
                 $numOfElements = sizeof($wordIds);
-                $randomNumInArray = rand($this->MIN_WORD_ID, $numOfElements-1);
+                $randomNumInArray = rand(0, $numOfElements-1);
                 return $wordIds[$randomNumInArray];
             }
             else{
@@ -92,7 +91,7 @@
 
         /**
          * Returns array with key value pair of player and his score
-         * @param $lobbyIndex Integer index of lobby
+         * @param int $lobbyIndex Integer index of lobby
          */
         public function getLeaderBoard($lobbyIndex){
             $this->roundModel->getLeaderBoard($lobbyIndex);
@@ -100,10 +99,18 @@
 
         /**
          * This method get all sketches as a list.
-         * @return: String array() $this->sketches
+         * @return: array Array with strings
          */
         public function getSketchesOfRound(){
-                return $this->sketches;
+            return $this->sketches;
+        }
+
+        /**
+         * Method returns draw time of lobby
+         * @param int $joinCode integer with joincode of lobby 
+         */
+        public function getDrawTime($joinCode){
+            return $this->roundModel->getDrawTime($joinCode);
         }
     }
 ?>

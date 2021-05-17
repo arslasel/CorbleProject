@@ -6,18 +6,17 @@ function loadLobbyData(joincode) {
         type: 'get',
         url: '../Controller/ajax/LobbyViewUpdate.php',
         data: {
-            joincode: joincode,
+            joincode: lobby_joincode,
         },
         success: function(response) {
             data = JSON.parse(response)
             currentTime = Math.round((new Date()).getTime() / 1000);
             document.getElementById('lobby_overview_state').innerHTML = data.state;
-            document.getElementById('lobby_overview_votetime').innerHTML = data.votetime;
-            //console.log("data.starttime",data.starttime,"currentTime",currentTime,"data.starttime - currentTime",data.starttime - currentTime)
-            document.getElementById('lobby_overview_starttime').innerHTML = data.starttime - currentTime;
-            document.getElementById('lobby_overview_drawtime').innerHTML = data.drawtime;
-            document.getElementById('lobby_overview_maxplayer').innerHTML = data.maxplayer;
-            document.getElementById('lobby_overview_joincode').innerHTML = data.joincode;
+            document.getElementById('lobby_overview_votetime').innerHTML = data.voteTime;
+            document.getElementById('lobby_overview_starttime').innerHTML = data.startTime - currentTime;
+            document.getElementById('lobby_overview_drawtime').innerHTML = data.drawTime;
+            document.getElementById('lobby_overview_maxplayer').innerHTML = data.maxPlayer;
+            document.getElementById('lobby_overview_joincode').innerHTML = data.joinCode;
 
             var ul = document.getElementById('lobby_overview_players');
             ul.innerHTML = "";
@@ -27,7 +26,7 @@ function loadLobbyData(joincode) {
                 ul.appendChild(li);
             });
 
-            if(data.starttime - currentTime == 0){
+            if(data.startTime - currentTime == 0){
                 redirectToGame()
             }
         }

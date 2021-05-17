@@ -33,17 +33,17 @@ class LobbyModel
 
     /**
      * Log in a new username
-     * @param string String Username to be logged in to the database
+     * @param string String username to be logged in to the database
      * @return bool Returns true if the user is successfully logged in.
      */
-    public function login($UserName){
+    public function login($userName){
         // check if a user with the same name exists
-        if ($this->corbleDatabase->checkIfUserExists($UserName)) {
+        if ($this->corbleDatabase->checkIfUserExists($userName)) {
             return false;
         } else { // there is no user with the same name continue login
-            $result = $this->databaseConnection->insertUser($UserName);
+            $result = $this->corbleDatabase->insertUser($userName);
             if ($result != 0) {
-                $_SESSION["lobby_username"] = $UserName;
+                $_SESSION["lobby_username"] = $userName;
                 return true;
             }
             return false;

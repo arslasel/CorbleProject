@@ -153,7 +153,7 @@ function loadView() {
 }
 
 function redirectToGame() {
-    url = "https://corble.ch/php/View/GameView.php?username=" + lobby_username + "&lobby=" + lobby_joincode + "$roundID=" + start_RoundID;
+    url = "https://corble.ch/php/View/GameView.php?username=" + lobby_username + "&lobby=" + lobby_joincode + "&roundID=" + start_RoundID;
     window.location.replace(url)
 }
 

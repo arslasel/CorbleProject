@@ -49,7 +49,7 @@
          */
         public function saveSketch($file, $joinCode, $userName,$roundIndex){
             $this->roundIndex = $roundIndex;
-            $this->roundModel->savePicture(
+            return $this->roundModel->savePicture(
                 file_get_contents($file), $this->corbleDatabase->getLobbyIndexByJoincode($joinCode), 
                 $this->roundIndex,$this->corbleDatabase->getPlayerByIndex($userName));
         }

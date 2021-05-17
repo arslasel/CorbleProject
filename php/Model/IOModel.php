@@ -33,6 +33,7 @@ class IOModel
         if(is_file($path) or is_writable($path)) {
             file_put_contents($path, $pictureBase64);
         }
+        echo "PATH". $path;
         return $path;
     }
 

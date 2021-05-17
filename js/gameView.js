@@ -11,11 +11,11 @@ function init() {
     lobby_username = urlParams.get('username')
     lobby_joincode = urlParams.get('lobby')
     start_roundID = urlParams.get('roundID')
-    $.when(initGame()).done(function (response) {remainingTime = response.voteTime;})
+    initGame();
 }
 
 function initGame() {
-    return $.ajax({
+    $.ajax({
         type: 'get',
         url: '../Controller/ajax/GameViewInitGame.php',
         data: {
@@ -58,17 +58,14 @@ function submitImage() {
     var fd = new FormData();
     var blob = new Blob([document.getElementById("drawBoard").toDataURL()], { type: "text/plain" });
     fd.append("imageBase64", blob, "imageBase64.txt");
-    fd.append("username", lobby_username);
-    fd.append("lobby", lobby_joincode);
+    fd.append("lobby_username", lobby_username);
+    fd.append("lobby_joincode", lobby_joincode);
+    fd.append("start_roundID", start_roundID);
     fd.append("word", 2);
     $.ajax({
         url: '../Controller/ajax/GameViewSubmitImage.php',
         type: 'post',
-        data: {
-            username: lobby_username,
-            joincode: lobby_joincode,
-            start_roundID: start_roundID
-        },
+        data: fd,
         contentType: false,
         processData: false,
         success: function (response) {
@@ -283,8 +280,8 @@ function registerTimeEvents() {
         document.getElementById("timeLeftToDraw").innerHTML = remainingTime.toString();
         document.getElementById("timeLeftToVote").innerHTML = remainingTime.toString();
         if (remainingTime == 0) {
-            submitImage();
-            initVote();
+            //submitImage();
+            //initVote();
         }
         if(remainingTime < 0){ remainingTime = -1;}
     }, 1000);

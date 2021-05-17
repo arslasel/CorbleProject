@@ -446,7 +446,7 @@ class DatabaseLibrary{
     public function savePicture($path, $playerIndex){
         $conn = $this->databaseConnection->createConnection();
         $stmt = $conn->prepare("INSERT INTO tbl_sketch (
-            path, computerscore, fk_player_indx_sketch, fk_word_indx_sketch, votes, fk_round_indx) VALUES (?, '0', ?, '', '0', '')");
+            path, computerscore, fk_player_indx_sketch, fk_word_indx_sketch, votes, fk_round_indx) VALUES (?, '0', ?, 1, '0', 1)");
 
         $stmt->bind_param("si", $path, $playerIndex);
 

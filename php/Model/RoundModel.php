@@ -29,7 +29,7 @@ class RoundModel
      * @param int Database round index
      * @param int Database player index
      */
-    public function savePicture($base64, $lobbyIndex, $roundIndex, $playerIndex,){
+    public function savePicture($base64, $lobbyIndex, $roundIndex, $playerIndex){
         $IoModel = new IOModel();
         $path = $IoModel->savePicture($base64, $lobbyIndex, $roundIndex, $playerIndex);
         if (!is_null($path)) {

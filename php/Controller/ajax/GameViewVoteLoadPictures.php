@@ -25,9 +25,9 @@ class GameViewVoteLoadPictures{
     /** 
     * Function to load a pictures to vote 
     */
-    public function LoadPicture(){ 
+    public function loadPicture(){ 
         $jsonarray = array();
-        $pictureArray = $this->roundController->getAllSketchesToVote($_GET['joincode'],$_GET['username']);
+        $pictureArray = $this->roundController->getAllSketchesToVote($_GET['joincode'], $_GET['username']);
         foreach ($pictureArray as $picture) {
             $jsonPicture = new GameViewVotePictureData();
             $jsonPicture->dbIndex = $picture[1];
@@ -40,7 +40,7 @@ class GameViewVoteLoadPictures{
 
 $instance = new GameViewVoteLoadPictures();
 try {
-    $instance->LoadPicture();
+    $instance->loadPicture();
 } catch (Exception $e) {
     echo json_encode($e->getMessage());
 }

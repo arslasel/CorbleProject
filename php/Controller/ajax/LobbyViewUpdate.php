@@ -40,12 +40,12 @@ class LobbyViewAjaxUpdate{
         }
            
         $result = new LobbyViewAjaxData();
-        $result->state = $lobbycontroller->getState($_GET['joinCode']);
-        $result->voteTime =$lobbycontroller->getVoteTime($_GET['joinCode']);
-        $result->startTime =$lobbycontroller->getStartTime($_GET['joinCode']);
-        $result->drawTime =$lobbycontroller->getDrawTime($_GET['joinCode']);
-        $result->maxPlayer = $lobbycontroller->getMaxPlayers($_GET['joinCode']);
-        $result->joinCode = $_GET['joinCode'];
+        $result->state = $lobbycontroller->getState($_GET['joincode']);
+        $result->voteTime =$lobbycontroller->getVoteTime($_GET['joincode']);
+        $result->startTime =$lobbycontroller->getStartTime($_GET['joincode']);
+        $result->drawTime =$lobbycontroller->getDrawTime($_GET['joincode']);
+        $result->maxPlayer = $lobbycontroller->getMaxPlayers($_GET['joincode']);
+        $result->joinCode = $_GET['joincode'];
         $result->players = array_values($JSONplayers);
 
         return $result;

@@ -92,7 +92,7 @@
 
         /**
          * Returns array with key value pair of player and his score
-         * @param $lobbyIndex Integer index of lobby
+         * @param int $lobbyIndex Integer index of lobby
          */
         public function getLeaderBoard($lobbyIndex){
             $this->roundModel->getLeaderBoard($lobbyIndex);
@@ -100,10 +100,18 @@
 
         /**
          * This method get all sketches as a list.
-         * @return: String array() $this->sketches
+         * @return: array Array with strings
          */
         public function getSketchesOfRound(){
-                return $this->sketches;
+            return $this->sketches;
+        }
+
+        /**
+         * Method returns draw time of lobby
+         * @param int $joinCode integer with joincode of lobby 
+         */
+        public function getDrawTime($joinCode){
+            return $this->roundModel->getDrawTime($joinCode);
         }
     }
 ?>

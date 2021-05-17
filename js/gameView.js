@@ -61,7 +61,7 @@ function submitImage() {
     fd.append("lobby_username", lobby_username);
     fd.append("lobby_joincode", lobby_joincode);
     fd.append("start_roundID", start_roundID);
-    fd.append("word", );
+    fd.append("word", 2);
     $.ajax({
         url: '../Controller/ajax/GameViewSubmitImage.php',
         type: 'post',
@@ -89,12 +89,13 @@ function loadPicturesVote() {
         type: "GET",
         url: '../Controller/ajax/GameViewVoteLoadPictures.php',
         data: {
-            roundIndex: 1, //insert real round index later,
+            roundIndex: 1,
             username: lobby_username,
             joincode: lobby_joincode,
             start_roundID: start_roundID
         },
         success: function (data) {
+            console.log(data);
             images = JSON.parse(data);
             img_mini_container = document.getElementById("img_mini_container");
             img_mini_container.innerHTML = "";

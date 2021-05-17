@@ -62,8 +62,9 @@
          * @return array with all sketches to vote
          */
         public function getAllSketchesToVote($joinCode, $userName){
-            return $this->roundModel->getAllSketches($this->corbleDatabase->getLobbyIndexByJoinCode($joinCode), 
-                $this->corbleDatabase->getUserIndexbyUserName($userName));
+            $lobbyIndex = $this->corbleDatabase->getLobbyIndexByJoinCode($joinCode);
+            $userIndex = $this->corbleDatabase->getUserIndexbyUserName($userName);
+            return $this->roundModel->getAllSketches($lobbyIndex, $userIndex);
         }
 
         /**

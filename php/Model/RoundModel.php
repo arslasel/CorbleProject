@@ -33,7 +33,7 @@ class RoundModel
         $IoModel = new IOModel();
         $path = $IoModel->savePicture($base64, $lobbyIndex, $roundIndex, $playerIndex);
         if (!is_null($path)) {
-            $sketchID = $this->corbleDatabase->savePicture($path, $playerIndex);
+            $sketchID = $this->corbleDatabase->savePicture($path, $playerIndex, $roundIndex);
             $this->corbleDatabase->InsertSketchInRound($sketchID, $roundIndex);
             return $sketchID;
         }

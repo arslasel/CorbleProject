@@ -354,7 +354,7 @@ class DatabaseLibrary{
      */
     public function getAllSketches($roundIndex, $playerIndex){
         $conn = $this->databaseConnection->createConnection();
-        $stmt = $conn->prepare("SELECT path FROM tbl_sketch WHERE fk_round_indx = ? AND fk_player_indx_sketch <> ?");
+        $stmt = $conn->prepare("SELECT path as path FROM tbl_sketch WHERE fk_round_indx = ? AND fk_player_indx_sketch <> ?");
         $stmt->bind_param("ii", $roundIndex, $playerIndex);
 
         $result =  $this->databaseConnection->executeQuery($conn, $stmt);
@@ -443,12 +443,12 @@ class DatabaseLibrary{
      * @param int $playerIndex player index
      * @return int|string returns 0 for success
      */
-    public function savePicture($path, $playerIndex){
+    public function savePicture($path, $playerIndex, $roundIndex){
         $conn = $this->databaseConnection->createConnection();
         $stmt = $conn->prepare("INSERT INTO tbl_sketch (
-            path, computerscore, fk_player_indx_sketch, fk_word_indx_sketch, votes, fk_round_indx) VALUES (?, '0', ?, 1, '0', 1)");
+            path, computerscore, fk_player_indx_sketch, fk_word_indx_sketch, votes, fk_round_indx) VALUES (?, '0', ?, 1, '0', ?)");
 
-        $stmt->bind_param("si", $path, $playerIndex);
+        $stmt->bind_param("sii", $path, $playerIndex, $roundIndex);
 
         return $this->databaseConnection->executeInsertQuery($conn, $stmt);
     }
@@ -612,7 +612,13 @@ class DatabaseLibrary{
         $stmt = $conn->prepare("SELECT indx FROM tbl_player WHERE name = ?");
         $stmt->bind_param("s", $userName);
 
-        return $this->databaseConnection->executeInsertQuery($conn, $stmt);
+        $result =  $this->databaseConnection->executeQuery($conn, $stmt);
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            return $row['indx'];
+        } else {
+            return 0;
+        }
     }
 
     /**

@@ -1,28 +1,33 @@
 <?php
 
-include_once($_SERVER['DOCUMENT_ROOT'] ."/php/Model/DatabaseLibrary.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/DatabaseConnection.php");
+include_once($_SERVER['DOCUMENT_ROOT'] ."/php/Controller/RoundController.php");
 
+/**
+ * Class GameViewVotePictureData
+ */
 class GameViewVotePictureData{
     public $dbIndex;
     public $path;
 }
 
-
-class GameViewVoteLoadPictures
-{
-    private $databaseConnection;
-    private $corbleDatabase;
-
+/**
+ * Class GameViewVoteLoadPictures
+ */
+class GameViewVoteLoadPictures{
+    private $roundController;
+    /**
+     * Constructor of class GameViewVoteLoadPictures
+     */
     public function __construct(){
-        $this->databaseConnection = new DatabaseConnection();
-        $this->corbleDatabase = new DatabaseLibrary($this->databaseConnection);
+        $this->roundController = new RoundController();
     }
 
-    public function LoadPicture()
-    { 
+    /** 
+    * Function to load a pictures to vote 
+    */
+    public function LoadPicture(){ 
         $jsonarray = array();
-        $pictureArray = $this->corbleDatabase->getAllSketches(1,158);//insert real id here
+        $pictureArray = $this->roundController->getAllSketchesToVote($_GET['joincode'],$_GET['username']);
         foreach ($pictureArray as $picture) {
             $jsonPicture = new GameViewVotePictureData();
             $jsonPicture->dbIndex = $picture[1];

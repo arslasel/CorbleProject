@@ -1,13 +1,20 @@
 <?php
-    include_once($_SERVER['DOCUMENT_ROOT'] . "/php/Model/DatabaseLibrary.php");
+    include_once($_SERVER['DOCUMENT_ROOT'] . "/php/Controller/RoundController.php");
+
+    /**
+     * Class GameViewInitGame
+     */
     class GameViewInitGame{
+
+        /**
+         * Get Draw time for ajax
+         */
         public function getDrawTime(){
-            $dbCon = new DatabaseConnection(); 
-            $dblib = new DatabaseLibrary($dbCon);
-            $joinCode = $_GET["joincode"];
-            return $dblib->getDrawTime($joinCode);
+            $roundController = new RoundController();
+            return $roundController->getDrawTime($_GET["joincode"]);
         }        
     }
+
     $instance = new GameViewInitGame();
     try {
         echo json_encode($instance->getDrawTime(), JSON_NUMERIC_CHECK);

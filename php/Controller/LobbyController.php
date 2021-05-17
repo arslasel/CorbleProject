@@ -8,69 +8,119 @@
         private $lobbyModel;
         private $corbleDatabase;
         private $databaseConnection;
-        
+
+        /**
+         * LobbyController constructor
+         */
         public function __construct(){
             $this->databaseConnection = new DatabaseConnection();
             $this->corbleDatabase = new DatabaseLibrary($this->databaseConnection);
             
             $this->lobbyModel = new LobbyModel($this->corbleDatabase,$this->databaseConnection);
         }
-        
-        public function login($username){
-            return $this->lobbyModel->login($username);
+
+        /**
+         * Login a new user to the database
+         * @param string userName of current user to be added
+         */
+        public function login($userName){
+            return $this->lobbyModel->login($userName);
         }
 
+        /**
+         * Get all wordpools available on the corble database
+         * @return array Array with wordpools of lobby
+         */
         public function getWordPools(){
             return WordpoolModel::getWordPools($this->corbleDatabase);
         }
 
-        public function createLobby($votetime,$drawtime,$starttime,$maxplayer,$wordpools,$username){
-            $joincode = $this->lobbyModel->createLobby($votetime,$drawtime,$starttime,$maxplayer,$wordpools,$username);
-            $lobbyIndex = $this->lobbyModel->getLobbyIndxByJoincode($joincode);
+        /**
+         * Create a new lobby with given parameters
+         * @param int $voteTime Time to vote for a sketch
+         * @param int $drawTime Time to draw a sketch
+         * @param int $startTime Time to start the game
+         * @param int $maxPlayer Maximum amount of players
+         * @param $wordpools array Choosen wordpool categories
+         */
+        public function createLobby($voteTime, $drawTime, $startTime, $maxPlayer, $wordpools, $userName){
+            $joinCode = $this->lobbyModel->createLobby($voteTime, $drawTime, $startTime, $maxPlayer, $wordpools, $userName);
+            $lobbyIndex = $this->lobbyModel->getLobbyIndexByjoinCode($joinCode);
             $wordPoolsOfLobby = $this->lobbyModel->getWordpoolIdsofLobby($lobbyIndex);
 
             $rand = rand(0,count($wordPoolsOfLobby)-1);
             $round1 = new RoundController();
-            $round1->createRound($this->lobbyModel->getLobbyIndxByJoincode($joincode),3);//$wordpools[$rand]
-            return $joincode;
+            $round1->createRound($this->lobbyModel->getLobbyIndexByjoinCode($joinCode),3);
+            return $joinCode;
         }
 
-        public function joinLobby($joincode,$username){
-            return $this->lobbyModel->joinLobby($joincode,$username,false);
+        /**
+         * Join a lobby to with a joind code and a username 
+         * @param int Joincode to to access a lobby
+         * @param string Username to join
+         * @return 
+         */
+        public function joinLobby($joinCode, $userName){
+            return $this->lobbyModel->joinLobby($joinCode,$userName,false);
         }
 
-        public function getState($joincode){
-            $this->lobbyModel->readLobbyDataFromDB($joincode, $this->corbleDatabase->getLobbyIndxByJoincode($joincode));
+        /**
+         * Get State of lobby
+         * @param int $joinCode Join Code to get the state from 
+         * @return string state of lobby
+         */
+        public function getState($joinCode){
+            $this->lobbyModel->readLobbyDataFromDB($joinCode, $this->corbleDatabase->getLobbyIndexByjoinCode($joinCode));
             return $this->lobbyModel->getState();
         }
 
-        public function getVoteTime($joincode){
-            $this->lobbyModel->readLobbyDataFromDB($joincode, $this->corbleDatabase->getLobbyIndxByJoincode($joincode));
+        /**
+         * Get vote time of lobby
+         * @param int $joinCode Join Code to get the state from 
+         * @return int Vote time of lobby
+         */
+        public function getVoteTime($joinCode){
+            $this->lobbyModel->readLobbyDataFromDB($joinCode, $this->corbleDatabase->getLobbyIndexByjoinCode($joinCode));
             return $this->lobbyModel->getVoteTime();
         } 
-        
-        public function getStartTime($joincode){
-            $this->lobbyModel->readLobbyDataFromDB($joincode, $this->corbleDatabase->getLobbyIndxByJoincode($joincode));
+
+        /**
+         * Get start time of lobby
+         * @param int $joinCode Join Code to get the state from 
+         * @return int start time of lobby
+         */
+        public function getStartTime($joinCode){
+            $this->lobbyModel->readLobbyDataFromDB($joinCode, $this->corbleDatabase->getLobbyIndexByjoinCode($joinCode));
             return $this->lobbyModel->getStartTime();
         }     
         
-        public function getDrawTime($joincode){
-            $this->lobbyModel->readLobbyDataFromDB($joincode, $this->corbleDatabase->getLobbyIndxByJoincode($joincode));
-            return $this->lobbyModel->getdrawTime();
+        /**
+         * Get draw time of lobby
+         * @param int $joinCode Join Code to get the state from 
+         * @return int draw time of lobby
+         */        
+        public function getDrawTime($joinCode){
+            $this->lobbyModel->readLobbyDataFromDB($joinCode, $this->corbleDatabase->getLobbyIndexByjoinCode($joinCode));
+            return $this->lobbyModel->getDrawTime();
         }             
 
-        public function getMaxPlayer($joincode){
-            $this->lobbyModel->readLobbyDataFromDB($joincode, $this->corbleDatabase->getLobbyIndxByJoincode($joincode));
+        /**
+         * Return maximum amount of players
+         * @param int $joinCode Join Code to get the state from 
+         * @return int maximum amount of players
+         */
+        public function getMaxPlayers($joinCode){
+            $this->lobbyModel->readLobbyDataFromDB($joinCode, $this->corbleDatabase->getLobbyIndexByjoinCode($joinCode));
             return $this->lobbyModel->getMaxPlayers();
         }             
 
-        public function getJoinCode($joincode){
-            $this->lobbyModel->readLobbyDataFromDB($joincode, $this->corbleDatabase->getLobbyIndxByJoincode($joincode));
-            return $this->lobbyModel->getJoinCode();
-        }      
-
-        public function getPlayersOfLobby($joincode){
-            return $this->lobbyModel->getPlayersOfLobby($joincode);
+         /**
+         * Get players of lobby
+         * @param int $joinCode Join Code to get the state from 
+         * @return array with players of a given lobby
+         */
+        public function getPlayersOfLobby($joinCode){
+            return $this->lobbyModel->getPlayersOfLobby($this->corbleDatabase->getLobbyIndexByjoinCode($joinCode));
         }
 
     }

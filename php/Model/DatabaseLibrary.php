@@ -5,31 +5,28 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/php/Model/DatabaseConnection.php");
 /**
  * Class DatabaseLibrary
  *
- * Library of methods with sql statements for the corble database using the Database Conneciton class
- *
+ * Library of methods with sql statements for the Corble database using the DatabaseConeciton class
  */
-class DatabaseLibrary
-{
+class DatabaseLibrary{
 
     private $databaseConnection;
 
     /**
      * DatabaseLibrary default constructor
      */
-    public function __construct($databaseConnection)
-    {
+    public function __construct($databaseConnection){
         $this->databaseConnection = $databaseConnection;
     }
 
     /**
      * Returns true if a user given by the name exists on the database
-     * @param $user string Username
+     * @param string $username string Name of user
      * @return bool True iff the user exists on the database
      */
-    public function checkIfUserExists($user){
+    public function checkIfUserExists($username){
         $conn = $this->databaseConnection->createConnection();
-        $stmt = $conn->prepare("SELECT COUNT(*) as matches FROM  tbl_player WHERE name =?");
-        $stmt->bind_param("s", $user);
+        $stmt = $conn->prepare("SELECT COUNT(*) as matches FROM tbl_player WHERE name = ?");
+        $stmt->bind_param("s", $username);
 
         $result =  $this->databaseConnection->executeQuery($conn, $stmt);
         if($result){
@@ -44,33 +41,33 @@ class DatabaseLibrary
 
     /**
      * Insert a new entry to the table tbl_lobby with all parameters
-     * @param $votetime int Time to vote for the best drawn picture
-     * @param $rawtime int Time to draw a picture
-     * @param $starttimeUNIX int Time where the game started
-     * @param $maxplayer int Maximum amount of players
-     * @param $joincode string String to join the lobby
-     * @param $playerINDX string Strin with index of the player who is lobby-leader
+     * @param int $voteTime int Time to vote for the best drawn picture
+     * @param int $rawTime int Time to draw a picture
+     * @param int $startTimeUnix int Time where the game started
+     * @param int $maxplayer int Maximum amount of players
+     * @param int $joinCode Code join the lobby
+     * @param int $playerIndex Index of the player who is lobby-leader
      * @return lobby id
      */
-    public function generateLobby($votetime,$rawtime,$starttimeUNIX,$maxplayer,$joincode,$playerINDX){
+    public function generateLobby($voteTime, $rawTime, $startTimeUnix, $maxplayer, $joinCode, $playerIndex){
         $conn = $this->databaseConnection->createConnection();
-        $stmt = $conn->prepare("INSERT INTO tbl_lobby (votetime,drawtime,starttime,maxplayer,joincode,fk_player_indx_lobby,state) 
+        $stmt = $conn->prepare("INSERT INTO tbl_lobby (votetime, drawtime, starttime, maxplayer, joincode, fk_player_indx_lobby, state) 
             VALUES (?,?,?,?,?,?,'WaitForPlayers')");        
             
-        $stmt->bind_param("iiiiii", $votetime, $rawtime, $starttimeUNIX, $maxplayer, $joincode,  $playerINDX);
+        $stmt->bind_param("iiiiii", $voteTime, $rawTime, $startTimeUnix, $maxplayer, $joinCode,  $playerIndex);
         
         return $this->databaseConnection->executeInsertQuery($conn, $stmt);
     }
 
     /**
-     * Checks if a joincode exists
-     * @param $joincode string Joincode to be checked on the database
+     * Checks if a joinCode exists
+     * @param int $joinCode joinCode to be checked on the database
      * @return bool True iff the join-code exists
      */
-    public function checkIfJoinCodeExists($joincode){
+    public function checkIfjoinCodeExists($joinCode){
         $conn = $this->databaseConnection->createConnection();
         $stmt = $conn->prepare("SELECT COUNT(*) as matches FROM  tbl_lobby WHERE joincode = ?");
-        $stmt->bind_param("i", $joincode); 
+        $stmt->bind_param("i", $joinCode); 
 
         $result =  $this->databaseConnection->executeQuery($conn, $stmt);
         if($result){
@@ -85,11 +82,11 @@ class DatabaseLibrary
 
     /**
      * Adds an array of wordpools to the lobby
-     * @param $worldpools array List of wordpools
-     * @param $lobbyIndx string Database index of worpool
+     * @param array $worldpools array List of wordpools
+     * @param int $lobbyIndex Database index of worpool
      * @return int Error-Code
      */
-    public function addWordCategoriesToLobby($worldpools, $lobbyIndx){
+    public function addWordCategoriesToLobby($worldpools, $lobbyIndex){
         $conn = $this->databaseConnection->createConnection();
         $stmt = $conn->prepare("INSERT INTO tbl_lobby_wordpool (fk_lobby_indx_lobby_wordpool,fk_wordpool_indx_lobby_wordpool)");
 
@@ -99,7 +96,7 @@ class DatabaseLibrary
             foreach ($worldpools as $wordpool) {
                 $stmt = $conn->prepare("INSERT INTO tbl_lobby_wordpool (fk_lobby_indx_lobby_wordpool,fk_wordpool_indx_lobby_wordpool) 
                     VALUES (?,?)");
-                $stmt->bind_param("ii", $lobbyIndx, $wordpool ); 
+                $stmt->bind_param("ii", $lobbyIndex, $wordpool ); 
                 $stmt->execute();
             }
             return 0;
@@ -108,13 +105,13 @@ class DatabaseLibrary
 
     /**
      * Gets lobby index by Join-code - if not existing returns 0
-     * @param $joincode String Joincode searhed in table tbl_lobby
+     * @param int $joinCode joinCode searhed in table tbl_lobby
      * @return int|mixed Lobby-index if a lobby with join-code exists else 0
      */
-    public function getLobbyIndxByJoincode($joincode){
+    public function getLobbyIndexByjoinCode($joinCode){
         $conn = $this->databaseConnection->createConnection();
-        $stmt = $conn->prepare("SELECT indx FROM tbl_lobby WHERE joincode= ?");
-        $stmt->bind_param("i", $joincode); 
+        $stmt = $conn->prepare("SELECT indx FROM tbl_lobby WHERE joincode = ?");
+        $stmt->bind_param("i", $joinCode); 
 
         $result = $this->databaseConnection->executeQuery($conn, $stmt);
         if ($result->num_rows > 0) {
@@ -127,11 +124,10 @@ class DatabaseLibrary
 
     /**
      * Gets all players of a lobby by a given lobby index
-     * @param $lobbyIndx string Lobby index
+     * @param int $lobbyIndx Lobby index
      * @return array List with all players (can be empty array)
      */
-    public function getPlayersOfLobby($lobbyIndx)
-    {
+    public function getPlayersOfLobby($lobbyIndex){
         $players = array();
 
         $conn = $this->databaseConnection->createConnection();
@@ -140,7 +136,7 @@ class DatabaseLibrary
             WHERE tbl_player.indx = tbl_lobby_player.fk_player_indx_lobby_player 
             AND tbl_lobby_player.fk_lobby_indx_Lobby_player = ?");
 
-        $stmt->bind_param("i", $lobbyIndx); 
+        $stmt->bind_param("i", $lobbyIndex); 
 
         $result =  $this->databaseConnection->executeQuery($conn, $stmt);
         if($result->num_rows > 0){
@@ -153,11 +149,10 @@ class DatabaseLibrary
 
     /**
      * Get Wordpools of lobby
-     * @param $lobbyIndx string Index of lobby
+     * @param int $lobbyIndex Index of lobby
      * @return array Array with all wordpools
      */
-    public function getWordpoolsOfLobby($lobbyIndx)
-    {
+    public function getWordpoolsOfLobby($lobbyIndex){
         $wordpools = array();
 
         $conn = $this->databaseConnection->createConnection();
@@ -165,7 +160,7 @@ class DatabaseLibrary
             FROM tbl_lobby_wordpool, tbl_wordpool 
             WHERE tbl_wordpool.indx = tbl_lobby_wordpool.fk_wordpool_indx_lobby_wordpool 
             AND tbl_lobby_wordpool.fk_lobby_indx_lobby_wordpool  = ?");
-        $stmt->bind_param("i", $lobbyIndx); 
+        $stmt->bind_param("i", $lobbyIndex); 
 
         $result =  $this->databaseConnection->executeQuery($conn, $stmt);
         if($result->num_rows > 0){
@@ -178,25 +173,25 @@ class DatabaseLibrary
 
     /**
      * Returns lobby information of a given join-code
-     * @param $joincode string JoinCode
-     * @return mixed Table
+     * @param int $joinCode joinCode
+     * @return mixed Table with data from database 
      */
-    public function readLobbyDataFromDB($joincode){
+    public function readLobbyDataFromDB($joinCode){
         $conn = $this->databaseConnection->createConnection();
         $stmt = $conn->prepare("SELECT * FROM tbl_lobby WHERE joincode = ?");
-        $stmt->bind_param("i", $joincode); 
+        $stmt->bind_param("i", $joinCode); 
 
         return $this->databaseConnection->executeQuery($conn, $stmt);
     }
 
     /**
      * Adds a player to an existing lobby
-     * @param $playerIndx string Index of player
-     * @param $lobbyIndx string Index of lobby
-     * @param $partyLeaderString string index of player that is party-leader
+     * @param int $playerIndex Index of player
+     * @param ind $lobbyIndex Index of lobby
+     * @param string $partyLeaderString string index of player that is party-leader
      * @return int returns 0 on success else dies
      */
-    public function addPlayerToLobby($playerIndx,$lobbyIndx,$partyLeaderString){
+    public function addPlayerToLobby($playerIndex, $lobbyIndex, $partyLeaderString){
         $conn = $this->databaseConnection->createConnection();
 
         $partyLeaderStringDB = "";
@@ -207,14 +202,14 @@ class DatabaseLibrary
         }
 
         $stmt = $conn->prepare("INSERT INTO tbl_lobby_player (fk_player_indx_lobby_player,fk_lobby_indx_Lobby_player,partyLeader) VALUES (?,?,?)");
-        $stmt->bind_param("iis", $playerIndx,  $lobbyIndx, $partyLeaderStringDB);   
+        $stmt->bind_param("iis", $playerIndex,  $lobbyIndex, $partyLeaderStringDB);   
 
         return $this->databaseConnection->executeInsertQuery($conn, $stmt);
     }
 
     /**
      * Returns player index by his name
-     * @param $name string with name of player
+     * @param string $name string with name of player
      * @return int|mixed string with index if player is in database else 0
      */
     public function getPlayerByIndex($name){
@@ -233,7 +228,7 @@ class DatabaseLibrary
 
     /**
      * Returns an array of Wordpool instances
-     * @return resultset $result
+     * @return array with wordpool instance 
      */
     public function getWordpools(){
         $conn = $this->databaseConnection->createConnection();
@@ -245,7 +240,7 @@ class DatabaseLibrary
 
     /**
      * Return primary optimal color ratio for word given with name
-     * @param $word string Wordname
+     * @param string $word string Wordname
      * @return int color ratio if word is found else 0
      */
     public function getPrimaryOptimalColorRatioForWord($word){
@@ -263,7 +258,7 @@ class DatabaseLibrary
 
     /**
      * Return secundary optimal color ration for word
-     * @param $word string Wordname
+     * @param string $word string Wordname
      * @return int Color ration if not found equals 0
      */
     public function getSecondaryOptimalColorRatioForWord($word){
@@ -281,7 +276,7 @@ class DatabaseLibrary
 
     /**
      * Return primary color of a given word
-     * @param $word string Word name
+     * @param string $word string Word name
      * @return int rgb number of color if not found = 0
      */
     public function getPrimaryColor($word){
@@ -299,7 +294,7 @@ class DatabaseLibrary
 
     /**
      * Return secundary color of a given word
-     * @param $word string Word name
+     * @param string $word string Word name
      * @return int rgb number of color if not found = 0
      */
     public function getSecondaryColor($word){
@@ -317,21 +312,21 @@ class DatabaseLibrary
 
     /**
      * Sets the computerscore for a sketch with a given index
-     * @param $totalPoints int Computer score
-     * @param $sketchIndx string Index of sketch
+     * @param int $totalPoints int Computer score
+     * @param int $sketchIndex string Index of sketch
      * @return mixed Returns 0 for success else dies
      */
-    public function setComputerScoreForSketch($totalPoints, $sketchIndx){
+    public function setComputerScoreForSketch($totalPoints, $sketchIndex){
         $conn = $this->databaseConnection->createConnection();
         $stmt = $conn->prepare("UPDATE tbl_sketch SET computerscore = ? WHERE indx = ?");
-        $stmt->bind_param("ii", $totalPoints, $sketchIndx);
+        $stmt->bind_param("ii", $totalPoints, $sketchIndex);
 
         return $this->databaseConnection->executeInsertQuery($conn, $stmt);
     }
 
     /**
      * Returns player name of best voted sketch
-     * @param $lobbyIndex string Index of lobby
+     * @param int $lobbyIndex string Index of lobby
      * @return mixed Returns player name or 0 if not found
      */
     public function getPlayerWithBestVotedSketch($lobbyIndex){
@@ -353,14 +348,14 @@ class DatabaseLibrary
 
     /**
      * Reuturns all skatches but not the one of the given player
-     * @param $roundIndx string Database index of round
-     * @param $playerindx string Player index
+     * @param int $roundIndex Database index of round
+     * @param int $playerindex Player index
      * @return array|int Array with paths. if nothing found result is 0
      */
-    public function getAllSketches($roundIndx, $playerindx){
+    public function getAllSketches($roundIndex, $playerindex){
         $conn = $this->databaseConnection->createConnection();
         $stmt = $conn->prepare("SELECT path as path FROM tbl_sketch WHERE fk_round_indx = ? AND fk_player_indx_sketch <> ?");
-        $stmt->bind_param("ii", $roundIndx, $playerindx);
+        $stmt->bind_param("ii", $roundIndex, $playerindex);
 
         $result =  $this->databaseConnection->executeQuery($conn, $stmt);
         if($result){
@@ -376,7 +371,7 @@ class DatabaseLibrary
 
     /**
      * Returns name of player with best computer-alscorithm scored sketch
-     * @param $lobbyIndex string Lobby index
+     * @param int $lobbyIndex Lobby index
      * @return mixed name of player if a player is found and 0 if nothing is found
      */
     public function getPlayerWithBestAlogrithmSketch($lobbyIndex){
@@ -397,10 +392,9 @@ class DatabaseLibrary
         }
     }
 
-
     /**
      * Reutrns player name of worst voted sketch by the computer
-     * @param $lobbyIndex string Index of lobby
+     * @param int $lobbyIndex string Index of lobby
      * @return mixed Name of player if nothing found 0
      */
     public function getPlayerWithWorstVotedSketch($lobbyIndex){
@@ -423,7 +417,7 @@ class DatabaseLibrary
 
     /**
      * Returns path of best voted sketch
-     * @param $lobbyIndex string Lobby index
+     * @param int $lobbyIndex Lobby index
      * @return int String with path of best voted sketch if nothing found 0
      */
     public function getSketchBestVoted($lobbyIndex){
@@ -445,30 +439,30 @@ class DatabaseLibrary
 
     /**
      * Saves a enew sketch into the database with a given path and player index
-     * @param $path string path of player
-     * @param $playerIndx string player index
+     * @param string $path string path of player
+     * @param int $playerIndex player index
      * @return int|string returns 0 for success
      */
-    public function savePicture($path, $playerIndx){
+    public function savePicture($path, $playerIndex){
         $conn = $this->databaseConnection->createConnection();
         $stmt = $conn->prepare("INSERT INTO tbl_sketch (
             path, computerscore, fk_player_indx_sketch, fk_word_indx_sketch, votes, fk_round_indx) VALUES (?, '0', ?, '', '0', '')");
 
-        $stmt->bind_param("si", $path, $playerIndx);
+        $stmt->bind_param("si", $path, $playerIndex);
 
         return $this->databaseConnection->executeInsertQuery($conn, $stmt);
     }
 
     /**
      * This method gets the round index of a specific sketch
-     * @param: int $sketchIndx
-     * @return: int array() $result->fetch_assoc()
+     * @param int $sketchIndex Index of sketch
+     * @return int Round index of sketch
      */
-    public function getRoundIndexOfSketch($sketchIndx){
+    public function getRoundIndexOfSketch($sketchIndex){
         $conn = $this->databaseConnection->createConnection();
         $stmt = $conn->prepare("SELECT fk_round_indx_round_sketch FROM tbl_round_sketch WHERE fk_sketch_indx_round_sketch = ?");
 
-        $stmt->bind_param("i", $sketchIndx);
+        $stmt->bind_param("i", $sketchIndex);
 
         $result =  $this->databaseConnection->executeQuery($conn, $stmt);
         if($result){
@@ -480,7 +474,7 @@ class DatabaseLibrary
 
     /**
      * Returns path of sketch with worst rating from algorithm
-     * @param $lobbyIndex string with index of lobby
+     * @param int $lobbyIndex string with index of lobby
      * @return int Returns path to sketch or 0 if none found
      */
     public function getSketchWorstAlgorithm($lobbyIndex){
@@ -500,11 +494,10 @@ class DatabaseLibrary
         }
     }
 
-
     /**
      * This method gives back all wordIds of a category
-     * @param: int $categoryId
-     * @return: int array() $result->fetch_assoc()
+     * @param int $categoryId Category of words (wordpool)
+     * @return array with wordpool indexes
      */
     public function getAllWordIdsOfCategory($categoryId){
         $conn = $this->databaseConnection->createConnection();
@@ -519,13 +512,13 @@ class DatabaseLibrary
             }
             return $wordIndexes;
         } else {
-            return 0;
+            return $wordIndexes;
         }
     }
 
     /**
      * Returns best sketch rated by the algorithm
-     * @param $lobbyIndex string Index of lobby
+     * @param int $lobbyIndex Index of lobby
      * @return int Path of sketch if found else 0
      */
     public function getSketchBestAlgorithm($lobbyIndex){
@@ -547,7 +540,7 @@ class DatabaseLibrary
 
     /**
      * Returns winner of a lobby by the sum of the total amount of votes
-     * @param $lobbyIndex string Index of lobby
+     * @param int $lobbyIndex Index of lobby
      * @return int Name of winner else 0
      */
     public function getWinner($lobbyIndex){
@@ -571,13 +564,13 @@ class DatabaseLibrary
 
     /**
      * This method gets the votes for a specific sketch index.
-     * @param: int $sketchIndx
-     * @return: int array() result->fetch_assoc()
+     * @param int $sketchIndex Index of sketch to get votes from 
+     * @return int votes of sketch
      */
-    public function getVotes($sketchIndx){
+    public function getVotes($sketchIndex){
         $conn = $this->databaseConnection->createConnection();
         $stmt = $conn->prepare("SELECT votes FROM tbl_sketch WHERE indx = ? LIMIT 1 FOR UPDATE");
-        $stmt->bind_param("i", $sketchIndx);
+        $stmt->bind_param("i", $sketchIndex);
 
         $result =  $this->databaseConnection->executeQuery($conn, $stmt);
         if($result){
@@ -589,37 +582,51 @@ class DatabaseLibrary
 
     /**
      * Insert a user to the database if it not existis
-     * @param $useraname to be inserted
+     * @param string $useraname to be inserted
      * @return boolean if insert was sucessfull
      */
-    public function insertUser($username){
+    public function insertUser($userName){
         $conn = $this->databaseConnection->createConnection();
         $stmt = $conn->prepare("INSERT INTO tbl_player (name) VALUES (?)");
-        $stmt->bind_param("s", $username);
+        $stmt->bind_param("s", $userName);
+
+        return $this->databaseConnection->executeInsertQuery($conn, $stmt);
+    }
+
+    /**
+     * Return index of user by given username 
+     * @param string Username 
+     * @return int index of user 
+     */
+    public function getUserIndexbyUserName($userName){
+        $conn = $this->databaseConnection->createConnection();
+        $stmt = $conn->prepare("SELECT indx FROM tbl_player WHERE name = ?)");
+        $stmt->bind_param("s", $userName);
 
         return $this->databaseConnection->executeInsertQuery($conn, $stmt);
     }
 
     /**
      * This method sets the vote for a specific sketch index.
-     * @param: int $sketchIndx
+     * @param int $votes Votes to be set for sktech
+     * @param int $sketchIndex Index of sketch where to votes should be set 
      */
-    public function setVotes($votes, $sketchIndx){
+    public function setVotes($votes, $sketchIndex){
         $conn = $this->databaseConnection->createConnection();
         $stmt = $conn->prepare("UPDATE tbl_sketch SET votes = ? WHERE indx = ?");
-        $stmt->bind_param("ii",$votes, $sketchIndx);
+        $stmt->bind_param("ii", $votes, $sketchIndex);
         $this->databaseConnection->executeQuery($conn, $stmt);
     }
 
     /**
      * Returns all scores of all pictures of a given player
-     * @param $playerIndx String with index of player
+     * @param $playerIndex String with index of player
      * @return array|int|null Returns a list or one value with all scores of aplayser
      */
-    public function getScoreOfPlayer($playerIndx){
+    public function getScoreOfPlayer($playerIndex){
         $conn = $this->databaseConnection->createConnection();
         $stmt = $conn->prepare("SELECT votes FROM tbl_sketch WHERE fk_player_indx_sketch = ?");
-        $stmt->bind_param("i", $playerIndx);
+        $stmt->bind_param("i", $playerIndex);
 
         $result =  $this->databaseConnection->executeQuery($conn, $stmt);
         if($result){
@@ -631,13 +638,12 @@ class DatabaseLibrary
 
     /**
      * This function returns de drawtime for a round
-     * @param $joinCode int
-     * @return $drawtime int
+     * @param int $joinCode joinCode of lobby
+     * @return int $drawtime int returns time to draw 
      */
-    public function getDrawTime(int $joinCode)
-    {
+    public function getDrawTime(int $joinCode){
         $conn = $this->databaseConnection->createConnection();
-        $stmt = $conn->prepare("SELECT votetime FROM tbl_lobby WHERE joincode = ?;");
+        $stmt = $conn->prepare("SELECT voteTime FROM tbl_lobby WHERE joincode = ?;");
         $stmt->bind_param("i", $joinCode);
         $result = $this->databaseConnection->executeQuery($conn, $stmt);
         if ($result) {
@@ -647,9 +653,12 @@ class DatabaseLibrary
         }
     }
 
-
-    public function getWordpoolIdsofLobby(int $lobbyIndex)
-    {
+    /**
+     * Get Wordpool id's of Wordpools 
+     * @param int $lobbyIndex Index of lobby to get the active wordpools
+     * @return array of wordpools-index 
+     */
+    public function getWordpoolIdsOfLobby(int $lobbyIndex){
         $conn = $this->databaseConnection->createConnection();
         $stmt = $conn->prepare("SELECT fk_wordpool_indx_lobby_wordpool FROM tbl_lobby_wordpool WHERE fk_lobby_indx_lobby_wordpool = ?;");
         $stmt->bind_param("i", $lobbyIndex);
@@ -666,11 +675,16 @@ class DatabaseLibrary
         }
     }
 
-    public function createRound(int $lobbyIndx, int $wordIndx)
-    {
+    /**
+     * Create new round with a given lobbyIndex and WordIndex
+     * @param int $lobbyIndex Index of lobby 
+     * @param int $wordIndex Word that was chosen in the round
+     * @return int Index of created round
+     */
+    public function createRound(int $lobbyIndex, int $wordIndex){
         $conn = $this->databaseConnection->createConnection();
         $stmt = $conn->prepare("INSERT INTO tbl_round(fk_lobby_indx, fk_word_indx_round) VALUES (?,?);");
-        $stmt->bind_param("ii", $lobbyIndx,$wordIndx);
+        $stmt->bind_param("ii", $lobbyIndex,$wordIndex);
 
         return $this->databaseConnection->executeInsertQuery($conn,$stmt);
     }

@@ -1,20 +1,31 @@
 <?php
 
-include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/DatabaseLibrary.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/PlayerModel.php");
+include_once($_SERVER['DOCUMENT_ROOT']."/php/Controller/LobbyController.php");
 
+/**
+ * Class LobbyViewAjaxData
+ * 
+ * Used as ajax data container
+ */
 class LobbyViewAjaxData{
     public $state;
-    public $votetime;
-    public $starttime;
-    public $drawtime;
-    public $maxplayer;
-    public $joincode;
+    public $voteTime;
+    public $startTime;
+    public $drawTime;
+    public $maxPlayer;
+    public $joinCode;
     public $players;
 }
 
+/**
+ * Class LobbyViewAjaxUpdate
+ */
 class LobbyViewAjaxUpdate{
 
+    /**
+     * Ajax Update functio to get data from Model
+     * @return LobbyViewAjaxData object with data
+     */
     public function getData(){
 
         ini_set('display_errors', 1); 
@@ -29,12 +40,12 @@ class LobbyViewAjaxUpdate{
         }
            
         $result = new LobbyViewAjaxData();
-        $result->state = $lobbycontroller->getState($_GET['joincode']);
-        $result->votetime =$lobbycontroller->getVoteTime($_GET['joincode']);
-        $result->starttime =$lobbycontroller->getStartTime($_GET['joincode']);
-        $result->drawtime =$lobbycontroller->getDrawTime($_GET['joincode']);
-        $result->maxplayer = $lobbycontroller->getMaxPlayers($_GET['joincode']);
-        $result->joincode =$lobbycontroller->getJoinCode($_GET['joincode']);
+        $result->state = $lobbycontroller->getState($_GET['joinCode']);
+        $result->voteTime =$lobbycontroller->getVoteTime($_GET['joinCode']);
+        $result->startTime =$lobbycontroller->getStartTime($_GET['joinCode']);
+        $result->drawTime =$lobbycontroller->getDrawTime($_GET['joinCode']);
+        $result->maxPlayer = $lobbycontroller->getMaxPlayers($_GET['joinCode']);
+        $result->joinCode = $_GET['joinCode'];
         $result->players = array_values($JSONplayers);
 
         return $result;

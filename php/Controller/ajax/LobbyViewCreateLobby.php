@@ -2,8 +2,15 @@
 
 include_once($_SERVER['DOCUMENT_ROOT']."/php/Controller/LobbyController.php");
 
+/**
+ * Class LobbyViewCreateLobby
+ */
 class LobbyViewCreateLobby{
 
+    /**
+    * Function to create a new lobby
+    * @return int joincode of lobby
+    */
     public function createLobby(){
         $lobbyController = new LobbyController();
 
@@ -22,8 +29,6 @@ class LobbyViewCreateLobby{
         
         return $joincode;
     }
-
-    
 }
 
 $instance = new LobbyViewCreateLobby();

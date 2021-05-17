@@ -2,27 +2,36 @@
 
 include_once($_SERVER['DOCUMENT_ROOT']."/php/Controller/LobbyController.php");
 
-class LobbyViewLoadWordPoolsData{
+/**
+ * Class LobbyViewLoadwordPoolsData
+ * 
+ * Used as ajax data container
+ */
+class LobbyViewLoadwordPoolsData{
     public $index;
     public $name;
 }
 
+/**
+ * Class LobbyViewLoadWordPools
+ */
 class LobbyViewLoadWordPools{
 
+    /**
+     * Function for Ajax to load WordPools
+     */
     public function loadWordPools(){
         $lobbyController = new LobbyController();
-        $wordpools = $lobbyController->getWordPools();
+        $wordPools = $lobbyController->getWordPools();
         $jsonArray = array();
-        foreach ($wordpools as $wordpool) {
+        foreach ($wordPools as $wordpool) {
             $json = new LobbyViewLoadWordPoolsData();
-            $json->index = $wordpool->getIndx();
+            $json->index = $wordpool->getIndex();
             $json->name = $wordpool->getName();
             array_push($jsonArray,$json);
         }   
         echo json_encode($jsonArray);
     }
-
-    
 }
 
 $instance = new LobbyViewLoadWordPools();

@@ -26,7 +26,7 @@ function loadLobbyData(joincode) {
                 ul.appendChild(li);
             });
 
-            if(data.starttime - currentTime == 0){
+            if(data.startTime - currentTime == 0){
                 redirectToGame()
             }
         }

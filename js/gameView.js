@@ -124,7 +124,8 @@ function loadPicturesVote() {
         url: '../Controller/ajax/GameViewVoteLoadPictures.php',
         data: {
             roundIndex: 1, //insert real round index later,
-            username: lobby_username
+            username: lobby_username,
+            joincode: lobby_joincode
         },
         success: function (data) {
             images = JSON.parse(data);

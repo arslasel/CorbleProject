@@ -1,4 +1,0 @@
-<?php
-function checkTiming($lobbyIndx)
-{
-}

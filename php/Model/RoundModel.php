@@ -22,12 +22,12 @@ class RoundModel
      * @param $roundIndx String with database round index
      * @param $playerIndx String with database player index
      */
-    public function savePicture($base64, $lobbyIndx, $roundIndx, $playerIndx, $wordIndx)
-    {
+
+    public function savePicture($base64, $lobbyIndx, $roundIndx, $playerIndx){
         $IoModel = new IOModel();
         $path = $IoModel->savePicture($base64, $lobbyIndx, $roundIndx, $playerIndx);
         if (!is_null($path)) {
-            $this->corbleDatabase->savePicture($path, $playerIndx, $roundIndx, $wordIndx);
+            $this->corbleDatabase->savePicture($path, $playerIndx,$roundIndx, rand(100000, 999999));
         }
     }
 

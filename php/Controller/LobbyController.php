@@ -4,6 +4,7 @@
     include_once($_SERVER['DOCUMENT_ROOT']."/php/Controller/RoundController.php");
 
     class LobbyController{
+
         private $lobbyModel;
         private $corbleDatabase;
         private $databaseConnection;
@@ -38,10 +39,40 @@
             return $this->lobbyModel->joinLobby($joincode,$username,false);
         }
 
-        public function readLobbyDataFromDB(){
-            $this->lobbyModel->readLobbyDataFromDB();
-            return $this->lobbyModel;
+        public function getState($joincode){
+            $this->lobbyModel->readLobbyDataFromDB($joincode, $this->corbleDatabase->getLobbyIndxByJoincode($joincode));
+            return $this->lobbyModel->getState();
         }
+
+        public function getVoteTime($joincode){
+            $this->lobbyModel->readLobbyDataFromDB($joincode, $this->corbleDatabase->getLobbyIndxByJoincode($joincode));
+            return $this->lobbyModel->getVoteTime();
+        } 
+        
+        public function getStartTime($joincode){
+            $this->lobbyModel->readLobbyDataFromDB($joincode, $this->corbleDatabase->getLobbyIndxByJoincode($joincode));
+            return $this->lobbyModel->getStartTime();
+        }     
+        
+        public function getDrawTime($joincode){
+            $this->lobbyModel->readLobbyDataFromDB($joincode, $this->corbleDatabase->getLobbyIndxByJoincode($joincode));
+            return $this->lobbyModel->getdrawTime();
+        }             
+
+        public function getMaxPlayer($joincode){
+            $this->lobbyModel->readLobbyDataFromDB($joincode, $this->corbleDatabase->getLobbyIndxByJoincode($joincode));
+            return $this->lobbyModel->getMaxPlayers();
+        }             
+
+        public function getJoinCode($joincode){
+            $this->lobbyModel->readLobbyDataFromDB($joincode, $this->corbleDatabase->getLobbyIndxByJoincode($joincode));
+            return $this->lobbyModel->getJoinCode();
+        }      
+
+        public function getPlayersOfLobby($joincode){
+            return $this->lobbyModel->getPlayersOfLobby($joincode);
+        }
+
     }
     return;
 ?>

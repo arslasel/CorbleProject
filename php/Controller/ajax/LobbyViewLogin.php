@@ -1,6 +1,5 @@
 <?php
 
-include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/DatabaseLibrary.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/php/Controller/LobbyController.php");
 
 class LobbyViewLogin{

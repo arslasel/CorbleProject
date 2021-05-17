@@ -5,7 +5,8 @@ include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/DatabaseLibrary.php");
 class GameEndModel{
     private $lobbyIndex;
     private $corbleDatabase;
-    public function __construct($corbleDatabase,$lobbyIndex){
+
+    public function __construct($corbleDatabase, $lobbyIndex){
         $this->lobbyIndex = $lobbyIndex;
         $this->corbleDatabase = $corbleDatabase;
     }
@@ -18,8 +19,8 @@ class GameEndModel{
         $this->corbleDatabase->getPlayerWithBestAlogrithmSketch($this->lobbyIndex);
     }
 
-    public function getPlayerWithWorstVotedSketch(){
-        $this->corbleDatabase->getPlayerWithWORSTAlogrithmSketch($this->lobbyIndex);
+    public function getPlayerWithWorstAlogrithmSketch(){
+        $this->corbleDatabase->getPlayerWithWorstAlogrithmSketch($this->lobbyIndex);
     }
 
     public function getSketchBestVoted(){

@@ -1,22 +1,16 @@
 <?php
 
-include_once($_SERVER['DOCUMENT_ROOT'] ."/php/Model/DatabaseLibrary.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/DatabaseConnection.php");
+include_once($_SERVER['DOCUMENT_ROOT'] ."/php/Controller/GameEndController.php.php");
 
-class GameViewEndLoadPictureWinnerVote
-{
-
-    private $databaseConnection;
-    private $corbleDatabase;
+class GameViewEndLoadPictureWinnerVote{
+    private $gameEndController;
 
     public function __construct(){
-        $this->databaseConnection = new DatabaseConnection();
-        $this->corbleDatabase = new DatabaseLibrary($this->databaseConnection);
+        $this->gameEndController = new GameEndController($_GET['joincode']);
     }
 
-    public function LoadPicture()
-    { 
-        $picture = $this->corbleDatabase->getSketchBestVoted(197);//In der $_Get-Klammer muss no spezifiziert werden
+    public function LoadPicture(){ 
+        $picture = $this->gameEndController->getSketchBestVoted();
         echo $picture;
     }
 }

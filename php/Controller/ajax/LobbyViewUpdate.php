@@ -20,32 +20,24 @@ class LobbyViewAjaxUpdate{
         ini_set('display_errors', 1); 
         error_reporting(E_ALL);
 
-        $dbLib = new DatabaseLibrary(new DatabaseConnection());
-        $result = $dbLib->readLobbyDataFromDB($_GET['joincode']);
+        $lobbycontroller = new LobbyController();
 
-        if($result){
-
-            $row = $result->fetch_assoc();
-        
-            $players = $dbLib->getPlayersOfLobby($row['indx']);
-            $JSONplayers = array();
-            foreach ($players as $player) {
-                array_push($JSONplayers,$player->getName());
-            }
-            
-            $result = new LobbyViewAjaxData();
-            $result->state = $row["state"];
-            $result->votetime = $row["votetime"];
-            $result->starttime = $row["starttime"];
-            $result->drawtime = $row["drawtime"];
-            $result->maxplayer = $row["maxplayer"];
-            $result->joincode = $row["joincode"];
-            $result->players = array_values($JSONplayers);
-
-            return $result;
+        $players = $lobbycontroller->getPlayersOfLobby($_GET['joincode']);
+        $JSONplayers = array();
+        foreach ($players as $player) {
+            array_push($JSONplayers,$player->getName());
         }
+           
+        $result = new LobbyViewAjaxData();
+        $result->state = $lobbycontroller->getState($_GET['joincode']);
+        $result->votetime =$lobbycontroller->getVoteTime($_GET['joincode']);
+        $result->starttime =$lobbycontroller->getStartTime($_GET['joincode']);
+        $result->drawtime =$lobbycontroller->getDrawTime($_GET['joincode']);
+        $result->maxplayer = $lobbycontroller->getMaxPlayers($_GET['joincode']);
+        $result->joincode =$lobbycontroller->getJoinCode($_GET['joincode']);
+        $result->players = array_values($JSONplayers);
 
-        return 0;
+        return $result;
     }
 }
 

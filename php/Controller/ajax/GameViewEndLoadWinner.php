@@ -1,22 +1,17 @@
 <?php
 
-include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/DatabaseLibrary.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/DatabaseConnection.php");
+include_once($_SERVER['DOCUMENT_ROOT'] ."/php/Controller/GameEndController.php.php");
 
-class GameViewEndLoadWinner
-{
-
-    private $databaseConnection;
-    private $corbleDatabase;
+class GameViewEndLoadWinner{
+    private $gameEndController;
 
     public function __construct(){
-        $this->databaseConnection = new DatabaseConnection();
-        $this->corbleDatabase = new DatabaseLibrary($this->databaseConnection);
+        $this->gameEndController = new GameEndController($_GET['joincode']);
     }
 
     public function LoadWinner()
     {
-        $winnerName = $this->corbleDatabase->getWinner(197);// onbtain lobby index the right way
+        $winnerName = $this->gameEndController->getWinner();
         echo $winnerName;
     }
 }

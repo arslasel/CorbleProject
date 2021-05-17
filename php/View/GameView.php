@@ -1,6 +1,6 @@
 <?php
 session_start();
-include_once('../Controller/GameEndConotroller.php');
+include_once('../Controller/GameEndController.php');
 ?>
 
 <!DOCTYPE HTML>

@@ -1,38 +1,35 @@
 <?php
-    //Includes required for using the RoundController functionality
     include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/RatingModel.php");
     include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/RoundModel.php");
+
     /**
      * The class RoundController will be used for doing the whole logic part of the game round
      */
     class RoundController{
-        //Class variable initializations
-        private $sketches = array(); //this should be an array of sketchesIds and imagedata
-        private $sketchesIds = array();
-        private $categoryId = 1;
+        private $sketches = array();
         private const MIN_WORD_ID = 0;
         private $ratingModel;
-        private $roundIndx;
+        private $roundIndex;
         private $corbleDatabase;
         private $roundModel;
 
         /**
          * This method is the constructor of the class RoundController
-         * @param: String array() $sketches
-         * @param: int $category
          */
         public function __construct(){
             $this->corbleDatabase = new DatabaseLibrary(new DatabaseConnection());
             $this->roundModel = new RoundModel($this->corbleDatabase);
-            //$this->sketches = $sketches; //Here are sketch-id and picture information contained
-            //$this->sketchesIds = array_column($this->sketches, 0);
-            //$this->categoryId = $categoryId;
         }
 
-
-        public function createRound(int $lobbyIndx, int $categoryId){
+        /**
+         * Create new round with given lobby-index and word cataroy
+         * @param int $lobbyIndex Index of lobby
+         * @param int $categoryId Category id 
+         * @return int Database index of created round
+         */
+        public function createRound(int $lobbyIndex, int $categoryId){
             $wordId = $this->selectRandomWord($categoryId);
-            return $this->corbleDatabase->createRound($lobbyIndx, $wordId);
+            return $this->corbleDatabase->createRound($lobbyIndex, $wordId);
         }
 
         /**
@@ -45,19 +42,33 @@
             }
         }
 
-
         /**
          * Saves a picture to the database
-         * @param $joinCode Joincode of loby
+         * @param string file with sketch to be saved
+         * @param int $joinCode Joincode to save the sketch to
+         * @param string $userName String with name of user
          */
-        public function saveSketch($file, $joinCode, $username){
+        public function saveSketch($file, $joinCode, $userName){
             $this->roundModel->savePicture(
-                file_get_contents($file), $this->corbleDatabase->getLobbyIndxByJoincode($joinCode), 
-                $this->roundIndex,$this->corbleDatabase->getPlayerByIndex($username));
+                file_get_contents($file), $this->corbleDatabase->getLobbyIndexByJoincode($joinCode), 
+                $this->roundIndex,$this->corbleDatabase->getPlayerByIndex($userName));
+        }
+
+
+        /**
+         * Returns all sketches of a player by a given joincode and username
+         * @param int joincode of player 
+         * @param string username of player
+         * @return array with all sketches to vote
+         */
+        public function getAllSketchesToVote($joinCode, $userName){
+            return $this->roundModel->getAllSketches($this->corbleDatabase->getLobbyIndexByJoincode($joinCode), 
+                $this->corbleDatabase->getUserIndexbyUserName($userName));
         }
 
         /**
          * This method is used for selecting a random Word out of a category
+         * @param int $categoryId Database id to get all word from 
          */
         public function selectRandomWord($categoryId){
             $wordIds = $this->corbleDatabase->getAllWordIdsOfCategory($categoryId);
@@ -73,23 +84,20 @@
 
         /**
          * This method is used to perform the rating of a picture from a player
-         * @param: int $sketchIndx
+         * @param int $sketchIndex Database index of sketch 
          */
-        public function sketchRateOfPlayer($sketchIndx){
-            $this->roundModel->saveRatingFromPlayer($sketchIndx);
+        public function sketchRateOfPlayer($sketchIndex){
+            $this->roundModel->saveRatingFromPlayer($sketchIndex);
         }
 
         /**
          * Returns array with key value pair of player and his score
-         * @param $lobbyIndx Integer index of lobby
+         * @param $lobbyIndex Integer index of lobby
          */
-        public function getLeaderBoard($lobbyIndx){
-            $this->roundModel->getLeaderBoard($lobbyIndx);
+        public function getLeaderBoard($lobbyIndex){
+            $this->roundModel->getLeaderBoard($lobbyIndex);
         }
 
-        /////////////////////////////////////////////////////////////////////
-        /////////////// Helper Methods
-        /////////////////////////////////////////////////////////////////////
         /**
          * This method get all sketches as a list.
          * @return: String array() $this->sketches
@@ -97,13 +105,5 @@
         public function getSketchesOfRound(){
                 return $this->sketches;
         }
-
-        /**
-         * This method refreshes the sketches which are contained in the round.
-         */
-        /*public function refreshListOfSketches(){
-            $this->roundIndx = $this->corbleDatabase->getRoundIndexOfSketch($this->sketchesIds[0]);
-            $this->sketches = $this->roundModel->getAllSketches($this->roundIndx);
-        }*/
     }
 ?>

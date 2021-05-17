@@ -4,7 +4,7 @@ session_start();
 
 <!DOCTYPE HTML>
 <html>
-
+<!----------------------- Head ----------------------------------------------->
 <head>
     <meta charset="utf-8">
     <meta http-equiv='cache-control' content='no-cache'>
@@ -26,29 +26,27 @@ session_start();
     <script src="../../js/init.js"></script>
     <script src="../../js/lobbyView.js"></script>
     <link rel="icon" type="image/png" href="">
-
 </head>
 
 <body>
 
-    <!--The Modal-->
+    <!----------------------- About Corble ----------------------------------->
     <div id="aboutCorble" class="modal">
-        <!--Modal Content-->
         <div class="modal-content textPosition">
             <div class="modal-header textShadow">
                 <h2>About Corble</h2>
             </div>
             <div>
                 <p class="textformating">
-                    Corble ist ein kreatives Zeichnungsspiel, bei dem 4 bis 8 Spieler
-                    gegeneinander antreten. Das Ziel ist ein Bild zu malen, welche das,
-                    angezeigte Wort am besten darstellt.
+                    Corble ist ein kreatives Zeichnungsspiel, bei dem 6 Spielern
+                    gegeneinander antreten. Das Ziel ist es, ein Bild zu malen, welches das
+                    angezeigte Wort so gut wie möglich darstellt.
                 </p>
                 <div class="textShadow">
                     <h4>Unsere Mission</h4>
                 </div>
                 <p class="textformating">
-                    Spieler dürfen ihre kreative Seite zeigen und diese froide mit allen
+                    Spieler dürfen ihre kreative Seite zeigen und diese freude mit allen
                     teilen.
                 </p>
                 <div class="textShadow">
@@ -56,7 +54,7 @@ session_start();
                 </div>
                 <p class="textformating">
                     Corble wurde im Auftrag von der ZHAW kreiert. Das Ziel dieses Projektes ist, die
-                    Grundkenntnisse von Software Entwicklung 1 zu vertiefen sowie Erkentnisse zu Projekt
+                    Grundkenntnisse von Software Entwicklung 1 zu vertiefen, sowie Erkentnisse in Projekt-
                     Management zu sammeln.
                 </p>
                 <div class="textShadow">
@@ -83,9 +81,8 @@ session_start();
         </div>
     </div>
 
-    <!--The Modal-->
+    <!----------------------- Rules of Corble -------------------------------->
     <div id="rulesCorble" class="modal">
-        <!--Modal Content-->
         <div class="modal-content textPosition">
             <div class="modal-header textShadow">
                 <h2>Corble Rules </h2>
@@ -94,45 +91,45 @@ session_start();
                 <h4>1. Anmelden und Starten</h4>
             </div>
             <p class="textformating">
-                Bevor es losgeht muss du dich mit deinem Künstlernamen anmelden.
-                Danach kannst du einem Spiel beitreten oder selber eins erstellen.
+                Bevor es losgeht muss du dich mit deinem Namen anmelden.
+                Danach kannst du einem Spiel beitreten oder selber eines erstellen.
             </p>
             <div class="textShadowLight">
                 <h4>2. Beitreten oder Erstellen</h4>
             </div>
             <h5>Join Lobby</h5>
             <ul class="textformating">
-                <li>Trete einem Spiel bei, dafür gibst du den erhaltenen Code ein.</li>
+                <li>Trete einem Spiel bei. Dafür gibst du den erhaltenen Join-Code ein.</li>
             </ul>
             <h5>Create Lobby</h5>
             <ul class="textformating">
                 <li>Erstelle ein Spiel nach deinen Regeln.</li>
             </ul>
             <div class="textShadowLight">
-                <h4>3. Male das Wort</h4>
+                <h4>3. Zeichne das Wort</h4>
             </div>
             <p class="textformating">
                 In einer vorgegebenen Zeit, muss du das angezeigte Wort so genau wie möglich
-                malen.
+                zeichnen.
             </p>
             <ul class="textformating">
                 <li>1. Verwende Farben</li>
                 <li>2. Verwende Stiftgrössen</li>
                 <li>3. Mit Clear wird alles gelöst</li>
-                <li>4. Bestätige dein Kunstwerk mit Submit</li>
+                <li>4. Bestätige dein Kunstwerk mit "Submit"</li>
             </ul>
             <div class="textShadowLight">
                 <h4>4. Bestimme das beste Bild</h4>
             </div>
             <p class="textformating">
-                Die Qual der Wahl, wer hat das beste Bild kreiert? Nach jeder Malrunden muss du
-                dich entscheiden, wer hat das beste Bild gezeichnet. Aber bedenke du hast nicht
-                ewig Zeit.
+                Die Qual der Wahl: Wer hat das beste Bild kreiert? Nach jeder Runde musst du
+                dich entscheiden, wer das beste Bild gezeichnet hat. Aber bedenke, du hast nicht
+                ewig Zeit!
             </p>
             <ul class="textformating">
-                <li>1. Wähle dein Bild in der Minislideshow.</li>
+                <li>1. Wähle dein Bild in der Slideshow.</li>
                 <li>2. Das gewählte Bild wird rot markiert und angezeigt.</li>
-                <li>3. Ist die Zeit abgelaufen, wird das gewählte Bild genommen.</li>
+                <li>3. Ist die Zeit abgelaufen, wird das gewählte Bild als bestes Bild bewerted.</li>
             </ul>
             <div class="textShadowLight">
                 <h4>5. Siegerehrung</h4>
@@ -151,6 +148,7 @@ session_start();
         </div>
     </div>
 
+    <!----------------------- SideBar ---------------------------------------->
     <ul class="sidenav" id="mobile-nav">
         <li class="usernameDisplay"><a id="username_displaym" href="#">&nbsp;</a></li>
         <li><a class="modal-trigger" href="#aboutCorble">About</a></li>
@@ -174,6 +172,7 @@ session_start();
         </nav>
     </div>
 
+    <!----------------------- Join Lobby ------------------------------------->
     <div hidden="" id="select_name" class="content">
         <div class="row">
             <h2 class="WelcomeText">Welcome To Corble</h2>
@@ -199,6 +198,8 @@ session_start();
             <div class="col s0 l3"></div>
         </div>
     </div>
+
+    <!----------------------- Configure Lobby -------------------------------->
     <div hidden="" id="lobby_configurator" class="content">
         <div class="row">
             <div id="joinLobbyModal" class="modal">
@@ -284,6 +285,8 @@ session_start();
             </div>
         </div>
     </div>
+
+    <!----------------------- Lobby Overview --------------------------------->
     <div hidden="" id="lobby_overview" class="content">
 
         <h4 class="LobbyTitle">Lobby Overview</h4>

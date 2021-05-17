@@ -1,32 +1,50 @@
 <?php
 
+/**
+ * Class PlayerModel
+ *
+ * Object that represents a player with name and database-index
+ */
 class PlayerModel
 {
     private $name;
-    private $indx;
+    private $index;
 
-    public function __construct($name, $indx)
-    {
+    /**
+     * PlayerModel constructor.
+     * @param $name String Name of the player
+     * @param $index String Database index of the player
+     */
+    public function __construct($name, $index){
         $this->name = $name;
-        $this->indx = $indx;
+        $this->index = $index;
     }
 
-
-    public static function getPlayerIndxByName($corbleDatabase, $name)
-    {
+    /**
+     * Return the database index of a player by his name
+     * @param $corbleDatabase Object Database connection
+     * @param $name String Name of player
+     * @return mixed Name of player
+     */
+    public static function getPlayerIndexByName($corbleDatabase, $name){
         return $corbleDatabase->getPlayerByIndex($name);
     }
 
-    public function getName()
-    {
+    /**
+     * Getter for name of player
+     * @return String Name of player
+     */
+    public function getName(){
         return $this->name;
     }
 
-    public function getIndx()
-    {
-        return $this->indx;
+    /**
+     * Getter for database index of player
+     * @return String Database indes of player
+     */
+    public function getIndex(){
+        return $this->index;
     }
 }
-
 
 return;

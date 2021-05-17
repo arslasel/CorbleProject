@@ -6,6 +6,7 @@ include_once('../Controller/GameEndConotroller.php');
 <!DOCTYPE HTML>
 <html>
 
+<!----------------------- Head ----------------------------------------------->
 <head>
     <meta charset="utf-8">
     <meta http-equiv='cache-control' content='no-cache'>
@@ -32,6 +33,7 @@ include_once('../Controller/GameEndConotroller.php');
 </head>
 
 <body>
+    <!----------------------- About Corble ----------------------------------->
     <div id="aboutCorble" class="modal">
         <div class="modal-content textPosition">
             <div class="modal-header textShadow">
@@ -39,15 +41,15 @@ include_once('../Controller/GameEndConotroller.php');
             </div>
             <div>
                 <p class="textformating">
-                    Corble ist ein kreatives Zeichnungsspiel, bei dem 4 bis 8 Spieler
-                    gegeneinander antreten. Das Ziel ist ein Bild zu malen, welche das,
-                    angezeigte Wort am besten darstellt.
+                    Corble ist ein kreatives Zeichnungsspiel, bei dem 6 Spielern
+                    gegeneinander antreten. Das Ziel ist es, ein Bild zu malen, welches das
+                    angezeigte Wort so gut wie möglich darstellt.
                 </p>
                 <div class="textShadow">
                     <h4>Unsere Mission</h4>
                 </div>
                 <p class="textformating">
-                    Spieler dürfen ihre kreative Seite zeigen und diese froide mit allen
+                    Spieler dürfen ihre kreative Seite zeigen und diese freude mit allen
                     teilen.
                 </p>
                 <div class="textShadow">
@@ -55,7 +57,7 @@ include_once('../Controller/GameEndConotroller.php');
                 </div>
                 <p class="textformating">
                     Corble wurde im Auftrag von der ZHAW kreiert. Das Ziel dieses Projektes ist, die
-                    Grundkenntnisse von Software Entwicklung 1 zu vertiefen sowie Erkentnisse zu Projekt
+                    Grundkenntnisse von Software Entwicklung 1 zu vertiefen, sowie Erkentnisse in Projekt-
                     Management zu sammeln.
                 </p>
                 <div class="textShadow">
@@ -82,6 +84,7 @@ include_once('../Controller/GameEndConotroller.php');
         </div>
     </div>
 
+    <!----------------------- Rules of Corble -------------------------------->
     <div id="rulesCorble" class="modal">
         <div class="modal-content textPosition">
             <div class="modal-header textShadow">
@@ -91,7 +94,7 @@ include_once('../Controller/GameEndConotroller.php');
                 <h4>1. Anmelden und Starten</h4>
             </div>
             <p class="textformating">
-                Bevor es losgeht muss du dich mit deinem Künstlernamen anmelden.
+                Bevor es losgeht muss du dich mit deinem Namen anmelden.
                 Danach kannst du einem Spiel beitreten oder selber eines erstellen.
             </p>
             <div class="textShadowLight">
@@ -99,37 +102,37 @@ include_once('../Controller/GameEndConotroller.php');
             </div>
             <h5>Join Lobby</h5>
             <ul class="textformating">
-                <li>Trete einem Spiel bei, dafür gibst du den erhaltenen Code ein.</li>
+                <li>Trete einem Spiel bei. Dafür gibst du den erhaltenen Join-Code ein.</li>
             </ul>
             <h5>Create Lobby</h5>
             <ul class="textformating">
                 <li>Erstelle ein Spiel nach deinen Regeln.</li>
             </ul>
             <div class="textShadowLight">
-                <h4>3. Male das Wort</h4>
+                <h4>3. Zeichne das Wort</h4>
             </div>
             <p class="textformating">
-                In einer vorgegebenen Zeit muss du das angezeigte Wort so genau wie möglich
-                malen.
+                In einer vorgegebenen Zeit, muss du das angezeigte Wort so genau wie möglich
+                zeichnen.
             </p>
             <ul class="textformating">
                 <li>1. Verwende Farben</li>
                 <li>2. Verwende Stiftgrössen</li>
                 <li>3. Mit Clear wird alles gelöst</li>
-                <li>4. Bestätige dein Kunstwerk mit Submit</li>
+                <li>4. Bestätige dein Kunstwerk mit "Submit"</li>
             </ul>
             <div class="textShadowLight">
                 <h4>4. Bestimme das beste Bild</h4>
             </div>
             <p class="textformating">
-                Die Qual der Wahl, wer hat das beste Bild kreiert? Nach jeder Malrunden muss du
-                dich entscheiden, wer hat das beste Bild gezeichnet. Aber bedenke du hast nicht
-                ewig Zeit.
+                Die Qual der Wahl: Wer hat das beste Bild kreiert? Nach jeder Runde musst du
+                dich entscheiden, wer das beste Bild gezeichnet hat. Aber bedenke, du hast nicht
+                ewig Zeit!
             </p>
             <ul class="textformating">
-                <li>1. Wähle dein Bild in der Minislideshow.</li>
+                <li>1. Wähle dein Bild in der Slideshow.</li>
                 <li>2. Das gewählte Bild wird rot markiert und angezeigt.</li>
-                <li>3. Ist die Zeit abgelaufen, wird das gewählte Bild genommen.</li>
+                <li>3. Ist die Zeit abgelaufen, wird das gewählte Bild als bestes Bild bewerted.</li>
             </ul>
             <div class="textShadowLight">
                 <h4>5. Siegerehrung</h4>
@@ -148,6 +151,7 @@ include_once('../Controller/GameEndConotroller.php');
         </div>
     </div>
 
+    <!----------------------- Navigation -------------------------------------->
     <ul class="sidenav" id="mobile-nav">
         <li class="usernameDisplay"><a id="username_displaym" href="#"></a></li>
         <li><a href="#">Leave</a></li>
@@ -172,7 +176,7 @@ include_once('../Controller/GameEndConotroller.php');
         </nav>
     </div>
 
-
+    <!----------------------- Draw Picture ----------------------------------->
     <div hidden id="drawContainer" class="content">
         <div class="row FullHeight NoMargin">
             <div id="drawBoardContainer" class="col s12 l10 NoPadding drawcols">
@@ -251,6 +255,8 @@ include_once('../Controller/GameEndConotroller.php');
             </div>
         </div>
     </div>
+    
+    <!----------------------- Vote Picture ----------------------------------->
     <div hidden id="voteContainer" class="content">
         <div class="row NoMarginRow">
             <div class="col s6 l2 NoPadding">
@@ -275,6 +281,8 @@ include_once('../Controller/GameEndConotroller.php');
             </div>
         </div>
     </div>
+
+    <!----------------------- GameEnd ---------------------------------------->  
     <div hidden id="endContainer" class="content">
         <div class="row">
             <h2 class="WelcomeText">Spiel Ende</h2>

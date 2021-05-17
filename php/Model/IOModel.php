@@ -1,19 +1,28 @@
 <?php
+
+/**
+ * Class IOModel
+ *
+ * Methods and function to interact with IO
+ */
 class IOModel
 {
     private $root;
 
+    /**
+     * IOModel constructor.
+    */
     public function __construct(){
         $this->root = $_SERVER['DOCUMENT_ROOT'];
     }
 
     /**
-     * saves a picture given as base-64 string to a file in a directory that is created with the lobby an round index
+     * Saves a picture given as base-64 string to a file in a directory that is created with the lobby an round index
      *
-     * @param String $pictureBase64 Content of file to be saved as base-64 string
-     * @param String $lobbyIndex Index of Lobby  (used as directory-name)
-     * @param String $roundIndex Index of round (used as directory-name)
-     * @param String $pictureIndex Index of Picture (used as filename)
+     * @param string $pictureBase64 Content of file to be saved as base-64 string
+     * @param string $lobbyIndex Index of Lobby  (used as directory-name)
+     * @param string $roundIndex Index of round (used as directory-name)
+     * @param string $pictureIndex Index of Picture (used as filename)
      */
     public function savePicture(String $pictureBase64, String $lobbyIndex, String $roundIndex, String $pictureIndex){
         $path = $this->createRoundFolder($lobbyIndex, $roundIndex);
@@ -29,7 +38,7 @@ class IOModel
 
     /**
      * Returns the path to a picture given by its id
-     * @param $pictureIndex Index of picture
+     * @param int $pictureIndex Index of picture
      * @return string Path of picture
      */
     public function returnPathOfPictureIndex(String $pictureIndex){
@@ -37,17 +46,9 @@ class IOModel
         return $this->rsearch($this->root, $filename);
     }
 
-    /**
-     * Delete lobby with a given index
-     * @param $lobbyIndex lobby to index
-     */
-    private function deleteLobby(String $lobbyIndex){
-        $path = $this->rsearch($this->root, $lobbyIndex);
-        if(file_exists($path)){
-            rmdir($this->rsearch($this->root, $lobbyIndex));
-        }
-    }
-
+    //*************************************************************************
+    // Private Methods
+    //*************************************************************************
     private function createLobbyFolder(String $lobbyIndex){
         $path = $this->root;
         $path .= "/sketches/" . $lobbyIndex;
@@ -78,6 +79,4 @@ class IOModel
         }
         return false;
     }
-
-
 }

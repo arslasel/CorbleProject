@@ -27,15 +27,13 @@ class DatabaseConnection
         );
     }
 
-
-    /*
+    /**
      * Creates a connection to the database and executes a querry
-     * @param $query String Querry to be executed on the Corble Database
+     * @param $conn Database connection to run statement
+     * @param $stmt Prepared and injectionsave sql statment
      * @return bool|mysqli_result Result of querry
      */
-    public function executeQuery($conn, $stmt)
-    {
-        // Check connection
+    public function executeQuery($conn, $stmt){
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
         } else {
@@ -47,13 +45,13 @@ class DatabaseConnection
         }
     }
 
-    /*
+    /**
      * Creates a connection to the corble database and executes a insert querry
-     * @param $query string with querry to be executed
+     * @param $conn Database connection to run statement
+     * @param $stmt Prepared and injectionsave sql statment
      * @return int|string Result (Error-Code)
      */
-    public function executeInsertQuery($conn, $stmt)
-    {
+    public function executeInsertQuery($conn, $stmt){
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
         } else {

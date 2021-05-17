@@ -2,8 +2,14 @@
 
 include_once($_SERVER['DOCUMENT_ROOT']."/php/Controller/LobbyController.php");
 
+/**
+ * Cass LobbyViewLogin
+ */
 class LobbyViewLogin{
 
+    /**
+     * Function for Ajax to logon user
+     */
     public function login(){
         $lobbyController = new LobbyController();
 
@@ -14,8 +20,6 @@ class LobbyViewLogin{
             echo "success";
         }
     }
-
-    
 }
 
 $instance = new LobbyViewLogin();

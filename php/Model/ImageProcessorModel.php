@@ -1,26 +1,27 @@
 <?php
-	//If debugging is required the comment the following in
-    //ini_set('display_errors', 1);
-    
+   
 	/**
+	 * Class ImageProcessorModel
+	 * 
 	 * This class is used for counting the pixels on its specific color and is required for the grading algorithm 
 	*/
     class ImageProcessorModel{
         private $imageRessource;
-		//The image source from the stored picture which is require for counting the pixel colors of a specific picture
         
 		/**
 		 * This is the constuructor of the class ImageProcessorModel
 		 * The imageRessource is required for count the specific pixels colors of the image
-		 * @param: String $imageRessource		 
+		 * @param string $imageRessource String Path to image
 		*/
         public function __construct(String $imageRessource){
             $this->imageRessource = $imageRessource;
         }
         
 		/**
-		 * In the function pixelCount() will each pixels color be read out and with every possible color code in our game compared. If the comparison is successfully it will increment the counter of the specific color
-		 * @return: array($blackCounter, $redCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter) The array of all counters from each in the game possible color
+		 * In the function pixelCount() will each pixels color be read out and with
+         * every possible color code in our game compared. If the comparison is successfully
+         * it will increment the counter of the specific color
+		 * @return array The array of all counters from each in the game possible color
 		*/
         public function pixelCount(){
 			//Initalising all needed variables
@@ -44,7 +45,8 @@
                     $g = ($rgb >> 8) & 255;
                     $b = $rgb & 255;
         			
-					//Check if the color code wich was read out before and splittet fits with one valid of the game and increment the specific counter
+					// Check if the color code wich was read out before and splittet fits with one 
+					// valid of the game and increment the specific counter
         			if($r == 0 && $g == 0 && $b == 0){
         			    $blackCounter++;
         			}

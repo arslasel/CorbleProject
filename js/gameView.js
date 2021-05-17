@@ -61,7 +61,7 @@ function submitImage() {
     fd.append("lobby_username", lobby_username);
     fd.append("lobby_joincode", lobby_joincode);
     fd.append("start_roundID", start_roundID);
-    fd.append("word", 2);
+    fd.append("word", );
     $.ajax({
         url: '../Controller/ajax/GameViewSubmitImage.php',
         type: 'post',
@@ -117,7 +117,7 @@ function loadPicturesVote() {
                                 list[i].classList.remove("selectedPicture");
                             }
                         
-                            //console.log(this);
+                            
                             this.classList.add("selectedPicture");
 
                         }
@@ -262,7 +262,7 @@ function loadWinnerName() {
         type: "GET",
         url: '../Controller/ajax/GameViewEndLoadWinner.php',
         data: {
-            roundIndex: 1, //insert real round index later,
+            roundIndex: 1, 
             username: lobby_username,
             joincode: lobby_joincode,
             start_roundID: start_roundID
@@ -280,8 +280,8 @@ function registerTimeEvents() {
         document.getElementById("timeLeftToDraw").innerHTML = remainingTime.toString();
         document.getElementById("timeLeftToVote").innerHTML = remainingTime.toString();
         if (remainingTime == 0) {
-            //submitImage();
-            //initVote();
+            submitImage();
+            initVote();
         }
         if(remainingTime < 0){ remainingTime = -1;}
     }, 1000);

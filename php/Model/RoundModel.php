@@ -34,8 +34,7 @@ class RoundModel
         $path = $IoModel->savePicture($base64, $lobbyIndex, $roundIndex, $playerIndex);
         if (!is_null($path)) {
             $sketchID = $this->corbleDatabase->savePicture($path, $playerIndex);
-            echo "INDEX". $sketchID;
-            $this->corbleDatabase->InsertSketchInRound($sketchID,$roundIndex);
+            $this->corbleDatabase->InsertSketchInRound($sketchID, $roundIndex);
             return $sketchID;
         }
     }

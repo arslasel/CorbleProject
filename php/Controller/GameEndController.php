@@ -19,7 +19,7 @@ class GameEndController{
     public function __construct($joinCode){
         $this->databaseConnection = new DatabaseConnection();
         $this->corbleDatabase = new DatabaseLibrary($this->databaseConnection);
-        $this->lobbyIndex = $this->corbleDatabase->getLobbyIndexByJoincode($joinCode);
+        $this->lobbyIndex = $this->corbleDatabase->getLobbyIndexByJoinCode($joinCode);
         $this->gameEndModel = new GameEndModel($this->corbleDatabase, $this->lobbyIndex);
     }
     

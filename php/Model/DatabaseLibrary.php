@@ -349,13 +349,13 @@ class DatabaseLibrary{
     /**
      * Reuturns all skatches but not the one of the given player
      * @param int $roundIndex Database index of round
-     * @param int $playerindex Player index
+     * @param int $playerIndex Player index
      * @return array|int Array with paths. if nothing found result is 0
      */
-    public function getAllSketches($roundIndex, $playerindex){
+    public function getAllSketches($roundIndex, $playerIndex){
         $conn = $this->databaseConnection->createConnection();
-        $stmt = $conn->prepare("SELECT path as path FROM tbl_sketch WHERE fk_round_indx = ? AND fk_player_indx_sketch <> ?");
-        $stmt->bind_param("ii", $roundIndex, $playerindex);
+        $stmt = $conn->prepare("SELECT path FROM tbl_sketch WHERE fk_round_indx = ? AND fk_player_indx_sketch <> ?");
+        $stmt->bind_param("ii", $roundIndex, $playerIndex);
 
         $result =  $this->databaseConnection->executeQuery($conn, $stmt);
         if($result){
@@ -609,7 +609,7 @@ class DatabaseLibrary{
      */
     public function getUserIndexbyUserName($userName){
         $conn = $this->databaseConnection->createConnection();
-        $stmt = $conn->prepare("SELECT indx FROM tbl_player WHERE name = ?)");
+        $stmt = $conn->prepare("SELECT indx FROM tbl_player WHERE name = ?");
         $stmt->bind_param("s", $userName);
 
         return $this->databaseConnection->executeInsertQuery($conn, $stmt);
@@ -652,7 +652,7 @@ class DatabaseLibrary{
      */
     public function getDrawTime(int $joinCode){
         $conn = $this->databaseConnection->createConnection();
-        $stmt = $conn->prepare("SELECT voteTime FROM tbl_lobby WHERE joincode = ?;");
+        $stmt = $conn->prepare("SELECT voteTime FROM tbl_lobby WHERE joincode = ?");
         $stmt->bind_param("i", $joinCode);
         $result = $this->databaseConnection->executeQuery($conn, $stmt);
         if ($result) {
@@ -669,7 +669,7 @@ class DatabaseLibrary{
      */
     public function getWordpoolIdsOfLobby(int $lobbyIndex){
         $conn = $this->databaseConnection->createConnection();
-        $stmt = $conn->prepare("SELECT fk_wordpool_indx_lobby_wordpool FROM tbl_lobby_wordpool WHERE fk_lobby_indx_lobby_wordpool = ?;");
+        $stmt = $conn->prepare("SELECT fk_wordpool_indx_lobby_wordpool FROM tbl_lobby_wordpool WHERE fk_lobby_indx_lobby_wordpool = ?");
         $stmt->bind_param("i", $lobbyIndex);
 
         $result = $this->databaseConnection->executeQuery($conn,$stmt);
@@ -692,7 +692,7 @@ class DatabaseLibrary{
      */
     public function createRound(int $lobbyIndex, int $wordIndex){
         $conn = $this->databaseConnection->createConnection();
-        $stmt = $conn->prepare("INSERT INTO tbl_round(fk_lobby_indx, fk_word_indx_round) VALUES (?,?);");
+        $stmt = $conn->prepare("INSERT INTO tbl_round(fk_lobby_indx, fk_word_indx_round) VALUES (?,?)");
         $stmt->bind_param("ii", $lobbyIndex,$wordIndex);
 
         return $this->databaseConnection->executeInsertQuery($conn,$stmt);

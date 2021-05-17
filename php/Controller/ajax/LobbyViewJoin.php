@@ -11,7 +11,7 @@ class LobbyViewJoin{
      */
     public function join(){
         $lobbyController = new LobbyController();
-        $lobbyController->joinLobby($_GET['joincode'],$_GET['username']);
+        $lobbyController->joinLobby($_GET['joincode'], $_GET['username']);
     }
 }
 

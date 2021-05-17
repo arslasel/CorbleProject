@@ -47,10 +47,10 @@
          * @param int $joinCode Joincode to save the sketch to
          * @param string $userName String with name of user
          */
-        public function saveSketch($file, $joinCode, $userName,$roundIndex){
+        public function saveSketch($file, $joinCode, $userName, $roundIndex){
             $this->roundIndex = $roundIndex;
             return $this->roundModel->savePicture(
-                file_get_contents($file), $this->corbleDatabase->getLobbyIndexByJoincode($joinCode), 
+                file_get_contents($file), $this->corbleDatabase->getLobbyIndexByJoinCode($joinCode), 
                 $this->roundIndex,$this->corbleDatabase->getPlayerByIndex($userName));
         }
 
@@ -62,7 +62,7 @@
          * @return array with all sketches to vote
          */
         public function getAllSketchesToVote($joinCode, $userName){
-            return $this->roundModel->getAllSketches($this->corbleDatabase->getLobbyIndexByJoincode($joinCode), 
+            return $this->roundModel->getAllSketches($this->corbleDatabase->getLobbyIndexByJoinCode($joinCode), 
                 $this->corbleDatabase->getUserIndexbyUserName($userName));
         }
 

@@ -1,0 +1,1 @@
+[17-May-2021 12:03:13 UTC] PHP Notice:  Undefined property: RoundController::$MIN_WORD_ID in /home/rigpdqdi/public_html/corble.ch/php/Controller/RoundController.php on line 77

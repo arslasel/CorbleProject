@@ -7,7 +7,6 @@
      */
     class RoundController{
         private $sketches = array();
-        private const MIN_WORD_ID = 0;
         private $ratingModel;
         private $roundIndex;
         private $corbleDatabase;
@@ -74,7 +73,7 @@
             $wordIds = $this->corbleDatabase->getAllWordIdsOfCategory($categoryId);
             if(sizeof($wordIds) != 0){ // if wordIds == 0 then no word was found for category
                 $numOfElements = sizeof($wordIds);
-                $randomNumInArray = rand($this->MIN_WORD_ID, $numOfElements-1);
+                $randomNumInArray = rand(0, $numOfElements-1);
                 return $wordIds[$randomNumInArray];
             }
             else{

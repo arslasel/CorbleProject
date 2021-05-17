@@ -472,6 +472,15 @@ class DatabaseLibrary{
         }
     }
 
+    public function InsertSketchInRound($sketchID, $roundID){
+        $conn = $this->databaseConnection->createConnection();
+        $stmt = $conn->prepare("INSERT INTO tbl_round_sketch (fk_sketch_indx_round_sketch, fk_round_indx_round_sketch) VALUES (?,?)");
+        $stmt->bind_param("ii", $sketchID,$roundID);
+
+        return $this->databaseConnection->executeInsertQuery($conn, $stmt);
+    }
+
+
     /**
      * Returns path of sketch with worst rating from algorithm
      * @param int $lobbyIndex string with index of lobby

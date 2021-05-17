@@ -47,7 +47,8 @@
          * @param int $joinCode Joincode to save the sketch to
          * @param string $userName String with name of user
          */
-        public function saveSketch($file, $joinCode, $userName){
+        public function saveSketch($file, $joinCode, $userName,$roundIndex){
+            $this->roundIndex = $roundIndex;
             $this->roundModel->savePicture(
                 file_get_contents($file), $this->corbleDatabase->getLobbyIndexByJoincode($joinCode), 
                 $this->roundIndex,$this->corbleDatabase->getPlayerByIndex($userName));

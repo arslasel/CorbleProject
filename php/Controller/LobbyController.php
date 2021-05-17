@@ -2,7 +2,6 @@
     include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/LobbyModel.php");
     include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/WordpoolModel.php");
     include_once($_SERVER['DOCUMENT_ROOT']."/php/Controller/RoundController.php");
-    $_SESSION["rounds"];
 
     class LobbyController{
 
@@ -51,8 +50,8 @@
 
             $rand = rand(0,count($wordPoolsOfLobby)-1);
             $round1 = new RoundController();
-            $_SESSION["rounds"] = $round1->createRound($this->lobbyModel->getLobbyIndexByjoinCode($joinCode),$wordpools[$rand]);
-            return $joinCode;
+            $roundId = $round1->createRound($this->lobbyModel->getLobbyIndexByjoinCode($joinCode),$wordpools[$rand]);
+            return array($joinCode, $roundId);
         }
 
         /**

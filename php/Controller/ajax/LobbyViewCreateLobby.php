@@ -2,6 +2,12 @@
 
 include_once($_SERVER['DOCUMENT_ROOT']."/php/Controller/LobbyController.php");
 
+class LobbyViewCreateLobbyJSONData{
+    public $joincode;
+    public $roundID;
+}
+
+
 /**
  * Class LobbyViewCreateLobby
  */
@@ -19,15 +25,19 @@ class LobbyViewCreateLobby{
             array_push($wordpools,$wordpool);
         }
 
-        $joincode = $lobbyController->createLobby(
+        list($joincode,$roundID) = $lobbyController->createLobby(
             $_GET['drawtime'],
             $_GET['votetime'],
             $_GET['starttime'], 
             $_GET['maxplayer'], 
             $wordpools,
             $_GET['username']);
+
+        $json = new LobbyViewCreateLobbyJSONData();
+        $json->joincode = $joincode;
+        $json->roundID = $roundID;
         
-        return $joincode;
+        return $json;
     }
 }
 
@@ -38,3 +48,4 @@ try {
 catch (Exception $e) {
     echo json_encode($e->getMessage());
 }
+

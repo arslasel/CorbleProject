@@ -12,7 +12,7 @@ class GameViewSubmitImage{
      */
     public function submitImage(){
         $roundController = new RoundController();
-        $roundController->saveSketch($_FILES['imageBase64']['tmp_name'], $_GET['joincode'], $_GET['username']);
+        $roundController->saveSketch($_FILES['imageBase64']['tmp_name'], $_GET['joincode'], $_GET['username'],$_GET["start_roundID"]);
     }
 }
 

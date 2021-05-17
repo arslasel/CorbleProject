@@ -1,6 +1,7 @@
 lobby_username = "";
 lobby_joincode = 0;
-remainingTime = 60;
+start_roundID = 0;
+remainingTime = 9999;
 selectedImgID = 0;
 
 
@@ -9,6 +10,7 @@ function init() {
     const urlParams = new URLSearchParams(queryString);
     lobby_username = urlParams.get('username')
     lobby_joincode = urlParams.get('lobby')
+    start_roundID = urlParams.get('roundID')
     $.when(initGame()).done(function (response) {remainingTime = response.voteTime;})
 }
 
@@ -16,9 +18,11 @@ function initGame() {
     return $.ajax({
         type: 'get',
         url: '../Controller/ajax/GameViewInitGame.php',
-        dataType: 'JSON',
         data: {
             joincode: lobby_joincode
+        },
+        success: function (data) {
+            remainingTime = parseInt(JSON.parse(data).voteTime);
         }
     });
 
@@ -62,7 +66,8 @@ function submitImage() {
         type: 'post',
         data: {
             username: lobby_username,
-            joincode: lobby_joincode
+            joincode: lobby_joincode,
+            start_roundID: start_roundID
         },
         contentType: false,
         processData: false,
@@ -82,42 +87,6 @@ function loadView() {
     document.getElementById("endContainer").setAttribute("hidden", "1");
 }
 
-
-// Next/previous controls
-function plusSlides(n) {
-    selectSlide(slideIndex += n);
-}
-
-// Thumbnail image controls
-function currentSlide(n) {
-    selectSlide(slideIndex = n);
-}
-
-function selectSlide(caller, n) {
-    var element = document.getElementById("image" + n.toString());
-    if (element != null) {
-        element.removeAttribute("hidden")
-    }
-
-    for (let index = 1; index < 7; index++) {
-        var hideElemment = document.getElementById("image" + index.toString());
-        if (index != n) {
-            hideElemment.setAttribute("hidden", "true");
-        }
-    }
-}
-
-function selectPicture(n) {
-    var littelPicture = document.getElementById("imagePreview" + n.toString());
-    littelPicture.classList.add("selectedPicture");
-    for (let index = 1; index < 7; index++) {
-        var temp = document.getElementById("imagePreview" + index.toString())
-        if (temp != littelPicture) {
-            temp.classList.remove("selectedPicture");
-        }
-    }
-}
-
 function loadPicturesVote() {
     $.ajax({
         type: "GET",
@@ -125,7 +94,8 @@ function loadPicturesVote() {
         data: {
             roundIndex: 1, //insert real round index later,
             username: lobby_username,
-            joincode: lobby_joincode
+            joincode: lobby_joincode,
+            start_roundID: start_roundID
         },
         success: function (data) {
             images = JSON.parse(data);
@@ -171,7 +141,8 @@ function loadPictureWinnerVote() {
         data: {
             roundIndex: 1, //insert real round index later,
             username: lobby_username,
-            joincode: lobby_joincode
+            joincode: lobby_joincode,
+            start_roundID: start_roundID
         },
         success: function (data) {
             $.ajax({
@@ -195,7 +166,8 @@ function loadPictureBestAlgoVote() {
         data: {
             roundIndex: 1, //insert real round index later,
             username: lobby_username,
-            joincode: lobby_joincode
+            joincode: lobby_joincode,
+            start_roundID: start_roundID
         },
         success: function (data) {
             $.ajax({
@@ -219,7 +191,8 @@ function loadPictureWorstAlgoVote() {
         data: {
             roundIndex: 1, //insert real round index later,
             username: lobby_username,
-            joincode: lobby_joincode
+            joincode: lobby_joincode,
+            start_roundID: start_roundID
         },
         success: function (data) {
             $.ajax({
@@ -243,7 +216,8 @@ function loadPlayerNameOfBestVotedPicture() {
         data: {
             roundIndex: 1, //insert real round index later,
             username: lobby_username,
-            joincode: lobby_joincode
+            joincode: lobby_joincode,
+            start_roundID: start_roundID
         },
         success: function (data) {
             span = document.getElementById("bestVotedPlayer");
@@ -259,7 +233,8 @@ function loadPlayerNameOfBestAlgoPicture() {
         data: {
             roundIndex: 1, //insert real round index later,
             username: lobby_username,
-            joincode: lobby_joincode
+            joincode: lobby_joincode,
+            start_roundID: start_roundID
         },
         success: function (data) {
             span = document.getElementById("bestAlgoName");
@@ -275,7 +250,8 @@ function loadPlayerNameOfWorstAlgoPicture() {
         data: {
             roundIndex: 1, //insert real round index later,
             username: lobby_username,
-            joincode: lobby_joincode
+            joincode: lobby_joincode,
+            start_roundID: start_roundID
         },
         success: function (data) {
             span = document.getElementById("worstAlgoName");
@@ -291,7 +267,8 @@ function loadWinnerName() {
         data: {
             roundIndex: 1, //insert real round index later,
             username: lobby_username,
-            joincode: lobby_joincode
+            joincode: lobby_joincode,
+            start_roundID: start_roundID
         },
         success: function (data) {
             span = document.getElementById("winnerMessage");
@@ -306,7 +283,8 @@ function registerTimeEvents() {
         document.getElementById("timeLeftToDraw").innerHTML = remainingTime.toString();
         document.getElementById("timeLeftToVote").innerHTML = remainingTime.toString();
         if (remainingTime == 0) {
-            alert("drawTime over")
+            submitImage();
+            initVote();
         }
         if(remainingTime < 0){ remainingTime = -1;}
     }, 1000);

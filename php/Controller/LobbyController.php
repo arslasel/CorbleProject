@@ -1,6 +1,8 @@
 <?php
     include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/LobbyModel.php");
     include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/WordpoolModel.php");
+    include_once($_SERVER['DOCUMENT_ROOT']."/php/Controller/RoundController.php");
+
     class LobbyController{
 
         private $lobbyModel;
@@ -23,7 +25,14 @@
         }
 
         public function createLobby($votetime,$drawtime,$starttime,$maxplayer,$wordpools,$username){
-            return $this->lobbyModel->createLobby($votetime,$drawtime,$starttime,$maxplayer,$wordpools,$username);
+            $joincode = $this->lobbyModel->createLobby($votetime,$drawtime,$starttime,$maxplayer,$wordpools,$username);
+            $lobbyIndex = $this->lobbyModel->getLobbyIndxByJoincode($joincode);
+            $wordPoolsOfLobby = $this->lobbyModel->getWordpoolIdsofLobby($lobbyIndex);
+
+            $rand = rand(0,count($wordPoolsOfLobby)-1);
+            $round1 = new RoundController();
+            $round1->createRound($this->lobbyModel->getLobbyIndxByJoincode($joincode),3);//$wordpools[$rand]
+            return $joincode;
         }
 
         public function joinLobby($joincode,$username){

@@ -4,7 +4,7 @@ class PlayerModel
 {
     private $name;
     private $indx;
-    
+
     public function __construct($name, $indx)
     {
         $this->name = $name;
@@ -12,7 +12,7 @@ class PlayerModel
     }
 
 
-    public static function getPlayerIndxByName($corbleDatabase,$name)
+    public static function getPlayerIndxByName($corbleDatabase, $name)
     {
         return $corbleDatabase->getPlayerByIndex($name);
     }
@@ -30,5 +30,3 @@ class PlayerModel
 
 
 return;
-?>
-<!-- >

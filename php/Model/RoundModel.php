@@ -1,8 +1,8 @@
 <?php
 
-include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/DatabaseLibrary.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/PlayerModel.php");
-include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/IOModel.php");
+include_once($_SERVER['DOCUMENT_ROOT'] . "/php/Model/DatabaseLibrary.php");
+include_once($_SERVER['DOCUMENT_ROOT'] . "/php/Model/PlayerModel.php");
+include_once($_SERVER['DOCUMENT_ROOT'] . "/php/Model/IOModel.php");
 
 
 
@@ -22,8 +22,8 @@ class RoundModel
      * @param $roundIndx String with database round index
      * @param $playerIndx String with database player index
      */
-    public function savePicture($base64, $lobbyIndx, $roundIndx, $playerIndx,)
-    {
+
+    public function savePicture($base64, $lobbyIndx, $roundIndx, $playerIndx){
         $IoModel = new IOModel();
         $path = $IoModel->savePicture($base64, $lobbyIndx, $roundIndx, $playerIndx);
         if (!is_null($path)) {
@@ -72,5 +72,3 @@ class RoundModel
         return arsort($leaderboard);
     }
 }
-?>
-<!-- -->

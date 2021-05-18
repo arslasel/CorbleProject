@@ -30,9 +30,10 @@ class GameViewVoteLoadPictures{
         $pictureArray = $this->roundController->getAllSketchesToVote($_GET['start_roundID'], $_GET['username']);
 
         foreach ($pictureArray as $picture) {
+
             $jsonPicture = new GameViewVotePictureData();
-            $jsonPicture->dbIndex = $picture["indx"];
-            $jsonPicture->path = $picture["path"];
+            $jsonPicture->dbIndex = $picture[1];
+            $jsonPicture->path = $picture[0];
             array_push($jsonarray,$jsonPicture);
         }
 

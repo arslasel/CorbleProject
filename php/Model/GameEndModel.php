@@ -24,7 +24,7 @@ class GameEndModel{
      * @return string Name of player with the best vote sketch
      */
     public function getPlayerWithBestVotedSketch(){
-        $this->corbleDatabase->getPlayerWithBestVotedSketch($this->lobbyIndex);
+        return $this->corbleDatabase->getPlayerWithBestVotedSketch($this->lobbyIndex);
     }
 
     /**
@@ -32,7 +32,7 @@ class GameEndModel{
      * @return string Name of player
      */
     public function getPlayerWithBestAlogrithmSketch(){
-        $this->corbleDatabase->getPlayerWithBestAlogrithmSketch($this->lobbyIndex);
+        return $this->corbleDatabase->getPlayerWithBestAlogrithmSketch($this->lobbyIndex);
     }
 
     /**
@@ -40,7 +40,7 @@ class GameEndModel{
      * @return string with name of player 
      */
     public function getPlayerWithWorstAlogrithmSketch(){
-        $this->corbleDatabase->getPlayerWithWorstAlogrithmSketch($this->lobbyIndex);
+        return $this->corbleDatabase->getPlayerWithWorstAlogrithmSketch($this->lobbyIndex);
     }
 
     /**
@@ -48,7 +48,7 @@ class GameEndModel{
      * @return string Path to the sketch that is the best voted sketch
      */
     public function getSketchBestVoted(){
-        $this->corbleDatabase->getSketchBestVoted($this->lobbyIndex);
+        return $this->corbleDatabase->getSketchBestVoted($this->lobbyIndex);
     }
 
     /**
@@ -56,7 +56,7 @@ class GameEndModel{
      * @return string Path to the sketch
      */
     public function getSketchWorstAlgorithm(){
-        $this->corbleDatabase->getSketchWorstAlgorithm($this->lobbyIndex);
+        return $this->corbleDatabase->getSketchWorstAlgorithm($this->lobbyIndex);
     }
 
     /**
@@ -64,7 +64,7 @@ class GameEndModel{
      * @return string Path to the sketch
      */
     public function getSketchBestAlgorithm(){
-        $this->corbleDatabase->getSketchBestAlgorithm($this->lobbyIndex);
+        return $this->corbleDatabase->getSketchBestAlgorithm($this->lobbyIndex);
     }
 
     /**
@@ -72,6 +72,6 @@ class GameEndModel{
      * @return string Name of the payer
      */
     public function getWinner(){
-        $this->corbleDatabase->getWinner($this->lobbyIndex);
+        return $this->corbleDatabase->getWinner($this->lobbyIndex);
     }
 }

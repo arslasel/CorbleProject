@@ -331,7 +331,7 @@ class DatabaseLibrary{
      */
     public function getPlayerWithBestVotedSketch($lobbyIndex){
         $conn = $this->databaseConnection->createConnection();
-        $stmt = $conn->prepare("SELECT name FROM tbl_player WHERE indx = (
+        $stmt = $conn->prepare("SELECT name FROM tbl_player WHERE indx IN (
             SELECT fk_player_indx_sketch FROM tbl_sketch WHERE fk_round_indx IN (
                 SELECT indx FROM tbl_round WHERE fk_lobby_indx = ?) AND votes IN (
                     SELECT MAX(votes) FROM tbl_sketch WHERE fk_round_indx IN (
@@ -376,7 +376,7 @@ class DatabaseLibrary{
      */
     public function getPlayerWithBestAlogrithmSketch($lobbyIndex){
         $conn = $this->databaseConnection->createConnection();
-        $stmt = $conn->prepare("SELECT name FROM tbl_player WHERE indx = (
+        $stmt = $conn->prepare("SELECT name FROM tbl_player WHERE indx IN (
             SELECT fk_player_indx_sketch FROM tbl_sketch WHERE fk_round_indx IN (
                 SELECT indx FROM tbl_round WHERE fk_lobby_indx = ?) AND computerscore IN (
                     SELECT MAX(computerscore) FROM tbl_sketch WHERE fk_round_indx IN (
@@ -399,7 +399,7 @@ class DatabaseLibrary{
      */
     public function getPlayerWithWorstAlogrithmSketch($lobbyIndex){
         $conn = $this->databaseConnection->createConnection();
-        $stmt = $conn->prepare("SELECT name FROM tbl_player WHERE indx = (
+        $stmt = $conn->prepare("SELECT name FROM tbl_player WHERE indx IN (
             SELECT fk_player_indx_sketch FROM tbl_sketch WHERE fk_round_indx IN (
                 SELECT indx FROM tbl_round WHERE fk_lobby_indx = ?) AND computerscore IN (
                     SELECT MIN(computerscore) FROM tbl_sketch WHERE fk_round_indx IN (
@@ -597,7 +597,7 @@ class DatabaseLibrary{
      */
     public function getWinner($lobbyIndex){
         $conn = $this->databaseConnection->createConnection();
-        $stmt = $conn->prepare("SELECT name FROM tbl_player WHERE indx = (
+        $stmt = $conn->prepare("SELECT name FROM tbl_player WHERE indx IN (
             SELECT fk_player_indx_sketch FROM (
                 SELECT fk_player_indx_sketch, SUM(votes) as total FROM tbl_sketch WHERE fk_round_indx IN (
                     SELECT indx FROM tbl_round WHERE fk_lobby_indx = ?) GROUP BY fk_player_indx_sketch) as maximum WHERE total IN (

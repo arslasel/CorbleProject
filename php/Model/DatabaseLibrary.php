@@ -333,7 +333,7 @@ class DatabaseLibrary{
         $conn = $this->databaseConnection->createConnection();
         $stmt = $conn->prepare("SELECT name FROM tbl_player WHERE indx = (
             SELECT fk_player_indx_sketch FROM tbl_sketch WHERE fk_round_indx IN (
-                SELECT indx FROM tbl_round WHERE fk_lobby_indx = ?) AND votes = (
+                SELECT indx FROM tbl_round WHERE fk_lobby_indx = ?) AND votes IN (
                     SELECT MAX(votes) FROM tbl_sketch WHERE fk_round_indx IN (
                         SELECT indx FROM tbl_round WHERE fk_lobby_indx = ?)))");
         $stmt->bind_param("ii", $lobbyIndex, $lobbyIndex);
@@ -378,7 +378,7 @@ class DatabaseLibrary{
         $conn = $this->databaseConnection->createConnection();
         $stmt = $conn->prepare("SELECT name FROM tbl_player WHERE indx = (
             SELECT fk_player_indx_sketch FROM tbl_sketch WHERE fk_round_indx IN (
-                SELECT indx FROM tbl_round WHERE fk_lobby_indx = ?) AND computerscore = (
+                SELECT indx FROM tbl_round WHERE fk_lobby_indx = ?) AND computerscore IN (
                     SELECT MAX(computerscore) FROM tbl_sketch WHERE fk_round_indx IN (
                         SELECT indx FROM tbl_round WHERE fk_lobby_indx = ?)))");
 
@@ -401,7 +401,7 @@ class DatabaseLibrary{
         $conn = $this->databaseConnection->createConnection();
         $stmt = $conn->prepare("SELECT name FROM tbl_player WHERE indx = (
             SELECT fk_player_indx_sketch FROM tbl_sketch WHERE fk_round_indx IN (
-                SELECT indx FROM tbl_round WHERE fk_lobby_indx = ?) AND computerscore = (
+                SELECT indx FROM tbl_round WHERE fk_lobby_indx = ?) AND computerscore IN (
                     SELECT MIN(computerscore) FROM tbl_sketch WHERE fk_round_indx IN (
                         SELECT indx FROM tbl_round WHERE fk_lobby_indx = ?)))");
                         
@@ -532,7 +532,7 @@ class DatabaseLibrary{
     public function getSketchWorstAlgorithm($lobbyIndex){
         $conn = $this->databaseConnection->createConnection();
         $stmt = $conn->prepare("SELECT path FROM tbl_sketch WHERE fk_round_indx IN ((
-            SELECT indx FROM tbl_round WHERE fk_lobby_indx =  ?)) AND computerscore = (
+            SELECT indx FROM tbl_round WHERE fk_lobby_indx =  ?)) AND computerscore IN (
                 SELECT MIN(computerscore) FROM tbl_sketch WHERE fk_round_indx IN (
                     SELECT indx FROM tbl_round WHERE fk_lobby_indx =  ?))");
 
@@ -576,7 +576,7 @@ class DatabaseLibrary{
     public function getSketchBestAlgorithm($lobbyIndex){
         $conn = $this->databaseConnection->createConnection();
         $stmt = $conn->prepare("SELECT path FROM tbl_sketch WHERE fk_round_indx IN ((
-                SELECT indx FROM tbl_round WHERE fk_lobby_indx =  ?)) AND computerscore = (
+                SELECT indx FROM tbl_round WHERE fk_lobby_indx =  ?)) AND computerscore IN (
                     SELECT MAX(computerscore) FROM tbl_sketch WHERE fk_round_indx IN (
                         SELECT indx FROM tbl_round WHERE fk_lobby_indx =  ?))");
 
@@ -600,7 +600,7 @@ class DatabaseLibrary{
         $stmt = $conn->prepare("SELECT name FROM tbl_player WHERE indx = (
             SELECT fk_player_indx_sketch FROM (
                 SELECT fk_player_indx_sketch, SUM(votes) as total FROM tbl_sketch WHERE fk_round_indx IN (
-                    SELECT indx FROM tbl_round WHERE fk_lobby_indx = ?) GROUP BY fk_player_indx_sketch) as maximum WHERE total = (
+                    SELECT indx FROM tbl_round WHERE fk_lobby_indx = ?) GROUP BY fk_player_indx_sketch) as maximum WHERE total IN (
                         SELECT MAX(total) FROM (SELECT fk_player_indx_sketch, SUM(votes) as total FROM tbl_sketch WHERE fk_round_indx IN (
                             SELECT indx FROM tbl_round WHERE fk_lobby_indx = ?) GROUP BY fk_player_indx_sketch) as playersum))");
 

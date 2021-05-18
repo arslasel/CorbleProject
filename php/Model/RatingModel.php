@@ -49,7 +49,7 @@ include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/DatabaseLibrary.php");
             $penaltyPoints += $this->ratioColorsRate($blackCounter,$redCounter,  $brownCounter, $greyCounter, $whiteCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter);
             $penaltyPoints += $this->foreignColorsRate($blackCounter,$redCounter,  $brownCounter, $greyCounter, $whiteCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter);
             $penaltyPoints = $this->validatepenaltyPoints($penaltyPoints);
-            $totalPoints = $this->actualPoints - $penaltyPoints + mt_rand(0.000000001, 0.0001);
+            $totalPoints = $this->actualPoints - $penaltyPoints;
             $this->corbleDatabase->setComputerScoreForSketch($totalPoints, $sketchIndex);
         }
 

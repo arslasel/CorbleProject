@@ -9,7 +9,6 @@ include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/DatabaseLibrary.php");
      */
 	class RatingModel{
         private $corbleDatabase;
-        private $imageRessource;
         private $imageProcessingController;
         public const MAX_POINTS = 10;
         public const MAX_DIFFERENCE_BORDER = 200;
@@ -30,10 +29,8 @@ include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/DatabaseLibrary.php");
          * @param string $imageRessource
          * @param string $word
          */
-        public function __construct($corbleDatabase, String $imageRessource, String $word){
-            $this->corbleDatabase = $corbleDatabase;
-            
-            $this->imageRessource = $imageRessource;
+        public function __construct(String $imageRessource, String $word){
+            $this->corbleDatabase = new DatabaseLibrary(new DatabaseConnection());
             $this->imageProcessingController = new ImageProcessorModel($imageRessource);
             $this->actualPoints = self::MAX_POINTS;
 
@@ -41,6 +38,23 @@ include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/DatabaseLibrary.php");
             $this->secondaryOptimalColorRatio = $this->corbleDatabase->getSecondaryOptimalColorRatioForWord($word);
             $this->primaryColor = $this->corbleDatabase->getPrimaryColor($word);
             $this->secondaryColor = $this->corbleDatabase->getSecondaryColor($word);
+        }
+
+        /**
+         * This function collects the penalties from the functions ratioColorsRate() and foreignColorsRate()
+         * @param int $sketchIndex
+         * @return int $totalPoints
+         */
+        public function collectPenalties($sketchIndex){
+            $penaltyPoints = 0;
+            $penaltyPoints = $this->actualPoints;
+            list($blackCounter, $brownCounter, $greyCounter, $whiteCounter, $redCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter) = $this->getPixelCountOfImage();
+            $penaltyPoints += $this->ratioColorsRate($blackCounter,$redCounter,  $brownCounter, $greyCounter, $whiteCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter);
+            $penaltyPoints += $this->foreignColorsRate($blackCounter,$redCounter,  $brownCounter, $greyCounter, $whiteCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter);
+            $penaltyPoints = $this->validatepenaltyPoints($penaltyPoints);
+            $totalPoints = $this->actualPoints - $penaltyPoints;
+            echo "" . $sketchIndex . " " . $totalPoints;
+            $this->corbleDatabase->setComputerScoreForSketch(rand(0,10), $sketchIndex);
         }
 
         /**
@@ -113,23 +127,6 @@ include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/DatabaseLibrary.php");
             $penaltyPoints = $this->validatepenaltyPoints($penaltyPoints);
             
             return $penaltyPoints;
-        }
-
-
-        /**
-         * This function collects the penalties from the functions ratioColorsRate() and foreignColorsRate()
-         * @param int $sketchIndex
-         * @return int $totalPoints
-         */
-        public function collectPenalties($sketchIndex){
-            $penaltyPoints = 0;
-            $penaltyPoints = $this->actualPoints;
-            list($blackCounter, $brownCounter, $greyCounter, $whiteCounter, $redCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter) = $this->getPixelCountOfImage();
-            $penaltyPoints += $this->ratioColorsRate($blackCounter,$redCounter,  $brownCounter, $greyCounter, $whiteCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter);
-            $penaltyPoints += $this->foreignColorsRate($blackCounter,$redCounter,  $brownCounter, $greyCounter, $whiteCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter);
-            $penaltyPoints = $this->validatepenaltyPoints($penaltyPoints);
-            $totalPoints = $this->actualPoints - $penaltyPoints;
-            $this->corbleDatabase->setComputerScoreForSketch($totalPoints, $sketchIndex);
         }
         
         /**

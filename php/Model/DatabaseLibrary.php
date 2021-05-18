@@ -354,6 +354,7 @@ class DatabaseLibrary{
      */
     public function getAllSketches($roundIndex, $playerIndex){
         $conn = $this->databaseConnection->createConnection();
+        echo " R" . $roundIndex . " " . $playerIndex;
         $stmt = $conn->prepare("SELECT path as path FROM tbl_sketch WHERE fk_round_indx = ? AND fk_player_indx_sketch <> ?");
         $stmt->bind_param("ii", $roundIndex, $playerIndex);
 
@@ -443,12 +444,12 @@ class DatabaseLibrary{
      * @param int $playerIndex player index
      * @return int|string returns 0 for success
      */
-    public function savePicture($path, $playerIndex, $roundIndex){
+    public function savePicture($path, $playerIndex, $wordIndex, $roundIndex){
         $conn = $this->databaseConnection->createConnection();
         $stmt = $conn->prepare("INSERT INTO tbl_sketch (
-            path, computerscore, fk_player_indx_sketch, fk_word_indx_sketch, votes, fk_round_indx) VALUES (?, '0', ?, 1, '0', ?)");
+            path, computerscore, fk_player_indx_sketch, fk_word_indx_sketch, votes, fk_round_indx) VALUES (?, '0', ?, ?, '0', ?)");
 
-        $stmt->bind_param("sii", $path, $playerIndex, $roundIndex);
+        $stmt->bind_param("siii", $path, $playerIndex, $wordIndex, $roundIndex);
 
         return $this->databaseConnection->executeInsertQuery($conn, $stmt);
     }
@@ -472,7 +473,45 @@ class DatabaseLibrary{
         }
     }
 
-    public function InsertSketchInRound($sketchID, $roundID){
+    /**
+     * This method gets the round index of a specific sketch
+     * @param int $sketchIndex Index of sketch
+     * @return string word name of round
+     */
+    public function getWordIndxOfRound($roundIndex){
+        $conn = $this->databaseConnection->createConnection();
+        $stmt = $conn->prepare("SELECT fk_word_indx_round FROM tbl_round WHERE indx = ?)");
+
+        $stmt->bind_param("i", $roundIndex);
+
+        $result =  $this->databaseConnection->executeQuery($conn, $stmt);
+        if($result){
+            return $result->fetch_assoc();
+        } else {
+            return 0;
+        }
+    }
+
+        /**
+     * This method gets the round index of a specific sketch
+     * @param int $sketchIndex Index of sketch
+     * @return string word name of round
+     */
+    public function getWordNameOfRound($roundIndex){
+        $conn = $this->databaseConnection->createConnection();
+        $stmt = $conn->prepare("SELECT word FROM tbl_word WHERE indx = (SELECT fk_word_indx_round FROM tbl_round WHERE indx = ?)");
+
+        $stmt->bind_param("i", $roundIndex);
+
+        $result =  $this->databaseConnection->executeQuery($conn, $stmt);
+        if($result){
+            return $result->fetch_assoc();
+        } else {
+            return 0;
+        }
+    }
+
+    public function insertSketchInRound($sketchID, $roundID){
         $conn = $this->databaseConnection->createConnection();
         $stmt = $conn->prepare("INSERT INTO tbl_round_sketch (fk_sketch_indx_round_sketch, fk_round_indx_round_sketch) VALUES (?,?)");
         $stmt->bind_param("ii", $sketchID,$roundID);
@@ -660,6 +699,24 @@ class DatabaseLibrary{
         $conn = $this->databaseConnection->createConnection();
         $stmt = $conn->prepare("SELECT voteTime FROM tbl_lobby WHERE joincode = ?");
         $stmt->bind_param("i", $joinCode);
+        $result = $this->databaseConnection->executeQuery($conn, $stmt);
+        if ($result) {
+            return $result->fetch_assoc();
+        } else {
+            return 0;
+        }
+    }
+    
+    /**
+     * This function returns de drawtime for a round
+     * @param int $joinCode joinCode of lobby
+     * @return int $drawtime int returns time to draw 
+     */
+    public function getSketchByIndex(int $sketchIndex){
+        $conn = $this->databaseConnection->createConnection();
+        $stmt = $conn->prepare("SELECT path as path FROM tbl_sketch WHERE indx = ?");
+        $stmt->bind_param("i", $sketchIndex);
+
         $result = $this->databaseConnection->executeQuery($conn, $stmt);
         if ($result) {
             return $result->fetch_assoc();

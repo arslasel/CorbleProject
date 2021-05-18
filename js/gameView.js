@@ -61,7 +61,6 @@ function submitImage() {
     fd.append("lobby_username", lobby_username);
     fd.append("lobby_joincode", lobby_joincode);
     fd.append("start_roundID", start_roundID);
-    fd.append("word", 2);
     $.ajax({
         url: '../Controller/ajax/GameViewSubmitImage.php',
         type: 'post',
@@ -282,7 +281,7 @@ function registerTimeEvents() {
         document.getElementById("timeLeftToVote").innerHTML = remainingTime.toString();
         if (remainingTime == 0) {
             submitImage();
-            initVote();
+          //  initVote();
         }
         if(remainingTime < 0){ remainingTime = -1;}
     }, 1000);

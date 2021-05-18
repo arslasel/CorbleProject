@@ -31,10 +31,13 @@ class RoundModel
      */
     public function savePicture($base64, $lobbyIndex, $roundIndex, $playerIndex){
         $IoModel = new IOModel();
+        echo "loby " . $lobbyIndex . " round " . $roundIndex . " pl " . $playerIndex; 
         $path = $IoModel->savePicture($base64, $lobbyIndex, $roundIndex, $playerIndex);
         if (!is_null($path)) {
-            $sketchID = $this->corbleDatabase->savePicture($path, $playerIndex, $roundIndex);
-            $this->corbleDatabase->InsertSketchInRound($sketchID, $roundIndex);
+            $sketchID = $this->corbleDatabase->savePicture($path, $playerIndex, 
+                    $this->corbleDatabase->getWordNameOfRound($roundIndex), $roundIndex);
+            $this->corbleDatabase->insertSketchInRound($sketchID, $roundIndex);
+            echo "Done";
             return $sketchID;
         }
     }

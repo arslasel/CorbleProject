@@ -34,11 +34,15 @@
         /**
          * This method is used for rating a sketch with the computer algorithm
          */
-        public function rateSketch(){
-            foreach($this->sketches as $sketchId => $valueOfSketch) {
-                $this->ratingModel = new RatingModel($this->corbleDatabase,$sketchId, $valueOfSketch);
-                $this->ratingModel->collectPenalties($sketchId);
-            }
+        public function rateSketch($sketchIndex, $roundIndex){
+            echo " sketchID " . $sketchIndex;
+            echo " roundId " . $roundIndex;
+            echo " Sketch " . $this->corbleDatabase->getSketchByIndex($sketchIndex);
+            echo " Word" . $this->corbleDatabase->getWordNameOfRound($roundIndex);
+            $this->ratingModel = new RatingModel($this->corbleDatabase->getSketchByIndex($sketchIndex), 
+                 $this->corbleDatabase->getWordNameOfRound($roundIndex));
+
+            $this->ratingModel->collectPenalties($sketchIndex);
         }
 
         /**
@@ -48,10 +52,9 @@
          * @param string $userName String with name of user
          */
         public function saveSketch($file, $joinCode, $userName, $roundIndex){
-            $this->roundIndex = $roundIndex;
             return $this->roundModel->savePicture(
                 file_get_contents($file), $this->corbleDatabase->getLobbyIndexByJoinCode($joinCode), 
-                $this->roundIndex,$this->corbleDatabase->getPlayerByIndex($userName));
+                $roundIndex, $this->corbleDatabase->getPlayerByIndex($userName));
         }
 
 
@@ -61,10 +64,9 @@
          * @param string username of player
          * @return array with all sketches to vote
          */
-        public function getAllSketchesToVote($joinCode, $userName){
-            $lobbyIndex = $this->corbleDatabase->getLobbyIndexByJoinCode($joinCode);
+        public function getAllSketchesToVote($roundIndex, $userName){
             $userIndex = $this->corbleDatabase->getUserIndexbyUserName($userName);
-            return $this->roundModel->getAllSketches($lobbyIndex, $userIndex);
+            return $this->roundModel->getAllSketches($roundIndex, $userIndex);
         }
 
         /**

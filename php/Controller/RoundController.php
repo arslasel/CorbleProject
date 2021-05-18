@@ -53,7 +53,6 @@
                 $roundIndex, $this->corbleDatabase->getPlayerByIndex($userName));
         }
 
-
         /**
          * Returns all sketches of a player by a given joincode and username
          * @param int joincode of player 
@@ -63,6 +62,17 @@
         public function getAllSketchesToVote($roundIndex, $userName){
             $userIndex = $this->corbleDatabase->getUserIndexbyUserName($userName);
             return $this->roundModel->getAllSketches($roundIndex, $userIndex);
+        }
+
+        /**
+         * Returns all sketches of a player by a given joincode and username
+         * @param int joincode of player 
+         * @param string username of player
+         * @return array with all sketches to vote
+         */
+        public function getAllSketchIdsToVote($roundIndex, $userName){
+            $userIndex = $this->corbleDatabase->getUserIndexbyUserName($userName);
+            return $this->roundModel->getAllSketchIds($roundIndex, $userIndex);
         }
 
         /**

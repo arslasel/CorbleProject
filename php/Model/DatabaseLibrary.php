@@ -370,6 +370,29 @@ class DatabaseLibrary{
     }
 
     /**
+     * Reuturns all skatche-id but not the one of the given player
+     * @param int $roundIndex Database index of round
+     * @param int $playerIndex Player index
+     * @return array|int Array with paths. if nothing found result is 0
+     */
+    public function getAllSketchIds($roundIndex, $playerIndex){
+        $conn = $this->databaseConnection->createConnection();
+        $stmt = $conn->prepare("SELECT indx FROM tbl_sketch WHERE fk_round_indx = ? AND fk_player_indx_sketch <> ?");
+        $stmt->bind_param("ii", $roundIndex, $playerIndex);
+
+        $result =  $this->databaseConnection->executeQuery($conn, $stmt);
+        if($result){
+            $results = array();
+            while ($row = $result->fetch_row()) {
+                array_push($results, $row);
+            }
+            return $results;
+        } else {
+            return 0;
+        }
+    }
+
+    /**
      * Returns name of player with best computer-alscorithm scored sketch
      * @param int $lobbyIndex Lobby index
      * @return mixed name of player if a player is found and 0 if nothing is found
@@ -787,6 +810,7 @@ class DatabaseLibrary{
             return 0;
         }
     }
+
     /**
      * Create new round with a given lobbyIndex and WordIndex
      * @param int $lobbyIndex Index of lobby 

@@ -58,6 +58,16 @@ class RoundModel
     public function getAllSketches($roundIndex, $playerIndex){
         return $this->corbleDatabase->getAllSketches($roundIndex, $playerIndex);
     }
+    
+    /**
+     * Get all sketches-Ud as an array but not the one of the player (no possiblity to vote for the own sketch)
+     * @param int Database index of the round
+     * @param int Database index of the player
+     * @return array|int Path to all sketches (but not the players one)
+     */
+    public function getAllSketchIds($roundIndex, $playerIndex){
+        return $this->corbleDatabase->getAllSketchIds($roundIndex, $playerIndex);
+    }
 
     /**
      * Returns the draw time for a lobby by the joincode

@@ -1,6 +1,6 @@
 <?php
 
-include_once($_SERVER['DOCUMENT_ROOT'] ."/php/Controller/GameEndController.php.php");
+include_once($_SERVER['DOCUMENT_ROOT'] ."/php/Controller/GameEndController.php");
 
 /**
  * Class GameViewEndLoadPictureWinnerVote

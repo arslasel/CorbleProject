@@ -12,3 +12,4 @@
 
 /vendor
 composer.lock
+error_log

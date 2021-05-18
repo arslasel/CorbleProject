@@ -22,7 +22,24 @@ function initGame() {
             joincode: lobby_joincode
         },
         success: function (data) {
-            remainingTime = parseInt(JSON.parse(data).voteTime);
+            remainingTime = data;
+            initWord();
+        }
+    });
+
+}
+
+function initWord() {
+    $.ajax({
+        type: 'get',
+        url: '../Controller/ajax/GameViewInitWord.php',
+        data: {
+            joincode: lobby_joincode,
+            roundIndex: start_roundID
+        },
+        success: function (data) {
+            console.log(data);
+            document.getElementById("wordToDraw").innerHTML = data;
         }
     });
 
@@ -45,7 +62,17 @@ function initGameEnd() {
 }
 
 function initVote() {
-    remainingTime = 60;
+    $.ajax({
+        type: 'get',
+        url: '../Controller/ajax/GameViewVoteTime.php',
+        data: {
+            joincode: lobby_joincode,
+            roundIndex: start_roundID
+        },
+        success: function (data) {        
+            remainingTime = data;
+        }
+    });
 
     document.getElementById("voteContainer").removeAttribute("hidden");
     document.getElementById("drawContainer").setAttribute("hidden", "1");
@@ -281,7 +308,7 @@ function registerTimeEvents() {
         document.getElementById("timeLeftToVote").innerHTML = remainingTime.toString();
         if (remainingTime == 0) {
             submitImage();
-          //  initVote();
+            initVote();
         }
         if(remainingTime < 0){ remainingTime = -1;}
     }, 1000);

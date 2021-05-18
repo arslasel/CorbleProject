@@ -420,7 +420,7 @@ class DatabaseLibrary{
      * @param int $lobbyIndex string Index of lobby
      * @return mixed Name of player if nothing found 0
      */
-    public function getPlayerWithWorstVotedSketch($lobbyIndex){
+    public function getPlayerWithWorstAlogrithmSketch($lobbyIndex){
         $conn = $this->databaseConnection->createConnection();
         $stmt = $conn->prepare("SELECT name FROM tbl_player WHERE indx = (
             SELECT fk_player_indx_sketch FROM tbl_sketch WHERE fk_round_indx IN (

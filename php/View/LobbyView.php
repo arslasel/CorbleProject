@@ -180,7 +180,7 @@ session_start();
         <div class="row">
             <div class="col s0 l3"></div>
             <div class="col s12 l6">
-                <h4>Join Lobby</h4>
+                <h4>Sign in with a new User</h4>
                 <div class="row">
                     <div class="col s12">
                         <input id="username" type="text" name="login_username" placeholder="Choose Username" required />

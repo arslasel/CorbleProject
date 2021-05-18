@@ -116,5 +116,14 @@
         public function getDrawTime($joinCode){
             return $this->roundModel->getDrawTime($joinCode);
         }
+
+        /**
+         * Method that returns the wordname
+         * @param int $roundIndex Index of round
+         * @param string name of word 
+         */
+        public function getWordName($roundIndex){
+            return $this->roundModel->getWordName($roundIndex);
+        }
     }
 ?>

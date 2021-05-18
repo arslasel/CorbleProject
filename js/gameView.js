@@ -12,6 +12,7 @@ function init() {
     lobby_joincode = urlParams.get('lobby')
     start_roundID = urlParams.get('roundID')
     initGame();
+    initWord();
 }
 
 function initGame() {
@@ -23,6 +24,21 @@ function initGame() {
         },
         success: function (data) {
             remainingTime = parseInt(JSON.parse(data).voteTime);
+        }
+    });
+
+}
+
+function initWord() {
+    $.ajax({
+        type: 'get',
+        url: '../Controller/ajax/GameViewInitWord.php',
+        data: {
+            joincode: lobby_joincode,
+            roundIndex: start_roundID
+        },
+        success: function (data) {
+            document.getElementById("wordToDraw").innerHTML = data;
         }
     });
 

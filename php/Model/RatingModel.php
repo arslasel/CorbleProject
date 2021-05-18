@@ -27,8 +27,8 @@ include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/DatabaseLibrary.php");
          * @param string $imageRessource
          * @param string $word
          */
-        public function __construct(String $imageRessource, String $word){
-            $this->corbleDatabase = new DatabaseLibrary(new DatabaseConnection());
+        public function __construct(DatabaseLibrary $database, String $imageRessource, String $word){
+            $this->corbleDatabase = $database;
             $this->imageProcessingController = new ImageProcessorModel($imageRessource);
             $this->actualPoints = self::MAX_POINTS;
 

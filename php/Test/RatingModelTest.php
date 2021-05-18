@@ -1,6 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
+//include_once($_SERVER['DOCUMENT_ROOT'] .'/php/Model/DatabaseConnection.php');
 
 class RatingModelTest extends TestCase{
 

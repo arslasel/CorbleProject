@@ -39,7 +39,7 @@
             echo " roundId " . $roundIndex;
             echo " Sketch " . $this->corbleDatabase->getSketchByIndex($sketchIndex);
             echo " Word" . $this->corbleDatabase->getWordNameOfRound($roundIndex);
-            $this->ratingModel = new RatingModel($this->corbleDatabase->getSketchByIndex($sketchIndex), 
+            $this->ratingModel = new RatingModel($this->corbleDatabase, $this->corbleDatabase->getSketchByIndex($sketchIndex), 
                  $this->corbleDatabase->getWordNameOfRound($roundIndex));
 
             $this->ratingModel->collectPenalties($sketchIndex);

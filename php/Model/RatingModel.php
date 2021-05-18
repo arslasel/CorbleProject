@@ -51,25 +51,9 @@ include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/DatabaseLibrary.php");
             $penaltyPoints += $this->foreignColorsRate($blackCounter,$redCounter,  $brownCounter, $greyCounter, $whiteCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter);
             $penaltyPoints = $this->validatepenaltyPoints($penaltyPoints);
 
-            echo "  blackCounter".$blackCounter;
-            echo "  brownCounter".$brownCounter;
-            echo "  greyCounter".$greyCounter;
-            echo "  whiteCounter".$whiteCounter;
-            echo "  orangeCounter".$orangeCounter;
-            echo "  redCounter".$redCounter;
-            echo "  greenCounter".$greenCounter;
-            echo "  blueCounter".$blueCounter;
-            echo "  yellowCounter".$yellowCounter;
-            echo "  primaryOptimalColorRatio".$this->primaryOptimalColorRatio;
-            echo "  secondaryOptimalColorRatio".$this->secondaryOptimalColorRatio;
-
-
-
-
-
 
             $totalPoints = $this->actualPoints - $penaltyPoints;
-            $this->corbleDatabase->setComputerScoreForSketch($totalPoints, $sketchIndex);
+            $this->corbleDatabase->setComputerScoreForSketch(rand(1,10), $sketchIndex);
         }
 
         /**

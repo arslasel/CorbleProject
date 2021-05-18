@@ -35,11 +35,7 @@
          * This method is used for rating a sketch with the computer algorithm
          */
         public function rateSketch($sketchIndex, $roundIndex){
-            echo " sketchID " . $sketchIndex;
-            echo " roundId " . $roundIndex;
-            echo " Sketch " . $this->corbleDatabase->getSketchByIndex($sketchIndex);
-            echo " Word" . $this->corbleDatabase->getWordNameOfRound($roundIndex);
-            $this->ratingModel = new RatingModel($this->corbleDatabase, $this->corbleDatabase->getSketchByIndex($sketchIndex), 
+            $this->ratingModel = new RatingModel($this->corbleDatabase, $this->corbleDatabase->getSketchByIndex($sketchIndex),
                  $this->corbleDatabase->getWordNameOfRound($roundIndex));
 
             $this->ratingModel->collectPenalties($sketchIndex);

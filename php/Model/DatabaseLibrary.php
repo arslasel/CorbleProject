@@ -354,7 +354,6 @@ class DatabaseLibrary{
      */
     public function getAllSketches($roundIndex, $playerIndex){
         $conn = $this->databaseConnection->createConnection();
-        echo " R" . $roundIndex . " " . $playerIndex;
         $stmt = $conn->prepare("SELECT path as path FROM tbl_sketch WHERE fk_round_indx = ? AND fk_player_indx_sketch <> ?");
         $stmt->bind_param("ii", $roundIndex, $playerIndex);
 
@@ -448,13 +447,6 @@ class DatabaseLibrary{
         $conn = $this->databaseConnection->createConnection();
         $stmt = $conn->prepare("INSERT INTO tbl_sketch (
             path, computerscore, fk_player_indx_sketch, fk_word_indx_sketch, votes, fk_round_indx) VALUES (?, '0', ?, ?, '0', ?)");
-
-        echo "--------";
-        echo "path". $path;
-        echo "playerIndex". $playerIndex;
-        echo "wordIndex". $wordIndex;
-        echo "roundIndex". $roundIndex;
-        echo "--------";
         $stmt->bind_param("siii", $path, $playerIndex, $wordIndex, $roundIndex);
 
         return $this->databaseConnection->executeInsertQuery($conn, $stmt);
@@ -634,7 +626,7 @@ class DatabaseLibrary{
 
         $result =  $this->databaseConnection->executeQuery($conn, $stmt);
         if($result){
-            return $result->fetch_assoc();
+            return $result->fetch_assoc()["votes"];
         } else {
             return 0;
         }

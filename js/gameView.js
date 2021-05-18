@@ -3,6 +3,8 @@ lobby_joincode = 0;
 start_roundID = 0;
 remainingTime = 9999;
 selectedImgID = 0;
+drawDone = false;
+voteDone = false;
 
 
 function init() {
@@ -96,6 +98,7 @@ function submitImage() {
         processData: false,
         success: function (response) {
             console.log(response)
+            drawDone = true;
         },
     });
 }
@@ -284,6 +287,19 @@ function loadPlayerNameOfWorstAlgoPicture() {
     });
 }
 
+function submitVote(){
+    $.ajax({
+        type: 'GET',
+        url: '../Controller/ajax/GameViewSubmitVote.php',
+        data: {
+            sketchID: selectedImgID 
+        },
+        success: function (data) {        
+            console.log(data)
+        }
+    });
+}
+
 function loadWinnerName() {
     $.ajax({
         type: "GET",
@@ -306,9 +322,17 @@ function registerTimeEvents() {
         remainingTime = remainingTime - 1;
         document.getElementById("timeLeftToDraw").innerHTML = remainingTime.toString();
         document.getElementById("timeLeftToVote").innerHTML = remainingTime.toString();
-        if (remainingTime == 0) {
+        if (remainingTime == 0 && drawDone == false && voteDone == false) {
             submitImage();
-            initVote();
+            setTimeout(() => {
+                initVote();
+            }, 2000);
+        }
+        if (remainingTime == 0 && drawDone == true && voteDone == false) {
+            submitVote();
+            setTimeout(() => {
+                initGameEnd();
+            }, 2000);
         }
         if(remainingTime < 0){ remainingTime = -1;}
     }, 1000);

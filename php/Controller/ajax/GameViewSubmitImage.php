@@ -13,9 +13,9 @@ class GameViewSubmitImage{
     public function submitImage(){
         $roundController = new RoundController();
         echo "StartSubmit";
-        $roundController->saveSketch($_FILES['imageBase64']['tmp_name'], $_POST['lobby_joincode'], $_POST['lobby_username'], $_POST["start_roundID"]);
+        $sketchID = $roundController->saveSketch($_FILES['imageBase64']['tmp_name'], $_POST['lobby_joincode'], $_POST['lobby_username'], $_POST["start_roundID"]);
         echo "Submited";
-        $roundController->rateSketch(8, $_POST["start_roundID"]);
+        $roundController->rateSketch($sketchID, $_POST["start_roundID"]);
         echo "rated";
     }
 }

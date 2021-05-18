@@ -14,7 +14,16 @@
 		 * @param string $imageRessource String Path to image
 		*/
         public function __construct(String $imageRessource){
-            $this->imageRessource = $imageRessource;
+
+			$tmpPath = str_replace("txt","png",$imageRessource);
+			$myfile = fopen($tmpPath, "w") or die("Unable to open file!");
+			fclose($myfile);
+
+			$content = file_get_contents($imageRessource);
+			$content = str_replace("data:image/png;base64,","",$content);
+			
+			file_put_contents($tmpPath, base64_decode($content));
+            $this->imageRessource = $tmpPath;
         }
         
 		/**

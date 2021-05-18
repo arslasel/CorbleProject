@@ -1,6 +1,4 @@
 <?php
-
-use function PHPUnit\Framework\isNull;
 include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/ImageProcessorModel.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/DatabaseLibrary.php");
 
@@ -52,9 +50,26 @@ include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/DatabaseLibrary.php");
             $penaltyPoints += $this->ratioColorsRate($blackCounter,$redCounter,  $brownCounter, $greyCounter, $whiteCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter);
             $penaltyPoints += $this->foreignColorsRate($blackCounter,$redCounter,  $brownCounter, $greyCounter, $whiteCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter);
             $penaltyPoints = $this->validatepenaltyPoints($penaltyPoints);
+
+            echo "  blackCounter".$blackCounter;
+            echo "  brownCounter".$brownCounter;
+            echo "  greyCounter".$greyCounter;
+            echo "  whiteCounter".$whiteCounter;
+            echo "  orangeCounter".$orangeCounter;
+            echo "  redCounter".$redCounter;
+            echo "  greenCounter".$greenCounter;
+            echo "  blueCounter".$blueCounter;
+            echo "  yellowCounter".$yellowCounter;
+            echo "  primaryOptimalColorRatio".$this->primaryOptimalColorRatio;
+            echo "  secondaryOptimalColorRatio".$this->secondaryOptimalColorRatio;
+
+
+
+
+
+
             $totalPoints = $this->actualPoints - $penaltyPoints;
-            echo "" . $sketchIndex . " " . $totalPoints;
-            $this->corbleDatabase->setComputerScoreForSketch(rand(0,10), $sketchIndex);
+            $this->corbleDatabase->setComputerScoreForSketch($totalPoints, $sketchIndex);
         }
 
         /**
@@ -216,7 +231,7 @@ include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/DatabaseLibrary.php");
          */
         public function calculatePenaltiesRatio(float $primaryOptimalColorRatio, float $secondaryOptimalColorRatio, float $actualPrimaryRatio, float $actualSecondaryRatio){
             $penaltyPoints = 0.0;
-            if(isNull($primaryOptimalColorRatio) && isNull($secondaryOptimalColorRatio) && isNull($actualPrimaryRatio) && isNull($actualSecondaryRatio)) {
+            if(!is_null($primaryOptimalColorRatio) && !is_null($secondaryOptimalColorRatio) && !is_null($actualPrimaryRatio) && !is_null($actualSecondaryRatio)) {
                 $differencePrimary = (float)abs($primaryOptimalColorRatio - $actualPrimaryRatio);
                 $differenceSecondary = (float)abs($secondaryOptimalColorRatio - $actualSecondaryRatio);
                 $penaltyPoints = $this->setPenaltiesRatioPoints($differencePrimary, $penaltyPoints);

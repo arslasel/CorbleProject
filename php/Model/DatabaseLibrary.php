@@ -245,12 +245,12 @@ class DatabaseLibrary{
      */
     public function getPrimaryOptimalColorRatioForWord($word){
         $conn = $this->databaseConnection->createConnection();
-        $stmt = $conn->prepare("SELECT primaryColorRatio AS primaryColorRatio FROM tbl_word WHERE word = ?");
+        $stmt = $conn->prepare("SELECT primaryColorRatio FROM tbl_word WHERE word = ?");
         $stmt->bind_param("s", $word);
 
         $result =  $this->databaseConnection->executeQuery($conn, $stmt);
         if($result){
-            return $result->fetch_assoc();
+            return $result->fetch_assoc()["primaryColorRatio"];
         } else {
             return 0;
         }
@@ -263,12 +263,12 @@ class DatabaseLibrary{
      */
     public function getSecondaryOptimalColorRatioForWord($word){
         $conn = $this->databaseConnection->createConnection();
-        $stmt = $conn->prepare("SELECT secondaryColorRatio AS primaryColorRatio FROM tbl_word WHERE word = ?");
+        $stmt = $conn->prepare("SELECT secondaryColorRatio FROM tbl_word WHERE word = ?");
         $stmt->bind_param("s", $word);
 
         $result =  $this->databaseConnection->executeQuery($conn, $stmt);
         if($result){
-            return $result->fetch_assoc();
+            return $result->fetch_assoc()["secondaryColorRatio"];
         } else {
             return 0;
         }
@@ -281,12 +281,12 @@ class DatabaseLibrary{
      */
     public function getPrimaryColor($word){
         $conn = $this->databaseConnection->createConnection();
-        $stmt = $conn->prepare("SELECT primaryColor  AS primaryColorRatio FROM tbl_word WHERE word = ?");
+        $stmt = $conn->prepare("SELECT primaryColor  FROM tbl_word WHERE word = ?");
         $stmt->bind_param("s", $word);
 
         $result =  $this->databaseConnection->executeQuery($conn, $stmt);
         if($result){
-            return $result->fetch_assoc();
+            return $result->fetch_assoc()["primaryColor"];
         } else {
             return 0;
         }
@@ -299,12 +299,12 @@ class DatabaseLibrary{
      */
     public function getSecondaryColor($word){
         $conn = $this->databaseConnection->createConnection();
-        $stmt = $conn->prepare("SELECT secondaryColor  AS primaryColorRatio FROM tbl_word WHERE word = ?");
+        $stmt = $conn->prepare("SELECT secondaryColor FROM tbl_word WHERE word = ?");
         $stmt->bind_param("s", $word);
 
         $result =  $this->databaseConnection->executeQuery($conn, $stmt);
         if($result){
-            return $result->fetch_assoc();
+            return $result->fetch_assoc()["secondaryColor"];
         } else {
             return 0;
         }
@@ -449,6 +449,12 @@ class DatabaseLibrary{
         $stmt = $conn->prepare("INSERT INTO tbl_sketch (
             path, computerscore, fk_player_indx_sketch, fk_word_indx_sketch, votes, fk_round_indx) VALUES (?, '0', ?, ?, '0', ?)");
 
+        echo "--------";
+        echo "path". $path;
+        echo "playerIndex". $playerIndex;
+        echo "wordIndex". $wordIndex;
+        echo "roundIndex". $roundIndex;
+        echo "--------";
         $stmt->bind_param("siii", $path, $playerIndex, $wordIndex, $roundIndex);
 
         return $this->databaseConnection->executeInsertQuery($conn, $stmt);
@@ -480,13 +486,13 @@ class DatabaseLibrary{
      */
     public function getWordIndxOfRound($roundIndex){
         $conn = $this->databaseConnection->createConnection();
-        $stmt = $conn->prepare("SELECT fk_word_indx_round FROM tbl_round WHERE indx = ?)");
+        $stmt = $conn->prepare("SELECT fk_word_indx_round FROM tbl_round WHERE indx = ?");
 
         $stmt->bind_param("i", $roundIndex);
 
         $result =  $this->databaseConnection->executeQuery($conn, $stmt);
         if($result){
-            return $result->fetch_assoc();
+            return $result->fetch_assoc()["fk_word_indx_round"];
         } else {
             return 0;
         }
@@ -505,7 +511,7 @@ class DatabaseLibrary{
 
         $result =  $this->databaseConnection->executeQuery($conn, $stmt);
         if($result){
-            return $result->fetch_assoc();
+            return $result->fetch_assoc()["word"];
         } else {
             return 0;
         }
@@ -719,7 +725,7 @@ class DatabaseLibrary{
 
         $result = $this->databaseConnection->executeQuery($conn, $stmt);
         if ($result) {
-            return $result->fetch_assoc();
+            return $result->fetch_assoc()["path"];
         } else {
             return 0;
         }

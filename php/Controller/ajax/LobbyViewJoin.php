@@ -12,7 +12,7 @@ class LobbyViewJoin{
     public function join(){
         $lobbyController = new LobbyController();
         $lobbyController->joinLobby($_GET['joincode'], $_GET['username']);
-        $roundID = 2;
+        $roundID = $lobbyController->getRoundIndexFromLobby($_GET['joincode']);
 
         return $roundID;
     }

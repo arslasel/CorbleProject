@@ -785,7 +785,7 @@ class DatabaseLibrary{
      */
     public function getRoundIndexFromLobby(int $lobbyIndex){
         $conn = $this->databaseConnection->createConnection();
-        $stmt = $conn->prepare("SELECT indx FROM tbl_round WHERE fk_lobby_index = ?");
+        $stmt = $conn->prepare("SELECT indx FROM tbl_round WHERE fk_lobby_indx = ?");
         $stmt->bind_param("i", $lobbyIndex);
 
         $result = $this->databaseConnection->executeQuery($conn,$stmt);

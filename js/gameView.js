@@ -326,13 +326,13 @@ function registerTimeEvents() {
             submitImage();
             setTimeout(() => {
                 initVote();
-            }, 2000);
+            }, 5000);
         }
         if (remainingTime == 0 && drawDone == true && voteDone == false) {
             submitVote();
             setTimeout(() => {
                 initGameEnd();
-            }, 2000);
+            }, 5000);
         }
         if(remainingTime < 0){ remainingTime = -1;}
     }, 1000);

@@ -3,6 +3,9 @@
     include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/WordpoolModel.php");
     include_once($_SERVER['DOCUMENT_ROOT']."/php/Controller/RoundController.php");
 
+    /**
+     * Class LobbyController
+     */
     class LobbyController{
 
         private $lobbyModel;

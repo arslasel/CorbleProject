@@ -392,28 +392,7 @@ class DatabaseLibrary{
         }
     }
 
-    /**
-     * Reutrns player name of worst voted sketch by the computer
-     * @param int $lobbyIndex string Index of lobby
-     * @return mixed Name of player if nothing found 0
-     */
-    public function getPlayerWithWorstAlogrithmSketch($lobbyIndex){
-        $conn = $this->databaseConnection->createConnection();
-        $stmt = $conn->prepare("SELECT name FROM tbl_player WHERE indx IN (
-            SELECT fk_player_indx_sketch FROM tbl_sketch WHERE fk_round_indx IN (
-                SELECT indx FROM tbl_round WHERE fk_lobby_indx = ?) AND computerscore IN (
-                    SELECT MIN(computerscore) FROM tbl_sketch WHERE fk_round_indx IN (
-                        SELECT indx FROM tbl_round WHERE fk_lobby_indx = ?)))");
-                        
-        $stmt->bind_param("ii", $lobbyIndex, $lobbyIndex);
 
-        $result =  $this->databaseConnection->executeQuery($conn, $stmt);
-        if ($result) {
-            return $result->fetch_assoc()["name"];
-        } else {
-            return 0;
-        }
-    }
 
     /**
      * Returns path of best voted sketch
@@ -546,6 +525,29 @@ class DatabaseLibrary{
         }
     }
 
+        /**
+     * Reutrns player name of worst voted sketch by the computer
+     * @param int $lobbyIndex string Index of lobby
+     * @return mixed Name of player if nothing found 0
+     */
+    public function getPlayerWithWorstAlogrithmSketch($lobbyIndex){
+        $conn = $this->databaseConnection->createConnection();
+        $stmt = $conn->prepare("SELECT name FROM tbl_player WHERE indx IN (
+            SELECT fk_player_indx_sketch FROM tbl_sketch WHERE fk_round_indx IN (
+                SELECT indx FROM tbl_round WHERE fk_lobby_indx = ?) AND computerscore IN (
+                    SELECT MIN(computerscore) FROM tbl_sketch WHERE fk_round_indx IN (
+                        SELECT indx FROM tbl_round WHERE fk_lobby_indx = ?)))");
+                        
+        $stmt->bind_param("ii", $lobbyIndex, $lobbyIndex);
+
+        $result =  $this->databaseConnection->executeQuery($conn, $stmt);
+        if ($result) {
+            return $result->fetch_assoc()["name"];
+        } else {
+            return 0;
+        }
+    }
+    
     /**
      * This method gives back all wordIds of a category
      * @param int $categoryId Category of words (wordpool)

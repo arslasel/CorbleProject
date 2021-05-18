@@ -7,7 +7,6 @@ class LobbyViewCreateLobbyJSONData{
     public $roundID;
 }
 
-
 /**
  * Class LobbyViewCreateLobby
  */

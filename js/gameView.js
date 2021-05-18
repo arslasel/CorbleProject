@@ -23,7 +23,7 @@ function initGame() {
             joincode: lobby_joincode
         },
         success: function (data) {
-            remainingTime = parseInt(JSON.parse(data).voteTime);
+            remainingTime = data;
         }
     });
 

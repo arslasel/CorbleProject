@@ -43,7 +43,7 @@
          * @param int $maxPlayer Maximum amount of players
          * @param $wordpools array Choosen wordpool categories
          */
-        public function createLobby($voteTime, $drawTime, $startTime, $maxPlayer, $wordpools, $userName){
+        public function createLobby($drawTime, $voteTime, $startTime, $maxPlayer, $wordpools, $userName){
             $joinCode = $this->lobbyModel->createLobby($voteTime, $drawTime, $startTime, $maxPlayer, $wordpools, $userName);
             $lobbyIndex = $this->lobbyModel->getLobbyIndexByjoinCode($joinCode);
             $wordPoolsOfLobby = $this->lobbyModel->getWordpoolIdsofLobby($lobbyIndex);

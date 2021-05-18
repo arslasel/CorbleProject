@@ -28,13 +28,14 @@ class GameViewVoteLoadPictures{
     public function loadPicture(){ 
         $jsonarray = array();
         $pictureArray = $this->roundController->getAllSketchesToVote($_GET['start_roundID'], $_GET['username']);
-        $pictureIdArray = $this->roundController->getAllSketchIdsToVote($_GET['start_roundID'], $_GET['username']);
-        for ($i=0; $i<count($pictureArray); $i++) { 
+
+        foreach ($pictureArray as $picture) {
             $jsonPicture = new GameViewVotePictureData();
-            $jsonPicture->dbIndex = $pictureIdArray[$i];
-            $jsonPicture->path = $pictureArray[$i];
+            $jsonPicture->dbIndex = $picture["indx"];
+            $jsonPicture->path = $picture["path"];
             array_push($jsonarray,$jsonPicture);
         }
+
         echo json_encode($jsonarray);
     }
 }

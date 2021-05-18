@@ -354,30 +354,7 @@ class DatabaseLibrary{
      */
     public function getAllSketches($roundIndex, $playerIndex){
         $conn = $this->databaseConnection->createConnection();
-        $stmt = $conn->prepare("SELECT path as path FROM tbl_sketch WHERE fk_round_indx = ? AND fk_player_indx_sketch <> ?");
-        $stmt->bind_param("ii", $roundIndex, $playerIndex);
-
-        $result =  $this->databaseConnection->executeQuery($conn, $stmt);
-        if($result){
-            $results = array();
-            while ($row = $result->fetch_row()) {
-                array_push($results, $row);
-            }
-            return $results;
-        } else {
-            return 0;
-        }
-    }
-
-    /**
-     * Reuturns all skatche-id but not the one of the given player
-     * @param int $roundIndex Database index of round
-     * @param int $playerIndex Player index
-     * @return array|int Array with paths. if nothing found result is 0
-     */
-    public function getAllSketchIds($roundIndex, $playerIndex){
-        $conn = $this->databaseConnection->createConnection();
-        $stmt = $conn->prepare("SELECT indx FROM tbl_sketch WHERE fk_round_indx = ? AND fk_player_indx_sketch <> ?");
+        $stmt = $conn->prepare("SELECT path,indx FROM tbl_sketch WHERE fk_round_indx = ? AND fk_player_indx_sketch <> ?");
         $stmt->bind_param("ii", $roundIndex, $playerIndex);
 
         $result =  $this->databaseConnection->executeQuery($conn, $stmt);

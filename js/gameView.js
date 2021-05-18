@@ -38,6 +38,7 @@ function initWord() {
             roundIndex: start_roundID
         },
         success: function (data) {
+            console.log(data);
             document.getElementById("wordToDraw").innerHTML = data;
         }
     });

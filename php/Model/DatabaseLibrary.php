@@ -498,7 +498,7 @@ class DatabaseLibrary{
         }
     }
 
-        /**
+    /**
      * This method gets the round index of a specific sketch
      * @param int $sketchIndex Index of sketch
      * @return string word name of round
@@ -517,6 +517,12 @@ class DatabaseLibrary{
         }
     }
 
+    /**
+     * insert a sketch to the database 
+     * @param int sketchID index of sketch 
+     * @param int roundID round index
+     * @return int succesfull the index of the inserted row
+     */
     public function insertSketchInRound($sketchID, $roundID){
         $conn = $this->databaseConnection->createConnection();
         $stmt = $conn->prepare("INSERT INTO tbl_round_sketch (fk_sketch_indx_round_sketch, fk_round_indx_round_sketch) VALUES (?,?)");
@@ -690,7 +696,7 @@ class DatabaseLibrary{
 
         $result =  $this->databaseConnection->executeQuery($conn, $stmt);
         if($result){
-            return $result->fetch_assoc();
+            return $result->fetch_assoc()["votes"];
         } else {
             return 0;
         }
@@ -703,11 +709,29 @@ class DatabaseLibrary{
      */
     public function getDrawTime(int $joinCode){
         $conn = $this->databaseConnection->createConnection();
-        $stmt = $conn->prepare("SELECT voteTime FROM tbl_lobby WHERE joincode = ?");
+        $stmt = $conn->prepare("SELECT drawtime FROM tbl_lobby WHERE joincode = ?");
         $stmt->bind_param("i", $joinCode);
         $result = $this->databaseConnection->executeQuery($conn, $stmt);
         if ($result) {
-            return $result->fetch_assoc();
+            return $result->fetch_assoc()["drawtime"];
+        } else {
+            return 0;
+        }
+    }
+
+    
+    /**
+     * This function returns de votetime for a round
+     * @param int $joinCode joinCode of lobby
+     * @return int $votetime int returns time to vote
+     */
+    public function getVoteTime(int $joinCode){
+        $conn = $this->databaseConnection->createConnection();
+        $stmt = $conn->prepare("SELECT votetime FROM tbl_lobby WHERE joincode = ?");
+        $stmt->bind_param("i", $joinCode);
+        $result = $this->databaseConnection->executeQuery($conn, $stmt);
+        if ($result) {
+            return $result->fetch_assoc()["votetime"];
         } else {
             return 0;
         }

@@ -118,12 +118,20 @@
         }
 
         /**
+         * Method returns draw time of lobby
+         * @param int $joinCode integer with joincode of lobby 
+         */
+        public function getVoteTime($joinCode){
+            return $this->roundModel->getVoteTime($joinCode);
+        }
+
+        /**
          * Method that returns the wordname
          * @param int $roundIndex Index of round
          * @param string name of word 
          */
-        public function getWordName($roundIndex){
-            return $this->roundModel->getWordName($roundIndex);
+        public function getWordNameController($roundIndex){
+            return $this->roundModel->getWordNameDatabase($roundIndex);
         }
     }
 ?>

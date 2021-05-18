@@ -188,6 +188,15 @@ class LobbyModel
     }
 
     /**
+    * Get Wordpool Indexes of given lobby
+    * @param int Index of lobby
+    * @return mixed array with indexs of Wordpool for given lobby
+    */
+    public function getRoundIndexFromLobby($lobbyIndex){
+    return $this->corbleDatabase->getRoundIndexFromLobby($lobbyIndex);
+    }
+
+    /**
      * Reads parameters of lobby from database taken single by getter
      * @param int JoinCode to write to database
      * @param int lobbyIndex to of current lobby

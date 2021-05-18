@@ -484,7 +484,7 @@ class DatabaseLibrary{
      * @param int $sketchIndex Index of sketch
      * @return string word name of round
      */
-    public function getWordIndxOfRound($roundIndex){
+    public function getWordIndexOfRound($roundIndex){
         $conn = $this->databaseConnection->createConnection();
         $stmt = $conn->prepare("SELECT fk_word_indx_round FROM tbl_round WHERE indx = ?");
 
@@ -711,7 +711,7 @@ class DatabaseLibrary{
         $conn = $this->databaseConnection->createConnection();
         $stmt = $conn->prepare("SELECT drawtime FROM tbl_lobby WHERE joincode = ?");
         $stmt->bind_param("i", $joinCode);
-        
+
         $result = $this->databaseConnection->executeQuery($conn, $stmt);
         if ($result) {
             return $result->fetch_assoc()["drawtime"];
@@ -778,6 +778,23 @@ class DatabaseLibrary{
         }
     }
 
+    /**
+     * Get Wordpool id's of Wordpools 
+     * @param int $lobbyIndex Index of lobby to get the active wordpools
+     * @return array of wordpools-index 
+     */
+    public function getRoundIndexFromLobby(int $lobbyIndex){
+        $conn = $this->databaseConnection->createConnection();
+        $stmt = $conn->prepare("SELECT indx FROM tbl_round WHERE fk_lobby_index = ?");
+        $stmt->bind_param("i", $lobbyIndex);
+
+        $result = $this->databaseConnection->executeQuery($conn,$stmt);
+        if ($result) {
+            return $result->fetch_assoc()["indx"];
+        } else {
+            return 0;
+        }
+    }
     /**
      * Create new round with a given lobbyIndex and WordIndex
      * @param int $lobbyIndex Index of lobby 

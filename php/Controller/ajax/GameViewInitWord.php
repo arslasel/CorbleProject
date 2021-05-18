@@ -11,6 +11,7 @@
          */
         public function getWordToDraw(){
             $roundController = new RoundController();
+            echo $_GET["roundIndex"];
             return $roundController->getWordNameController($_GET["roundIndex"]);
         }        
     }

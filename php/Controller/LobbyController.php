@@ -123,6 +123,14 @@
             return $this->lobbyModel->getPlayersOfLobby($this->corbleDatabase->getLobbyIndexByjoinCode($joinCode));
         }
 
+         /**
+         * Get round index with lobby code to join a round
+         * @param int $joinCode Join Code to get the state from 
+         * @return array with players of a given lobby
+         */
+        public function getRoundIndexFromLobby($joinCode){
+            return $this->lobbyModel->getRoundIndexFromLobby($this->corbleDatabase->getLobbyIndexByjoinCode($joinCode));
+        }
     }
     return;
 ?>

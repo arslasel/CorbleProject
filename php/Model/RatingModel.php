@@ -45,15 +45,12 @@ include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/DatabaseLibrary.php");
          */
         public function collectPenalties($sketchIndex){
             $penaltyPoints = 0;
-            $penaltyPoints = $this->actualPoints;
             list($blackCounter, $brownCounter, $greyCounter, $whiteCounter, $redCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter) = $this->getPixelCountOfImage();
             $penaltyPoints += $this->ratioColorsRate($blackCounter,$redCounter,  $brownCounter, $greyCounter, $whiteCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter);
             $penaltyPoints += $this->foreignColorsRate($blackCounter,$redCounter,  $brownCounter, $greyCounter, $whiteCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter);
             $penaltyPoints = $this->validatepenaltyPoints($penaltyPoints);
-
-
             $totalPoints = $this->actualPoints - $penaltyPoints;
-            $this->corbleDatabase->setComputerScoreForSketch(rand(1,10), $sketchIndex);
+            $this->corbleDatabase->setComputerScoreForSketch($totalPoints, $sketchIndex);
         }
 
         /**
@@ -124,7 +121,7 @@ include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/DatabaseLibrary.php");
             }
 
             $penaltyPoints = $this->validatepenaltyPoints($penaltyPoints);
-            
+
             return $penaltyPoints;
         }
         

@@ -17,7 +17,7 @@
 
     $instance = new GameViewInitWord();
     try {
-        $instance->getWordToDraw();
+        echo $instance->getWordToDraw();
     }
     catch (Exception $e) {
         echo json_encode($e->getMessage());

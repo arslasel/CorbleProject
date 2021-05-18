@@ -12,12 +12,15 @@ class LobbyViewJoin{
     public function join(){
         $lobbyController = new LobbyController();
         $lobbyController->joinLobby($_GET['joincode'], $_GET['username']);
+        $roundID = 2;
+
+        return $roundID;
     }
 }
 
 $instance = new LobbyViewJoin();
 try {
-    $instance->join();
+    echo json_encode($instance->join());
 }
 catch (Exception $e) {
     echo json_encode($e->getMessage());

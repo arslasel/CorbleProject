@@ -1,5 +1,6 @@
 lobby_username = "";
 lobby_joincode = 0;
+start_RoundID = 0;
 
 function loadLobbyData(joincode) {
     $.ajax({
@@ -8,7 +9,7 @@ function loadLobbyData(joincode) {
         data: {
             joincode: lobby_joincode,
         },
-        success: function(response) {
+        success: function (response) {
             data = JSON.parse(response)
             currentTime = Math.round((new Date()).getTime() / 1000);
             document.getElementById('lobby_overview_state').innerHTML = data.state;
@@ -26,7 +27,7 @@ function loadLobbyData(joincode) {
                 ul.appendChild(li);
             });
 
-            if(data.startTime - currentTime == 0){
+            if (data.startTime - currentTime <= 0) {
                 redirectToGame()
             }
         }
@@ -37,9 +38,9 @@ function createLobby() {
     var selected = [];
     for (var option of document.getElementById('lobby_config_wordpool').options) {
         if (option.selected) {
-            if(option.value != ""){
+            if (option.value != "") {
                 selected.push(option.value);
-            } 
+            }
         }
     }
     $.ajax({
@@ -55,18 +56,21 @@ function createLobby() {
 
         },
         success: function (response) {
-            lobby_joincode = parseInt(response);
-            if(lobby_joincode>0){
+            data = JSON.parse(response);
+
+            lobby_joincode = parseInt(data.joincode);
+            start_RoundID = parseInt(data.roundID);
+            if (lobby_joincode > 0 && start_RoundID > 0) {
                 loadView();
-                window.setInterval(()=>{
+                window.setInterval(() => {
                     loadLobbyData(lobby_joincode);
-                },1000);
+                }, 1000);
             }
         }
     });
 }
 
-function login(){
+function login() {
     $.ajax({
         type: 'get',
         url: '../Controller/ajax/LobbyViewLogin.php',
@@ -74,17 +78,17 @@ function login(){
             username: document.getElementById('username').value
         },
         success: function (response) {
-            if(response == "success"){
+            if (response == "success") {
                 lobby_username = document.getElementById('username').value
                 loadView();
-            }else{
-                alert(response)    
+            } else {
+                alert(response)
             }
         }
     });
 }
 
-function loadWordPools(){
+function loadWordPools() {
     $.ajax({
         type: 'get',
         url: '../Controller/ajax/LobbyViewLoadWordPools.php',
@@ -106,7 +110,7 @@ function loadWordPools(){
     });
 }
 
-function join_lobby(){
+function join_lobby() {
     $.ajax({
         type: 'get',
         url: '../Controller/ajax/LobbyViewJoin.php',
@@ -116,40 +120,41 @@ function join_lobby(){
         },
         success: function (response) {
             lobby_joincode = document.getElementById('lobby_joincode_field').value
+            start_RoundID = parseInt(JSON.parse(response));
             loadView();
-            window.setInterval(()=>{
+            window.setInterval(() => {
                 loadLobbyData(lobby_joincode);
-            },1000);
+            }, 1000);
         }
     });
 }
 
-function loadView(){
-    if(lobby_username == ""){
+function loadView() {
+    if (lobby_username == "") {
         //user is not logged in load login div
         document.getElementById("select_name").removeAttribute("hidden");
-        document.getElementById("lobby_configurator").setAttribute("hidden","1");
-        document.getElementById("lobby_overview").setAttribute("hidden","1");
-    }else{
+        document.getElementById("lobby_configurator").setAttribute("hidden", "1");
+        document.getElementById("lobby_overview").setAttribute("hidden", "1");
+    } else {
         //display username
         document.getElementById("username_displaym").innerHTML = lobby_username;
         document.getElementById("username_displayd").innerHTML = lobby_username;
 
-        if(lobby_joincode == 0){
+        if (lobby_joincode == 0) {
             //user is logged in show lobby create / join view
             document.getElementById("lobby_configurator").removeAttribute("hidden");
-            document.getElementById("select_name").setAttribute("hidden","1");
-            document.getElementById("lobby_overview").setAttribute("hidden","1");
-        }else{
+            document.getElementById("select_name").setAttribute("hidden", "1");
+            document.getElementById("lobby_overview").setAttribute("hidden", "1");
+        } else {
             document.getElementById("lobby_overview").removeAttribute("hidden");
-            document.getElementById("select_name").setAttribute("hidden","1");
-            document.getElementById("lobby_configurator").setAttribute("hidden","1");
+            document.getElementById("select_name").setAttribute("hidden", "1");
+            document.getElementById("lobby_configurator").setAttribute("hidden", "1");
         }
     }
 }
 
-function redirectToGame(){
-    url = "https://corble.ch/php/View/GameView.php?username="+lobby_username+"&lobby="+lobby_joincode;
+function redirectToGame() {
+    url = "https://corble.ch/php/View/GameView.php?username=" + lobby_username + "&lobby=" + lobby_joincode + "&roundID=" + start_RoundID;
     window.location.replace(url)
 }
 

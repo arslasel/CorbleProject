@@ -34,11 +34,11 @@
         /**
          * This method is used for rating a sketch with the computer algorithm
          */
-        public function rateSketch(){
-            foreach($this->sketches as $sketchId => $valueOfSketch) {
-                $this->ratingModel = new RatingModel($this->corbleDatabase,$sketchId, $valueOfSketch);
-                $this->ratingModel->collectPenalties($sketchId);
-            }
+        public function rateSketch($sketchIndex, $roundIndex){
+            $this->ratingModel = new RatingModel($this->corbleDatabase, $this->corbleDatabase->getSketchByIndex($sketchIndex),
+                 $this->corbleDatabase->getWordNameOfRound($roundIndex));
+
+            $this->ratingModel->collectPenalties($sketchIndex);
         }
 
         /**
@@ -47,12 +47,11 @@
          * @param int $joinCode Joincode to save the sketch to
          * @param string $userName String with name of user
          */
-        public function saveSketch($file, $joinCode, $userName){
-            $this->roundModel->savePicture(
-                file_get_contents($file), $this->corbleDatabase->getLobbyIndexByJoincode($joinCode), 
-                $this->roundIndex,$this->corbleDatabase->getPlayerByIndex($userName));
+        public function saveSketch($file, $joinCode, $userName, $roundIndex){
+            return $this->roundModel->savePicture(
+                file_get_contents($file), $this->corbleDatabase->getLobbyIndexByJoinCode($joinCode), 
+                $roundIndex, $this->corbleDatabase->getPlayerByIndex($userName));
         }
-
 
         /**
          * Returns all sketches of a player by a given joincode and username
@@ -60,11 +59,11 @@
          * @param string username of player
          * @return array with all sketches to vote
          */
-        public function getAllSketchesToVote($joinCode, $userName){
-            return $this->roundModel->getAllSketches($this->corbleDatabase->getLobbyIndexByJoincode($joinCode), 
-                $this->corbleDatabase->getUserIndexbyUserName($userName));
+        public function getAllSketchesToVote($roundIndex, $userName){
+            $userIndex = $this->corbleDatabase->getUserIndexbyUserName($userName);
+            return $this->roundModel->getAllSketches($roundIndex, $userIndex);
         }
-
+        
         /**
          * This method is used for selecting a random Word out of a category
          * @param int $categoryId Database id to get all word from 
@@ -111,6 +110,23 @@
          */
         public function getDrawTime($joinCode){
             return $this->roundModel->getDrawTime($joinCode);
+        }
+
+        /**
+         * Method returns draw time of lobby
+         * @param int $joinCode integer with joincode of lobby 
+         */
+        public function getVoteTime($joinCode){
+            return $this->roundModel->getVoteTime($joinCode);
+        }
+
+        /**
+         * Method that returns the wordname
+         * @param int $roundIndex Index of round
+         * @param string name of word 
+         */
+        public function getWordNameController($roundIndex){
+            return $this->roundModel->getWordNameDatabase($roundIndex);
         }
     }
 ?>

@@ -245,12 +245,12 @@ class DatabaseLibrary{
      */
     public function getPrimaryOptimalColorRatioForWord($word){
         $conn = $this->databaseConnection->createConnection();
-        $stmt = $conn->prepare("SELECT primaryColorRatio AS primaryColorRatio FROM tbl_word WHERE word = ?");
+        $stmt = $conn->prepare("SELECT primaryColorRatio FROM tbl_word WHERE word = ?");
         $stmt->bind_param("s", $word);
 
         $result =  $this->databaseConnection->executeQuery($conn, $stmt);
         if($result){
-            return $result->fetch_assoc();
+            return $result->fetch_assoc()["primaryColorRatio"];
         } else {
             return 0;
         }
@@ -263,12 +263,12 @@ class DatabaseLibrary{
      */
     public function getSecondaryOptimalColorRatioForWord($word){
         $conn = $this->databaseConnection->createConnection();
-        $stmt = $conn->prepare("SELECT secondaryColorRatio AS primaryColorRatio FROM tbl_word WHERE word = ?");
+        $stmt = $conn->prepare("SELECT secondaryColorRatio FROM tbl_word WHERE word = ?");
         $stmt->bind_param("s", $word);
 
         $result =  $this->databaseConnection->executeQuery($conn, $stmt);
         if($result){
-            return $result->fetch_assoc();
+            return $result->fetch_assoc()["secondaryColorRatio"];
         } else {
             return 0;
         }
@@ -281,12 +281,12 @@ class DatabaseLibrary{
      */
     public function getPrimaryColor($word){
         $conn = $this->databaseConnection->createConnection();
-        $stmt = $conn->prepare("SELECT primaryColor  AS primaryColorRatio FROM tbl_word WHERE word = ?");
+        $stmt = $conn->prepare("SELECT primaryColor  FROM tbl_word WHERE word = ?");
         $stmt->bind_param("s", $word);
 
         $result =  $this->databaseConnection->executeQuery($conn, $stmt);
         if($result){
-            return $result->fetch_assoc();
+            return $result->fetch_assoc()["primaryColor"];
         } else {
             return 0;
         }
@@ -299,12 +299,12 @@ class DatabaseLibrary{
      */
     public function getSecondaryColor($word){
         $conn = $this->databaseConnection->createConnection();
-        $stmt = $conn->prepare("SELECT secondaryColor  AS primaryColorRatio FROM tbl_word WHERE word = ?");
+        $stmt = $conn->prepare("SELECT secondaryColor FROM tbl_word WHERE word = ?");
         $stmt->bind_param("s", $word);
 
         $result =  $this->databaseConnection->executeQuery($conn, $stmt);
         if($result){
-            return $result->fetch_assoc();
+            return $result->fetch_assoc()["secondaryColor"];
         } else {
             return 0;
         }
@@ -331,9 +331,9 @@ class DatabaseLibrary{
      */
     public function getPlayerWithBestVotedSketch($lobbyIndex){
         $conn = $this->databaseConnection->createConnection();
-        $stmt = $conn->prepare("SELECT name FROM tbl_player WHERE indx = (
+        $stmt = $conn->prepare("SELECT name FROM tbl_player WHERE indx IN (
             SELECT fk_player_indx_sketch FROM tbl_sketch WHERE fk_round_indx IN (
-                SELECT indx FROM tbl_round WHERE fk_lobby_indx = ?) AND votes = (
+                SELECT indx FROM tbl_round WHERE fk_lobby_indx = ?) AND votes IN (
                     SELECT MAX(votes) FROM tbl_sketch WHERE fk_round_indx IN (
                         SELECT indx FROM tbl_round WHERE fk_lobby_indx = ?)))");
         $stmt->bind_param("ii", $lobbyIndex, $lobbyIndex);
@@ -349,13 +349,13 @@ class DatabaseLibrary{
     /**
      * Reuturns all skatches but not the one of the given player
      * @param int $roundIndex Database index of round
-     * @param int $playerindex Player index
+     * @param int $playerIndex Player index
      * @return array|int Array with paths. if nothing found result is 0
      */
-    public function getAllSketches($roundIndex, $playerindex){
+    public function getAllSketches($roundIndex, $playerIndex){
         $conn = $this->databaseConnection->createConnection();
-        $stmt = $conn->prepare("SELECT path as path FROM tbl_sketch WHERE fk_round_indx = ? AND fk_player_indx_sketch <> ?");
-        $stmt->bind_param("ii", $roundIndex, $playerindex);
+        $stmt = $conn->prepare("SELECT path,indx FROM tbl_sketch WHERE fk_round_indx = ? AND fk_player_indx_sketch <> ?");
+        $stmt->bind_param("ii", $roundIndex, $playerIndex);
 
         $result =  $this->databaseConnection->executeQuery($conn, $stmt);
         if($result){
@@ -376,9 +376,9 @@ class DatabaseLibrary{
      */
     public function getPlayerWithBestAlogrithmSketch($lobbyIndex){
         $conn = $this->databaseConnection->createConnection();
-        $stmt = $conn->prepare("SELECT name FROM tbl_player WHERE indx = (
+        $stmt = $conn->prepare("SELECT name FROM tbl_player WHERE indx IN (
             SELECT fk_player_indx_sketch FROM tbl_sketch WHERE fk_round_indx IN (
-                SELECT indx FROM tbl_round WHERE fk_lobby_indx = ?) AND computerscore = (
+                SELECT indx FROM tbl_round WHERE fk_lobby_indx = ?) AND computerscore IN (
                     SELECT MAX(computerscore) FROM tbl_sketch WHERE fk_round_indx IN (
                         SELECT indx FROM tbl_round WHERE fk_lobby_indx = ?)))");
 
@@ -392,28 +392,7 @@ class DatabaseLibrary{
         }
     }
 
-    /**
-     * Reutrns player name of worst voted sketch by the computer
-     * @param int $lobbyIndex string Index of lobby
-     * @return mixed Name of player if nothing found 0
-     */
-    public function getPlayerWithWorstVotedSketch($lobbyIndex){
-        $conn = $this->databaseConnection->createConnection();
-        $stmt = $conn->prepare("SELECT name FROM tbl_player WHERE indx = (
-            SELECT fk_player_indx_sketch FROM tbl_sketch WHERE fk_round_indx IN (
-                SELECT indx FROM tbl_round WHERE fk_lobby_indx = ?) AND computerscore = (
-                    SELECT MIN(computerscore) FROM tbl_sketch WHERE fk_round_indx IN (
-                        SELECT indx FROM tbl_round WHERE fk_lobby_indx = ?)))");
-                        
-        $stmt->bind_param("ii", $lobbyIndex, $lobbyIndex);
 
-        $result =  $this->databaseConnection->executeQuery($conn, $stmt);
-        if ($result) {
-            return $result->fetch_assoc()["name"];
-        } else {
-            return 0;
-        }
-    }
 
     /**
      * Returns path of best voted sketch
@@ -443,12 +422,11 @@ class DatabaseLibrary{
      * @param int $playerIndex player index
      * @return int|string returns 0 for success
      */
-    public function savePicture($path, $playerIndex){
+    public function savePicture($path, $playerIndex, $wordIndex, $roundIndex){
         $conn = $this->databaseConnection->createConnection();
         $stmt = $conn->prepare("INSERT INTO tbl_sketch (
-            path, computerscore, fk_player_indx_sketch, fk_word_indx_sketch, votes, fk_round_indx) VALUES (?, '0', ?, '', '0', '')");
-
-        $stmt->bind_param("si", $path, $playerIndex);
+            path, computerscore, fk_player_indx_sketch, fk_word_indx_sketch, votes, fk_round_indx) VALUES (?, '0', ?, ?, '0', ?)");
+        $stmt->bind_param("siii", $path, $playerIndex, $wordIndex, $roundIndex);
 
         return $this->databaseConnection->executeInsertQuery($conn, $stmt);
     }
@@ -473,6 +451,59 @@ class DatabaseLibrary{
     }
 
     /**
+     * This method gets the round index of a specific sketch
+     * @param int $sketchIndex Index of sketch
+     * @return string word name of round
+     */
+    public function getWordIndexOfRound($roundIndex){
+        $conn = $this->databaseConnection->createConnection();
+        $stmt = $conn->prepare("SELECT fk_word_indx_round FROM tbl_round WHERE indx = ?");
+
+        $stmt->bind_param("i", $roundIndex);
+
+        $result =  $this->databaseConnection->executeQuery($conn, $stmt);
+        if($result){
+            return $result->fetch_assoc()["fk_word_indx_round"];
+        } else {
+            return 0;
+        }
+    }
+
+    /**
+     * This method gets the round index of a specific sketch
+     * @param int $sketchIndex Index of sketch
+     * @return string word name of round
+     */
+    public function getWordNameOfRound($roundIndex){
+        $conn = $this->databaseConnection->createConnection();
+        $stmt = $conn->prepare("SELECT word FROM tbl_word WHERE indx = (SELECT fk_word_indx_round FROM tbl_round WHERE indx = ?)");
+
+        $stmt->bind_param("i", $roundIndex);
+
+        $result =  $this->databaseConnection->executeQuery($conn, $stmt);
+        if($result){
+            return $result->fetch_assoc()["word"];
+        } else {
+            return 0;
+        }
+    }
+
+    /**
+     * insert a sketch to the database 
+     * @param int sketchID index of sketch 
+     * @param int roundID round index
+     * @return int succesfull the index of the inserted row
+     */
+    public function insertSketchInRound($sketchID, $roundID){
+        $conn = $this->databaseConnection->createConnection();
+        $stmt = $conn->prepare("INSERT INTO tbl_round_sketch (fk_sketch_indx_round_sketch, fk_round_indx_round_sketch) VALUES (?,?)");
+        $stmt->bind_param("ii", $sketchID,$roundID);
+
+        return $this->databaseConnection->executeInsertQuery($conn, $stmt);
+    }
+
+
+    /**
      * Returns path of sketch with worst rating from algorithm
      * @param int $lobbyIndex string with index of lobby
      * @return int Returns path to sketch or 0 if none found
@@ -480,7 +511,7 @@ class DatabaseLibrary{
     public function getSketchWorstAlgorithm($lobbyIndex){
         $conn = $this->databaseConnection->createConnection();
         $stmt = $conn->prepare("SELECT path FROM tbl_sketch WHERE fk_round_indx IN ((
-            SELECT indx FROM tbl_round WHERE fk_lobby_indx =  ?)) AND computerscore = (
+            SELECT indx FROM tbl_round WHERE fk_lobby_indx =  ?)) AND computerscore IN (
                 SELECT MIN(computerscore) FROM tbl_sketch WHERE fk_round_indx IN (
                     SELECT indx FROM tbl_round WHERE fk_lobby_indx =  ?))");
 
@@ -494,6 +525,29 @@ class DatabaseLibrary{
         }
     }
 
+        /**
+     * Reutrns player name of worst voted sketch by the computer
+     * @param int $lobbyIndex string Index of lobby
+     * @return mixed Name of player if nothing found 0
+     */
+    public function getPlayerWithWorstAlogrithmSketch($lobbyIndex){
+        $conn = $this->databaseConnection->createConnection();
+        $stmt = $conn->prepare("SELECT name FROM tbl_player WHERE indx IN (
+            SELECT fk_player_indx_sketch FROM tbl_sketch WHERE fk_round_indx IN (
+                SELECT indx FROM tbl_round WHERE fk_lobby_indx = ?) AND computerscore IN (
+                    SELECT MIN(computerscore) FROM tbl_sketch WHERE fk_round_indx IN (
+                        SELECT indx FROM tbl_round WHERE fk_lobby_indx = ?)))");
+                        
+        $stmt->bind_param("ii", $lobbyIndex, $lobbyIndex);
+
+        $result =  $this->databaseConnection->executeQuery($conn, $stmt);
+        if ($result) {
+            return $result->fetch_assoc()["name"];
+        } else {
+            return 0;
+        }
+    }
+    
     /**
      * This method gives back all wordIds of a category
      * @param int $categoryId Category of words (wordpool)
@@ -524,7 +578,7 @@ class DatabaseLibrary{
     public function getSketchBestAlgorithm($lobbyIndex){
         $conn = $this->databaseConnection->createConnection();
         $stmt = $conn->prepare("SELECT path FROM tbl_sketch WHERE fk_round_indx IN ((
-                SELECT indx FROM tbl_round WHERE fk_lobby_indx =  ?)) AND computerscore = (
+                SELECT indx FROM tbl_round WHERE fk_lobby_indx =  ?)) AND computerscore IN (
                     SELECT MAX(computerscore) FROM tbl_sketch WHERE fk_round_indx IN (
                         SELECT indx FROM tbl_round WHERE fk_lobby_indx =  ?))");
 
@@ -545,10 +599,10 @@ class DatabaseLibrary{
      */
     public function getWinner($lobbyIndex){
         $conn = $this->databaseConnection->createConnection();
-        $stmt = $conn->prepare("SELECT name FROM tbl_player WHERE indx = (
+        $stmt = $conn->prepare("SELECT name FROM tbl_player WHERE indx IN (
             SELECT fk_player_indx_sketch FROM (
                 SELECT fk_player_indx_sketch, SUM(votes) as total FROM tbl_sketch WHERE fk_round_indx IN (
-                    SELECT indx FROM tbl_round WHERE fk_lobby_indx = ?) GROUP BY fk_player_indx_sketch) as maximum WHERE total = (
+                    SELECT indx FROM tbl_round WHERE fk_lobby_indx = ?) GROUP BY fk_player_indx_sketch) as maximum WHERE total IN (
                         SELECT MAX(total) FROM (SELECT fk_player_indx_sketch, SUM(votes) as total FROM tbl_sketch WHERE fk_round_indx IN (
                             SELECT indx FROM tbl_round WHERE fk_lobby_indx = ?) GROUP BY fk_player_indx_sketch) as playersum))");
 
@@ -574,7 +628,7 @@ class DatabaseLibrary{
 
         $result =  $this->databaseConnection->executeQuery($conn, $stmt);
         if($result){
-            return $result->fetch_assoc();
+            return $result->fetch_assoc()["votes"];
         } else {
             return 0;
         }
@@ -600,10 +654,16 @@ class DatabaseLibrary{
      */
     public function getUserIndexbyUserName($userName){
         $conn = $this->databaseConnection->createConnection();
-        $stmt = $conn->prepare("SELECT indx FROM tbl_player WHERE name = ?)");
+        $stmt = $conn->prepare("SELECT indx FROM tbl_player WHERE name = ?");
         $stmt->bind_param("s", $userName);
 
-        return $this->databaseConnection->executeInsertQuery($conn, $stmt);
+        $result =  $this->databaseConnection->executeQuery($conn, $stmt);
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            return $row['indx'];
+        } else {
+            return 0;
+        }
     }
 
     /**
@@ -630,7 +690,7 @@ class DatabaseLibrary{
 
         $result =  $this->databaseConnection->executeQuery($conn, $stmt);
         if($result){
-            return $result->fetch_assoc();
+            return $result->fetch_assoc()["votes"];
         } else {
             return 0;
         }
@@ -643,11 +703,48 @@ class DatabaseLibrary{
      */
     public function getDrawTime(int $joinCode){
         $conn = $this->databaseConnection->createConnection();
-        $stmt = $conn->prepare("SELECT voteTime FROM tbl_lobby WHERE joincode = ?;");
+        $stmt = $conn->prepare("SELECT drawtime FROM tbl_lobby WHERE joincode = ?");
         $stmt->bind_param("i", $joinCode);
+
         $result = $this->databaseConnection->executeQuery($conn, $stmt);
         if ($result) {
-            return $result->fetch_assoc();
+            return $result->fetch_assoc()["drawtime"];
+        } else {
+            return 0;
+        }
+    }
+
+    /**
+     * This function returns de votetime for a round
+     * @param int $joinCode joinCode of lobby
+     * @return int $votetime int returns time to vote
+     */
+    public function getVoteTime(int $joinCode){
+        $conn = $this->databaseConnection->createConnection();
+        $stmt = $conn->prepare("SELECT votetime FROM tbl_lobby WHERE joincode = ?");
+        $stmt->bind_param("i", $joinCode);
+
+        $result = $this->databaseConnection->executeQuery($conn, $stmt);
+        if ($result) {
+            return $result->fetch_assoc()["votetime"];
+        } else {
+            return 0;
+        }
+    }
+    
+    /**
+     * This function returns de drawtime for a round
+     * @param int $joinCode joinCode of lobby
+     * @return int $drawtime int returns time to draw 
+     */
+    public function getSketchByIndex(int $sketchIndex){
+        $conn = $this->databaseConnection->createConnection();
+        $stmt = $conn->prepare("SELECT path as path FROM tbl_sketch WHERE indx = ?");
+        $stmt->bind_param("i", $sketchIndex);
+
+        $result = $this->databaseConnection->executeQuery($conn, $stmt);
+        if ($result) {
+            return $result->fetch_assoc()["path"];
         } else {
             return 0;
         }
@@ -660,7 +757,7 @@ class DatabaseLibrary{
      */
     public function getWordpoolIdsOfLobby(int $lobbyIndex){
         $conn = $this->databaseConnection->createConnection();
-        $stmt = $conn->prepare("SELECT fk_wordpool_indx_lobby_wordpool FROM tbl_lobby_wordpool WHERE fk_lobby_indx_lobby_wordpool = ?;");
+        $stmt = $conn->prepare("SELECT fk_wordpool_indx_lobby_wordpool FROM tbl_lobby_wordpool WHERE fk_lobby_indx_lobby_wordpool = ?");
         $stmt->bind_param("i", $lobbyIndex);
 
         $result = $this->databaseConnection->executeQuery($conn,$stmt);
@@ -676,6 +773,24 @@ class DatabaseLibrary{
     }
 
     /**
+     * Get Wordpool id's of Wordpools 
+     * @param int $lobbyIndex Index of lobby to get the active wordpools
+     * @return array of wordpools-index 
+     */
+    public function getRoundIndexFromLobby(int $lobbyIndex){
+        $conn = $this->databaseConnection->createConnection();
+        $stmt = $conn->prepare("SELECT indx FROM tbl_round WHERE fk_lobby_indx = ?");
+        $stmt->bind_param("i", $lobbyIndex);
+
+        $result = $this->databaseConnection->executeQuery($conn,$stmt);
+        if ($result) {
+            return $result->fetch_assoc()["indx"];
+        } else {
+            return 0;
+        }
+    }
+
+    /**
      * Create new round with a given lobbyIndex and WordIndex
      * @param int $lobbyIndex Index of lobby 
      * @param int $wordIndex Word that was chosen in the round
@@ -683,7 +798,7 @@ class DatabaseLibrary{
      */
     public function createRound(int $lobbyIndex, int $wordIndex){
         $conn = $this->databaseConnection->createConnection();
-        $stmt = $conn->prepare("INSERT INTO tbl_round(fk_lobby_indx, fk_word_indx_round) VALUES (?,?);");
+        $stmt = $conn->prepare("INSERT INTO tbl_round(fk_lobby_indx, fk_word_indx_round) VALUES (?,?)");
         $stmt->bind_param("ii", $lobbyIndex,$wordIndex);
 
         return $this->databaseConnection->executeInsertQuery($conn,$stmt);

@@ -3,6 +3,9 @@
     include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/WordpoolModel.php");
     include_once($_SERVER['DOCUMENT_ROOT']."/php/Controller/RoundController.php");
 
+    /**
+     * Class LobbyController
+     */
     class LobbyController{
 
         private $lobbyModel;
@@ -43,15 +46,15 @@
          * @param int $maxPlayer Maximum amount of players
          * @param $wordpools array Choosen wordpool categories
          */
-        public function createLobby($voteTime, $drawTime, $startTime, $maxPlayer, $wordpools, $userName){
+        public function createLobby($drawTime, $voteTime, $startTime, $maxPlayer, $wordpools, $userName){
             $joinCode = $this->lobbyModel->createLobby($voteTime, $drawTime, $startTime, $maxPlayer, $wordpools, $userName);
             $lobbyIndex = $this->lobbyModel->getLobbyIndexByjoinCode($joinCode);
             $wordPoolsOfLobby = $this->lobbyModel->getWordpoolIdsofLobby($lobbyIndex);
 
             $rand = rand(0,count($wordPoolsOfLobby)-1);
             $round1 = new RoundController();
-            $round1->createRound($this->lobbyModel->getLobbyIndexByjoinCode($joinCode),3);
-            return $joinCode;
+            $roundId = $round1->createRound($this->lobbyModel->getLobbyIndexByjoinCode($joinCode),$wordpools[$rand]);
+            return array($joinCode, $roundId);
         }
 
         /**
@@ -123,6 +126,14 @@
             return $this->lobbyModel->getPlayersOfLobby($this->corbleDatabase->getLobbyIndexByjoinCode($joinCode));
         }
 
+         /**
+         * Get round index with lobby code to join a round
+         * @param int $joinCode Join Code to get the state from 
+         * @return array with players of a given lobby
+         */
+        public function getRoundIndexFromLobby($joinCode){
+            return $this->lobbyModel->getRoundIndexFromLobby($this->corbleDatabase->getLobbyIndexByjoinCode($joinCode));
+        }
     }
     return;
 ?>

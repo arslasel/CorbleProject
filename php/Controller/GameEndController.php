@@ -19,7 +19,7 @@ class GameEndController{
     public function __construct($joinCode){
         $this->databaseConnection = new DatabaseConnection();
         $this->corbleDatabase = new DatabaseLibrary($this->databaseConnection);
-        $this->lobbyIndex = $this->corbleDatabase->getLobbyIndexByJoincode($joinCode);
+        $this->lobbyIndex = $this->corbleDatabase->getLobbyIndexByJoinCode($joinCode);
         $this->gameEndModel = new GameEndModel($this->corbleDatabase, $this->lobbyIndex);
     }
     
@@ -28,7 +28,7 @@ class GameEndController{
      * @return string Name of player
      */
     public function getPlayerWithBestVotedSketch(){
-        $this->gameEndModel->getPlayerWithBestVotedSketch();
+        return $this->gameEndModel->getPlayerWithBestVotedSketch();
     }
 
     /**
@@ -36,7 +36,7 @@ class GameEndController{
      * @return string Name of player
      */
     public function getPlayerWithBestAlogrithmSketch(){
-        $this->gameEndModel->getPlayerWithBestAlogrithmSketch();
+        return $this->gameEndModel->getPlayerWithBestAlogrithmSketch();
     }
 
     /**
@@ -44,7 +44,7 @@ class GameEndController{
      * @return string Name of player
      */
     public function getPlayerWithWorstVotedSketch(){
-        $this->gameEndModel->getPlayerWithWorstAlogrithmSketch();
+        return $this->gameEndModel->getPlayerWithWorstAlogrithmSketch();
     }
 
     /**
@@ -52,7 +52,7 @@ class GameEndController{
      * @return string Path to the sketch
      */
     public function getSketchBestVoted(){
-        $this->gameEndModel->getSketchBestVoted();
+        return $this->gameEndModel->getSketchBestVoted();
     }
 
     /**
@@ -60,7 +60,7 @@ class GameEndController{
      * @return string Path to the sketch
      */
     public function getSketchWorstAlgorithm(){
-        $this->gameEndModel->getSketchWorstAlgorithm();
+        return $this->gameEndModel->getSketchWorstAlgorithm();
     }
 
     /**
@@ -68,7 +68,7 @@ class GameEndController{
      * @return string Path to the sketch
      */
     public function getSketchBestAlgorithm(){
-        $this->gameEndModel->getSketchBestAlgorithm();
+        return $this->gameEndModel->getSketchBestAlgorithm();
     }
 
     /**
@@ -76,6 +76,6 @@ class GameEndController{
      * @return string Name of player
      */
     public function getWinner(){
-        $this->gameEndModel->getWinner();
+        return $this->gameEndModel->getWinner();
     }
 }

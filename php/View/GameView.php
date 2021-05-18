@@ -198,6 +198,14 @@ include_once('../Controller/GameEndController.php');
                     </div>
                 </div>
                 <div class="row NoMarginRow">
+                    <div class="col s6 NoPadding">
+                        <h6>Word :</h6>
+                    </div>
+                    <div class="col s6 NoPadding">
+                        <h6 id="wordToDraw"></h6>
+                    </div>
+                </div>
+                <div class="row NoMarginRow">
                     <h6>Color</h6>
                 </div>
                 <div class="row NoMarginRow">

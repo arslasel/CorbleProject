@@ -1,6 +1,4 @@
 <?php
-
-use function PHPUnit\Framework\isNull;
 include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/ImageProcessorModel.php");
 include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/DatabaseLibrary.php");
 
@@ -9,7 +7,6 @@ include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/DatabaseLibrary.php");
      */
 	class RatingModel{
         private $corbleDatabase;
-        private $imageRessource;
         private $imageProcessingController;
         public const MAX_POINTS = 10;
         public const MAX_DIFFERENCE_BORDER = 200;
@@ -30,10 +27,8 @@ include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/DatabaseLibrary.php");
          * @param string $imageRessource
          * @param string $word
          */
-        public function __construct($corbleDatabase, String $imageRessource, String $word){
-            $this->corbleDatabase = $corbleDatabase;
-            
-            $this->imageRessource = $imageRessource;
+        public function __construct(DatabaseLibrary $database, String $imageRessource, String $word){
+            $this->corbleDatabase = $database;
             $this->imageProcessingController = new ImageProcessorModel($imageRessource);
             $this->actualPoints = self::MAX_POINTS;
 
@@ -41,6 +36,21 @@ include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/DatabaseLibrary.php");
             $this->secondaryOptimalColorRatio = $this->corbleDatabase->getSecondaryOptimalColorRatioForWord($word);
             $this->primaryColor = $this->corbleDatabase->getPrimaryColor($word);
             $this->secondaryColor = $this->corbleDatabase->getSecondaryColor($word);
+        }
+
+        /**
+         * This function collects the penalties from the functions ratioColorsRate() and foreignColorsRate()
+         * @param int $sketchIndex
+         * @return int $totalPoints
+         */
+        public function collectPenalties($sketchIndex){
+            $penaltyPoints = 0;
+            list($blackCounter, $brownCounter, $greyCounter, $whiteCounter, $redCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter) = $this->getPixelCountOfImage();
+            $penaltyPoints += $this->ratioColorsRate($blackCounter,$redCounter,  $brownCounter, $greyCounter, $whiteCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter);
+            $penaltyPoints += $this->foreignColorsRate($blackCounter,$redCounter,  $brownCounter, $greyCounter, $whiteCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter);
+            $penaltyPoints = $this->validatepenaltyPoints($penaltyPoints);
+            $totalPoints = $this->actualPoints - $penaltyPoints;
+            $this->corbleDatabase->setComputerScoreForSketch($totalPoints, $sketchIndex);
         }
 
         /**
@@ -74,62 +84,45 @@ include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/DatabaseLibrary.php");
             $penaltyPoints = 0;
 
             if(($blackCounter > RatingModel::NO_PIXEL && $this->primaryColor != "black") && ($blackCounter > RatingModel::NO_PIXEL && $this->secondaryColor != "black")){
-                $penaltyPoints += 1;
-                ($blackCounter >= RatingModel::MAX_DIFFERENCE_BORDER) ? $penaltyPoints += 3 :$this->relax();
+                $penaltyPoints += 0.5;
+                ($blackCounter >= RatingModel::MAX_DIFFERENCE_BORDER) ? $penaltyPoints += 1 :$this->relax();
             }
             if(($redCounter > RatingModel::NO_PIXEL && $this->primaryColor != "red") && ($redCounter > RatingModel::NO_PIXEL && $this->secondaryColor != "red")){
-                $penaltyPoints += 1;
-                ($redCounter >= RatingModel::MAX_DIFFERENCE_BORDER) ? $penaltyPoints += 3 :$this->relax();
+                $penaltyPoints += 0.5;
+                ($redCounter >= RatingModel::MAX_DIFFERENCE_BORDER) ? $penaltyPoints += 1 :$this->relax();
             }
             if(($brownCounter > RatingModel::NO_PIXEL && $this->primaryColor != "brown") && ($brownCounter > RatingModel::NO_PIXEL && $this->secondaryColor != "brown")){
-                $penaltyPoints += 1;
-                ($brownCounter >= RatingModel::MAX_DIFFERENCE_BORDER) ? $penaltyPoints += 3 :$this->relax();
+                $penaltyPoints += 0.5;
+                ($brownCounter >= RatingModel::MAX_DIFFERENCE_BORDER) ? $penaltyPoints += 1 :$this->relax();
             }
             if(($greyCounter > RatingModel::NO_PIXEL && $this->primaryColor != "grey") && ($greyCounter > RatingModel::NO_PIXEL && $this->secondaryColor != "grey")){
-                $penaltyPoints += 1;
-                ($greyCounter >= RatingModel::MAX_DIFFERENCE_BORDER) ? $penaltyPoints += 3 :$this->relax();
+                $penaltyPoints += 0.5;
+                ($greyCounter >= RatingModel::MAX_DIFFERENCE_BORDER) ? $penaltyPoints += 1 :$this->relax();
             } 
             if(($whiteCounter > RatingModel::NO_PIXEL && $this->primaryColor != "white") && ($whiteCounter > RatingModel::NO_PIXEL && $this->secondaryColor != "white")){
-                $penaltyPoints += 1;
-                ($whiteCounter >= RatingModel::MAX_DIFFERENCE_BORDER) ? $penaltyPoints += 3 :$this->relax();
+                $penaltyPoints += 0.5;
+                ($whiteCounter >= RatingModel::MAX_DIFFERENCE_BORDER) ? $penaltyPoints += 1 :$this->relax();
             }                             
             if(($greenCounter > RatingModel::NO_PIXEL && $this->primaryColor != "green") && ($greenCounter > RatingModel::NO_PIXEL && $this->secondaryColor != "green")){
-                $penaltyPoints += 1;
-                ($greenCounter >= RatingModel::MAX_DIFFERENCE_BORDER) ? $penaltyPoints += 3 :$this->relax();
+                $penaltyPoints += 0.5;
+                ($greenCounter >= RatingModel::MAX_DIFFERENCE_BORDER) ? $penaltyPoints += 1 :$this->relax();
             }
             if(($blueCounter > RatingModel::NO_PIXEL && $this->primaryColor != "blue") && ($blueCounter > RatingModel::NO_PIXEL && $this->secondaryColor != "blue")){
-                $penaltyPoints += 1;
-                ($blueCounter >= RatingModel::MAX_DIFFERENCE_BORDER) ? $penaltyPoints += 3 :$this->relax();
+                $penaltyPoints += 0.5;
+                ($blueCounter >= RatingModel::MAX_DIFFERENCE_BORDER) ? $penaltyPoints += 1 :$this->relax();
             }
             if(($yellowCounter > RatingModel::NO_PIXEL && $this->primaryColor != "yellow") && ($yellowCounter > RatingModel::NO_PIXEL && $this->secondaryColor != "yellow")){
-                $penaltyPoints += 1;
+                $penaltyPoints += 0.5;
                 ($yellowCounter >= 200) ? $penaltyPoints += 3 :$this->relax();
             }
             if(($orangeCounter > RatingModel::NO_PIXEL && $this->primaryColor != "orange") && ($orangeCounter > RatingModel::NO_PIXEL && $this->secondaryColor != "orange")){
-                $penaltyPoints += 1;
-                ($orangeCounter >= RatingModel::MAX_DIFFERENCE_BORDER) ? $penaltyPoints += 3 :$this->relax();
+                $penaltyPoints += 0.5;
+                ($orangeCounter >= RatingModel::MAX_DIFFERENCE_BORDER) ? $penaltyPoints += 1 :$this->relax();
             }
 
             $penaltyPoints = $this->validatepenaltyPoints($penaltyPoints);
-            
+
             return $penaltyPoints;
-        }
-
-
-        /**
-         * This function collects the penalties from the functions ratioColorsRate() and foreignColorsRate()
-         * @param int $sketchIndex
-         * @return int $totalPoints
-         */
-        public function collectPenalties($sketchIndex){
-            $penaltyPoints = 0;
-            $penaltyPoints = $this->actualPoints;
-            list($blackCounter, $brownCounter, $greyCounter, $whiteCounter, $redCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter) = $this->getPixelCountOfImage();
-            $penaltyPoints += $this->ratioColorsRate($blackCounter,$redCounter,  $brownCounter, $greyCounter, $whiteCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter);
-            $penaltyPoints += $this->foreignColorsRate($blackCounter,$redCounter,  $brownCounter, $greyCounter, $whiteCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter);
-            $penaltyPoints = $this->validatepenaltyPoints($penaltyPoints);
-            $totalPoints = $this->actualPoints - $penaltyPoints;
-            $this->corbleDatabase->setComputerScoreForSketch($totalPoints, $sketchIndex);
         }
         
         /**
@@ -219,7 +212,7 @@ include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/DatabaseLibrary.php");
          */
         public function calculatePenaltiesRatio(float $primaryOptimalColorRatio, float $secondaryOptimalColorRatio, float $actualPrimaryRatio, float $actualSecondaryRatio){
             $penaltyPoints = 0.0;
-            if(isNull($primaryOptimalColorRatio) && isNull($secondaryOptimalColorRatio) && isNull($actualPrimaryRatio) && isNull($actualSecondaryRatio)) {
+            if(!is_null($primaryOptimalColorRatio) && !is_null($secondaryOptimalColorRatio) && !is_null($actualPrimaryRatio) && !is_null($actualSecondaryRatio)) {
                 $differencePrimary = (float)abs($primaryOptimalColorRatio - $actualPrimaryRatio);
                 $differenceSecondary = (float)abs($secondaryOptimalColorRatio - $actualSecondaryRatio);
                 $penaltyPoints = $this->setPenaltiesRatioPoints($differencePrimary, $penaltyPoints);

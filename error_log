@@ -1,4 +1,0 @@
-[13-May-2021 09:44:23 UTC] PHP Fatal error:  Uncaught Error: Class 'LobbyViewAjaxUpdate' not found in /home/rigpdqdi/public_html/corble.ch/php/Controller/ajax/LobbyViewCreateLobby.php:30
-Stack trace:
-#0 {main}
-  thrown in /home/rigpdqdi/public_html/corble.ch/php/Controller/ajax/LobbyViewCreateLobby.php on line 30

@@ -2,12 +2,15 @@
 include_once($_SERVER['DOCUMENT_ROOT'] . "/php/Model/PlayerModel.php");
 include_once($_SERVER['DOCUMENT_ROOT'] . "/php/Model/DatabaseLibrary.php");
 include_once($_SERVER['DOCUMENT_ROOT'] . "/php/Model/WordpoolModel.php");
+/**
+ * Class LobbyModel 
+ */
 class LobbyModel
 {
     private $corbleDatabase;
     private $databaseConnection;
 
-    private $UserName; //name of the current user
+    private $UserName;
 
     private $lobbyIndex;
     private $votetime;
@@ -37,10 +40,9 @@ class LobbyModel
      * @return bool Returns true if the user is successfully logged in.
      */
     public function login($userName){
-        // check if a user with the same name exists
         if ($this->corbleDatabase->checkIfUserExists($userName)) {
             return false;
-        } else { // there is no user with the same name continue login
+        } else {
             $result = $this->corbleDatabase->insertUser($userName);
             if ($result != 0) {
                 $_SESSION["lobby_username"] = $userName;
@@ -49,6 +51,129 @@ class LobbyModel
             return false;
         }
     }
+
+    /**
+     * Reads parameters of lobby from database taken single by getter
+     * @param int JoinCode to write to database
+     * @param int lobbyIndex to of current lobby
+     */
+    public function readLobbyDataFromDB($joinCode, $lobbyIndex){
+        $queryResult = $this->corbleDatabase->readLobbyDataFromDB($joinCode);
+
+        if ($queryResult->num_rows > 0) {
+            while ($row = $queryResult->fetch_assoc()) {
+                $this->state = $row["state"];
+                $this->votetime = $row["votetime"];
+                $this->starttime = $row["starttime"];
+                $this->drawtime = $row["drawtime"];
+                $this->maxplayer = $row["maxplayer"];
+                $this->joincode = $row["joincode"];
+                $this->players = $this->getPlayersOfLobby($lobbyIndex);
+
+                break;
+            }
+        }
+    }
+
+    /**
+     * Join an existing lobby with a player and add information of the player is the party leader
+     * @param int $joincode String Join-code of lobby
+     * @param bool $isPartyLeader boolean Is the player the party leader
+     * @param string String Username of player to be entered into the corble database
+     */
+    public function joinLobby($joincode, $username, $isPartyLeader){
+        $playerIndex = PlayerModel::getPlayerIndexByName($this->corbleDatabase, $username);
+        $lobbyIndex = $this->getLobbyIndexByJoincode($joincode);
+        $partyLeaderString = "";
+        if ($isPartyLeader == true) {
+            $partyLeaderString = "TRUE";
+        } else {
+            $partyLeaderString = "FALSE";
+        }
+
+        if ($lobbyIndex != 0 && $playerIndex != 0) {
+             return $this->corbleDatabase->addPlayerToLobby($playerIndex, $lobbyIndex, $partyLeaderString);
+        }
+        return 0;
+    }
+    
+     /**
+     * Method to save a new lobby into the corble database
+     * @param int Time to vote for a sketch
+     * @param int Time to draw a sketch
+     * @param int Start time of lobby
+     * @param int Maximum amount of players
+     * @param array Choosen wordpools for lobby
+     */
+    public function createLobby($votetime, $drawtime, $starttime, $maxplayer, $wordpools, $username){
+        $this->votetime = $votetime;
+        $this->drawtime = $drawtime;
+        $this->starttime = $starttime;
+        $this->maxplayer = $maxplayer;
+        $this->wordpools = $wordpools;
+        $this->UserName = $username;
+
+        $this->generateLobbyDatabaseEntry();
+        $this->joinLobby($this->joincode, $username, true);
+
+        return $this->joincode;
+    }
+
+    /**
+     * Add the chosen wordpools to the database
+     */
+    public function addWordCategoriesToLobby(){
+        $this->corbleDatabase->addWordCategoriesToLobby($this->wordpools, $this->lobbyIndex);
+    }
+
+    /**
+     * Get the lobby index by a given joincode
+     * @param int String Joincode of lobby
+     * @return mixed Returns the database index of the lobby
+     */
+    public function getLobbyIndexByJoincode($joincode){
+        return $this->corbleDatabase->getLobbyIndexByJoincode($joincode);
+    }
+
+    /**
+     * Get the players of the current lobby
+     * @param int String Database index of current lobby
+     * @return mixed Returns an array with all players of current lobby
+     */
+    public function getPlayersOfLobby($lobbyIndex){
+        return $this->corbleDatabase->getPlayersOfLobby($lobbyIndex);
+    }
+
+    /**
+     * Returns all chosen Wordools of the current lobby
+     * @param int index of lobby
+     * @return mixed returns database output with 
+     */
+    public function getWordpoolsOfLobby($lobbyIndex){
+        return $this->corbleDatabase->getWordpoolsOfLobby($lobbyIndex);
+    }
+
+    /**
+     * Get Wordpool Indexes of given lobby
+     * @param int Index of lobby
+     * @return mixed array with indexs of Wordpool for given lobby
+     */
+    public function getWordpoolIdsOfLobby($lobbyIndex){
+        return $this->corbleDatabase->getWordpoolIdsOfLobby($lobbyIndex);
+    }
+
+    /**
+    * Get Wordpool Indexes of given lobby
+    * @param int Index of lobby
+    * @return mixed array with indexs of Wordpool for given lobby
+    */
+    public function getRoundIndexFromLobby($lobbyIndex){
+    return $this->corbleDatabase->getRoundIndexFromLobby($lobbyIndex);
+    }
+
+    //*************************************************************************
+    // Getters
+    //*************************************************************************
 
     /**
      * Set username of current user
@@ -122,116 +247,6 @@ class LobbyModel
         return $this->players;
     }
     
-     /**
-     * Method to save a new lobby into the corble database
-     * @param int Time to vote for a sketch
-     * @param int Time to draw a sketch
-     * @param int Start time of lobby
-     * @param int Maximum amount of players
-     * @param array Choosen wordpools for lobby
-     */
-    public function createLobby($votetime, $drawtime, $starttime, $maxplayer, $wordpools, $username){
-        $this->votetime = $votetime;
-        $this->drawtime = $drawtime;
-        $this->starttime = $starttime;
-        $this->maxplayer = $maxplayer;
-        $this->wordpools = $wordpools;
-        $this->UserName = $username;
-
-        $this->generateLobbyDatabaseEntry();
-        $this->joinLobby($this->joincode, $username, true);
-
-        return $this->joincode;
-    }
-
-    /**
-     * Add the chosen wordpools to the database
-     */
-    public function addWordCategoriesToLobby(){
-        $this->corbleDatabase->addWordCategoriesToLobby($this->wordpools, $this->lobbyIndex);
-    }
-
-    /**
-     * Get the lobby index by a given joincode
-     * @param int String Joincode of lobby
-     * @return mixed Returns the database index of the lobby
-     */
-    public function getLobbyIndexByJoincode($joincode){
-        return $this->corbleDatabase->getLobbyIndexByJoincode($joincode);
-    }
-
-    /**
-     * Get the players of the current lobby
-     * @param int String Database index of current lobby
-     * @return mixed Returns an array with all players of current lobby
-     */
-    public function getPlayersOfLobby($lobbyIndex){
-        return $this->corbleDatabase->getPlayersOfLobby($lobbyIndex);
-    }
-
-    /**
-     * Returns all chosen Wordools of the current lobby
-     * @param int index of lobby
-     * @return mixed returns database output with 
-     */
-    public function getWordpoolsOfLobby($lobbyIndex){
-        return $this->corbleDatabase->getWordpoolsOfLobby($lobbyIndex);
-    }
-
-    /**
-     * Get Wordpool Indexes of given lobby
-     * @param int Index of lobby
-     * @return mixed array with indexs of Wordpool for given lobby
-     */
-    public function getWordpoolIdsOfLobby($lobbyIndex){
-        return $this->corbleDatabase->getWordpoolIdsOfLobby($lobbyIndex);
-    }
-
-    /**
-     * Reads parameters of lobby from database taken single by getter
-     * @param int JoinCode to write to database
-     * @param int lobbyIndex to of current lobby
-     */
-    public function readLobbyDataFromDB($joinCode, $lobbyIndex){
-        $queryResult = $this->corbleDatabase->readLobbyDataFromDB($joinCode);
-
-        if ($queryResult->num_rows > 0) {
-            while ($row = $queryResult->fetch_assoc()) {
-                $this->state = $row["state"];
-                $this->votetime = $row["votetime"];
-                $this->starttime = $row["starttime"];
-                $this->drawtime = $row["drawtime"];
-                $this->maxplayer = $row["maxplayer"];
-                $this->joincode = $row["joincode"];
-                $this->players = $this->getPlayersOfLobby($lobbyIndex);
-
-                break;
-            }
-        }
-    }
-
-    /**
-     * Join an existing lobby with a player and add information of the player is the party leader
-     * @param int $joincode String Join-code of lobby
-     * @param bool $isPartyLeader boolean Is the player the party leader
-     * @param string String Username of player to be entered into the corble database
-     */
-    public function joinLobby($joincode, $username, $isPartyLeader){
-        $playerIndex = PlayerModel::getPlayerIndexByName($this->corbleDatabase, $username);
-        $lobbyIndex = $this->getLobbyIndexByJoincode($joincode);
-        $partyLeaderString = "";
-        if ($isPartyLeader == true) {
-            $partyLeaderString = "TRUE";
-        } else {
-            $partyLeaderString = "FALSE";
-        }
-
-        if ($lobbyIndex != 0 && $playerIndex != 0) {
-             return $this->corbleDatabase->addPlayerToLobby($playerIndex, $lobbyIndex, $partyLeaderString);
-        }
-        return 0;
-    }
-
     //*************************************************************************
     // Private Methods
     //*************************************************************************

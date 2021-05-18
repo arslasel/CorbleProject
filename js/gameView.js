@@ -12,7 +12,6 @@ function init() {
     lobby_joincode = urlParams.get('lobby')
     start_roundID = urlParams.get('roundID')
     initGame();
-    initWord();
 }
 
 function initGame() {
@@ -24,6 +23,7 @@ function initGame() {
         },
         success: function (data) {
             remainingTime = data;
+            initWord();
         }
     });
 
@@ -308,7 +308,7 @@ function registerTimeEvents() {
         document.getElementById("timeLeftToVote").innerHTML = remainingTime.toString();
         if (remainingTime == 0) {
             submitImage();
-          //  initVote();
+            initVote();
         }
         if(remainingTime < 0){ remainingTime = -1;}
     }, 1000);

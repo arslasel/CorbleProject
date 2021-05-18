@@ -120,6 +120,7 @@ function join_lobby() {
         },
         success: function (response) {
             lobby_joincode = document.getElementById('lobby_joincode_field').value
+            $start_RoundID = parseInt(JSON.parse(response));
             loadView();
             window.setInterval(() => {
                 loadLobbyData(lobby_joincode);

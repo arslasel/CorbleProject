@@ -62,7 +62,17 @@ function initGameEnd() {
 }
 
 function initVote() {
-    remainingTime = 60;
+    $.ajax({
+        type: 'get',
+        url: '../Controller/ajax/GameViewVoteTime.php',
+        data: {
+            joincode: lobby_joincode,
+            roundIndex: start_roundID
+        },
+        success: function (data) {        
+            remainingTime = data;
+        }
+    });
 
     document.getElementById("voteContainer").removeAttribute("hidden");
     document.getElementById("drawContainer").setAttribute("hidden", "1");

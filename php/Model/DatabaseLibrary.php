@@ -711,6 +711,7 @@ class DatabaseLibrary{
         $conn = $this->databaseConnection->createConnection();
         $stmt = $conn->prepare("SELECT drawtime FROM tbl_lobby WHERE joincode = ?");
         $stmt->bind_param("i", $joinCode);
+        
         $result = $this->databaseConnection->executeQuery($conn, $stmt);
         if ($result) {
             return $result->fetch_assoc()["drawtime"];
@@ -719,7 +720,6 @@ class DatabaseLibrary{
         }
     }
 
-    
     /**
      * This function returns de votetime for a round
      * @param int $joinCode joinCode of lobby
@@ -729,6 +729,7 @@ class DatabaseLibrary{
         $conn = $this->databaseConnection->createConnection();
         $stmt = $conn->prepare("SELECT votetime FROM tbl_lobby WHERE joincode = ?");
         $stmt->bind_param("i", $joinCode);
+
         $result = $this->databaseConnection->executeQuery($conn, $stmt);
         if ($result) {
             return $result->fetch_assoc()["votetime"];

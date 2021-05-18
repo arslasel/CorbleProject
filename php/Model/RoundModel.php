@@ -33,10 +33,8 @@ class RoundModel
         $IoModel = new IOModel();
         $path = $IoModel->savePicture($base64, $lobbyIndex, $roundIndex, $playerIndex);
         if (!is_null($path)) {
-            
-            
             $sketchID = $this->corbleDatabase->savePicture($path, $playerIndex, 
-                    $this->corbleDatabase->getWordIndxOfRound($roundIndex), $roundIndex);
+                    $this->corbleDatabase->getWordIndexOfRound($roundIndex), $roundIndex);
             $this->corbleDatabase->insertSketchInRound($sketchID, $roundIndex);
             return $sketchID;
         }
@@ -71,6 +69,15 @@ class RoundModel
     }
 
     /**
+     * Returns the draw time for a lobby by the joincode
+     * @param int Joincode of lobby
+     * @return int time to draw a sketch
+     */
+    public function getVoteTime($joinCode){
+        return $this->corbleDatabase->getVoteTime($joinCode);
+    }
+
+    /**
      * Get key-value array to display the leaderboard with name and score for each player
      * @param int Integer with index of lobby
      * @return array Key-Value table with player and score
@@ -87,5 +94,14 @@ class RoundModel
             $leaderboard[$player::getName()] = $playerScore;
         }
         return arsort($leaderboard);
+    }
+
+    /**
+     * Returns wordname of current round
+     * @param int $roundIndex Index of current round
+     * @return string name of word
+     */
+    public function getWordNameDatabase($roundIndex){
+        return $this->corbleDatabase->getWordNameOfRound($roundIndex);
     }
 }

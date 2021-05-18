@@ -49,7 +49,7 @@ include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/DatabaseLibrary.php");
             $penaltyPoints += $this->ratioColorsRate($blackCounter,$redCounter,  $brownCounter, $greyCounter, $whiteCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter);
             $penaltyPoints += $this->foreignColorsRate($blackCounter,$redCounter,  $brownCounter, $greyCounter, $whiteCounter, $greenCounter, $blueCounter, $yellowCounter, $orangeCounter);
             $penaltyPoints = $this->validatepenaltyPoints($penaltyPoints);
-            $totalPoints = $this->actualPoints - $penaltyPoints;
+            $totalPoints = $this->actualPoints - $penaltyPoints + mt_rand(0.000000001, 0.0001);
             $this->corbleDatabase->setComputerScoreForSketch($totalPoints, $sketchIndex);
         }
 
@@ -84,40 +84,40 @@ include_once($_SERVER['DOCUMENT_ROOT']."/php/Model/DatabaseLibrary.php");
             $penaltyPoints = 0;
 
             if(($blackCounter > RatingModel::NO_PIXEL && $this->primaryColor != "black") && ($blackCounter > RatingModel::NO_PIXEL && $this->secondaryColor != "black")){
-                $penaltyPoints += 1;
-                ($blackCounter >= RatingModel::MAX_DIFFERENCE_BORDER) ? $penaltyPoints += 3 :$this->relax();
+                $penaltyPoints += 0.5;
+                ($blackCounter >= RatingModel::MAX_DIFFERENCE_BORDER) ? $penaltyPoints += 1 :$this->relax();
             }
             if(($redCounter > RatingModel::NO_PIXEL && $this->primaryColor != "red") && ($redCounter > RatingModel::NO_PIXEL && $this->secondaryColor != "red")){
-                $penaltyPoints += 1;
-                ($redCounter >= RatingModel::MAX_DIFFERENCE_BORDER) ? $penaltyPoints += 3 :$this->relax();
+                $penaltyPoints += 0.5;
+                ($redCounter >= RatingModel::MAX_DIFFERENCE_BORDER) ? $penaltyPoints += 1 :$this->relax();
             }
             if(($brownCounter > RatingModel::NO_PIXEL && $this->primaryColor != "brown") && ($brownCounter > RatingModel::NO_PIXEL && $this->secondaryColor != "brown")){
-                $penaltyPoints += 1;
-                ($brownCounter >= RatingModel::MAX_DIFFERENCE_BORDER) ? $penaltyPoints += 3 :$this->relax();
+                $penaltyPoints += 0.5;
+                ($brownCounter >= RatingModel::MAX_DIFFERENCE_BORDER) ? $penaltyPoints += 1 :$this->relax();
             }
             if(($greyCounter > RatingModel::NO_PIXEL && $this->primaryColor != "grey") && ($greyCounter > RatingModel::NO_PIXEL && $this->secondaryColor != "grey")){
-                $penaltyPoints += 1;
-                ($greyCounter >= RatingModel::MAX_DIFFERENCE_BORDER) ? $penaltyPoints += 3 :$this->relax();
+                $penaltyPoints += 0.5;
+                ($greyCounter >= RatingModel::MAX_DIFFERENCE_BORDER) ? $penaltyPoints += 1 :$this->relax();
             } 
             if(($whiteCounter > RatingModel::NO_PIXEL && $this->primaryColor != "white") && ($whiteCounter > RatingModel::NO_PIXEL && $this->secondaryColor != "white")){
-                $penaltyPoints += 1;
-                ($whiteCounter >= RatingModel::MAX_DIFFERENCE_BORDER) ? $penaltyPoints += 3 :$this->relax();
+                $penaltyPoints += 0.5;
+                ($whiteCounter >= RatingModel::MAX_DIFFERENCE_BORDER) ? $penaltyPoints += 1 :$this->relax();
             }                             
             if(($greenCounter > RatingModel::NO_PIXEL && $this->primaryColor != "green") && ($greenCounter > RatingModel::NO_PIXEL && $this->secondaryColor != "green")){
-                $penaltyPoints += 1;
-                ($greenCounter >= RatingModel::MAX_DIFFERENCE_BORDER) ? $penaltyPoints += 3 :$this->relax();
+                $penaltyPoints += 0.5;
+                ($greenCounter >= RatingModel::MAX_DIFFERENCE_BORDER) ? $penaltyPoints += 1 :$this->relax();
             }
             if(($blueCounter > RatingModel::NO_PIXEL && $this->primaryColor != "blue") && ($blueCounter > RatingModel::NO_PIXEL && $this->secondaryColor != "blue")){
-                $penaltyPoints += 1;
-                ($blueCounter >= RatingModel::MAX_DIFFERENCE_BORDER) ? $penaltyPoints += 3 :$this->relax();
+                $penaltyPoints += 0.5;
+                ($blueCounter >= RatingModel::MAX_DIFFERENCE_BORDER) ? $penaltyPoints += 1 :$this->relax();
             }
             if(($yellowCounter > RatingModel::NO_PIXEL && $this->primaryColor != "yellow") && ($yellowCounter > RatingModel::NO_PIXEL && $this->secondaryColor != "yellow")){
-                $penaltyPoints += 1;
+                $penaltyPoints += 0.5;
                 ($yellowCounter >= 200) ? $penaltyPoints += 3 :$this->relax();
             }
             if(($orangeCounter > RatingModel::NO_PIXEL && $this->primaryColor != "orange") && ($orangeCounter > RatingModel::NO_PIXEL && $this->secondaryColor != "orange")){
-                $penaltyPoints += 1;
-                ($orangeCounter >= RatingModel::MAX_DIFFERENCE_BORDER) ? $penaltyPoints += 3 :$this->relax();
+                $penaltyPoints += 0.5;
+                ($orangeCounter >= RatingModel::MAX_DIFFERENCE_BORDER) ? $penaltyPoints += 1 :$this->relax();
             }
 
             $penaltyPoints = $this->validatepenaltyPoints($penaltyPoints);
